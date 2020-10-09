@@ -83,26 +83,26 @@ public class DrinkFactoryMachine extends JFrame {
 		contentPane.add(lblCoins);
 
 		JButton coffeeButton = new JButton("Coffee");
-		coffeeButton.setForeground(Color.WHITE);
-		coffeeButton.setBackground(Color.DARK_GRAY);
+		coffeeButton.setForeground(Color.DARK_GRAY);
+		coffeeButton.setBackground(Color.WHITE);
 		coffeeButton.setBounds(12, 34, 96, 25);
 		contentPane.add(coffeeButton);
 
 		JButton expressoButton = new JButton("Expresso");
-		expressoButton.setForeground(Color.WHITE);
-		expressoButton.setBackground(Color.DARK_GRAY);
+		expressoButton.setForeground(Color.DARK_GRAY);
+		expressoButton.setBackground(Color.WHITE);
 		expressoButton.setBounds(12, 71, 96, 25);
 		contentPane.add(expressoButton);
 
 		JButton teaButton = new JButton("Tea");
-		teaButton.setForeground(Color.WHITE);
-		teaButton.setBackground(Color.DARK_GRAY);
+		teaButton.setForeground(Color.DARK_GRAY);
+		teaButton.setBackground(Color.WHITE);
 		teaButton.setBounds(12, 108, 96, 25);
 		contentPane.add(teaButton);
 
 		JButton soupButton = new JButton("Soup");
-		soupButton.setForeground(Color.WHITE);
-		soupButton.setBackground(Color.DARK_GRAY);
+		soupButton.setForeground(Color.DARK_GRAY);
+		soupButton.setBackground(Color.WHITE);
 		soupButton.setBounds(12, 145, 96, 25);
 		contentPane.add(soupButton);
 
@@ -162,8 +162,8 @@ public class DrinkFactoryMachine extends JFrame {
 		contentPane.add(temperatureSlider);
 
 		JButton icedTeaButton = new JButton("Iced Tea");
-		icedTeaButton.setForeground(Color.WHITE);
-		icedTeaButton.setBackground(Color.DARK_GRAY);
+		icedTeaButton.setForeground(Color.DARK_GRAY);
+		icedTeaButton.setBackground(Color.WHITE);
 		icedTeaButton.setBounds(12, 182, 96, 25);
 		contentPane.add(icedTeaButton);
 
