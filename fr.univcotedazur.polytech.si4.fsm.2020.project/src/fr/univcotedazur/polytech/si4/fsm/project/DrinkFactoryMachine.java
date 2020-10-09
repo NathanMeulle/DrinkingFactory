@@ -202,6 +202,7 @@ public class DrinkFactoryMachine extends JFrame {
 		JButton money25centsButton = new JButton("0.25 €");
 		money25centsButton.setForeground(Color.BLACK);
 		money25centsButton.setBackground(Color.WHITE);
+		panel.add(money25centsButton);
 
 		JButton money10centsButton = new JButton("0.10 €");
 		money10centsButton.setForeground(Color.BLACK);
