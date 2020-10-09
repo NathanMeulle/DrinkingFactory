@@ -237,7 +237,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 		BufferedImage myPicture = null;
 		try {
-			myPicture = ImageIO.read(new File("./picts/vide2.jpg"));
+			myPicture = ImageIO.read(new File(System.getProperty("user.dir") +"/fr.univcotedazur.polytech.si4.fsm.2020.project/picts/vide2.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
