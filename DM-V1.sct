@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:sgraph="http://www.yakindu.org/sct/sgraph/2.0.0">
+  <sgraph:Statechart xmi:id="_Z1-u0PQBEeqcIuQ6E47TZw" specification="@EventDriven&#xA;// Use the event driven execution model.&#xA;// Runs a run-to-completion step&#xA;// each time an event is raised.&#xA;// Switch to cycle based behavior&#xA;// by specifying '@CycleBased(200)'&#xA;// instead.&#xA;&#xA;@ChildFirstExecution&#xA;// In composite states, execute&#xA;// child states first.&#xA;// @ParentFirstExecution does the opposite.&#xA;&#xA;interface:&#xA;// Define events&#xA;in event G&#xA;in event D&#xA;out event doRun&#xA;out event doStop&#xA;out event doPause&#xA;out event doClean&#xA;// and variables here. &#xA;// Use CTRL + Space for content assist." name="default"/>
+  <notation:Diagram xmi:id="_Z1_88PQBEeqcIuQ6E47TZw" type="org.yakindu.sct.ui.editor.editor.StatechartDiagramEditor" element="_Z1-u0PQBEeqcIuQ6E47TZw" measurementUnit="Pixel">
+    <children xsi:type="notation:Shape" xmi:id="_Z2DnUfQBEeqcIuQ6E47TZw" type="StatechartText" fontName="Verdana" lineColor="4210752">
+      <children xsi:type="notation:DecorationNode" xmi:id="_Z2DnU_QBEeqcIuQ6E47TZw" type="StatechartName">
+        <styles xsi:type="notation:ShapeStyle" xmi:id="_Z2DnVPQBEeqcIuQ6E47TZw"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_Z2DnVfQBEeqcIuQ6E47TZw"/>
+      </children>
+      <children xsi:type="notation:Shape" xmi:id="_Z2DnVvQBEeqcIuQ6E47TZw" type="StatechartTextExpression" fontName="Verdana" lineColor="4210752">
+        <layoutConstraint xsi:type="notation:Bounds" xmi:id="_Z2DnV_QBEeqcIuQ6E47TZw"/>
+      </children>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_Z2DnWPQBEeqcIuQ6E47TZw" x="10" y="10" width="200" height="400"/>
+    </children>
+    <styles xsi:type="notation:BooleanValueStyle" xmi:id="_Z1_88fQBEeqcIuQ6E47TZw" name="inlineDefinitionSection"/>
+    <styles xsi:type="notation:DiagramStyle" xmi:id="_Z1_88vQBEeqcIuQ6E47TZw"/>
+  </notation:Diagram>
+</xmi:XMI>
