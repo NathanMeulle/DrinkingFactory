@@ -195,18 +195,17 @@ public class DrinkFactoryMachine extends JFrame {
 		contentPane.add(panel);
 
 		JButton money50centsButton = new JButton("0.50 €");
-		money50centsButton.setForeground(Color.WHITE);
-		money50centsButton.setBackground(Color.DARK_GRAY);
+		money50centsButton.setForeground(Color.BLACK);
+		money50centsButton.setBackground(Color.WHITE);
 		panel.add(money50centsButton);
 
 		JButton money25centsButton = new JButton("0.25 €");
-		money25centsButton.setForeground(Color.WHITE);
-		money25centsButton.setBackground(Color.DARK_GRAY);
-		panel.add(money25centsButton);
+		money25centsButton.setForeground(Color.BLACK);
+		money25centsButton.setBackground(Color.WHITE);
 
 		JButton money10centsButton = new JButton("0.10 €");
-		money10centsButton.setForeground(Color.WHITE);
-		money10centsButton.setBackground(Color.DARK_GRAY);
+		money10centsButton.setForeground(Color.BLACK);
+		money10centsButton.setBackground(Color.WHITE);
 		panel.add(money10centsButton);
 
 		JPanel panel_1 = new JPanel();
@@ -215,8 +214,8 @@ public class DrinkFactoryMachine extends JFrame {
 		contentPane.add(panel_1);
 
 		JButton nfcBiiiipButton = new JButton("biiip");
-		nfcBiiiipButton.setForeground(Color.WHITE);
-		nfcBiiiipButton.setBackground(Color.DARK_GRAY);
+		nfcBiiiipButton.setForeground(Color.BLACK);
+		nfcBiiiipButton.setBackground(Color.WHITE);
 		panel_1.add(nfcBiiiipButton);
 
 		JLabel lblNfc = new JLabel("NFC");
@@ -230,8 +229,8 @@ public class DrinkFactoryMachine extends JFrame {
 		contentPane.add(separator);
 
 		JButton addCupButton = new JButton("Add cup");
-		addCupButton.setForeground(Color.WHITE);
-		addCupButton.setBackground(Color.DARK_GRAY);
+		addCupButton.setForeground(Color.BLACK);
+		addCupButton.setBackground(Color.WHITE);
 		addCupButton.setBounds(45, 336, 96, 25);
 		contentPane.add(addCupButton);
 
@@ -251,8 +250,8 @@ public class DrinkFactoryMachine extends JFrame {
 		contentPane.add(panel_2);
 
 		JButton cancelButton = new JButton("Cancel");
-		cancelButton.setForeground(Color.WHITE);
-		cancelButton.setBackground(Color.DARK_GRAY);
+		cancelButton.setForeground(Color.BLACK);
+		cancelButton.setBackground(Color.WHITE);
 		panel_2.add(cancelButton);
 
 		// listeners
