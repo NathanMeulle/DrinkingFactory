@@ -39,6 +39,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private static final long serialVersionUID = 2030629304432075314L;
 	private JPanel contentPane;
 	private JLabel messagesToUser;
+    JProgressBar progressBar = new JProgressBar();
 	protected DefaultSMStatemachine theFSM; // Declaration de la stateMAchine
 	private int cagnote = 0;
 	private int coffePrice = 35;
@@ -47,6 +48,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private int soupPrice = 75;
 	private int IcedTeaPrice = 50;
 	private int wantedTemperature = 60;
+	private int progressBarValue = 0;
 	TimerService timer;
 	private String selection;
 
@@ -132,7 +134,7 @@ public class DrinkFactoryMachine extends JFrame {
 		soupButton.setBounds(12, 145, 96, 25);
 		contentPane.add(soupButton);
 
-		JProgressBar progressBar = new JProgressBar();
+
 		progressBar.setStringPainted(true);
 		progressBar.setValue(0);               /// TODO: 27/10/2020  implementer ce set dans les autres methode pour montrer lavance de la preparation
 		progressBar.setForeground(Color.blue);
@@ -495,12 +497,18 @@ public class DrinkFactoryMachine extends JFrame {
                 repaint();
             }
         };
+        TimerTask repeatedTask = new TimerTask() {
+            public void run() {
+                progressBarValue+=10;
+                progressBar.setValue(progressBarValue);
+            }
+        };
         System.out.println("début chauffage");
         setMessageToUser("début du chauffage de l'eau");
         repaint();
         Timer timer = new Timer("Timer");
+        timer.scheduleAtFixedRate(repeatedTask, 0, delay/10);
         timer.schedule(task, delay);
-
         }
 
     
