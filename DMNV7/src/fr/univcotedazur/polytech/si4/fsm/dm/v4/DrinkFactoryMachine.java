@@ -96,6 +96,10 @@ public class DrinkFactoryMachine extends JFrame {
 		messagesToUser.setText("<html>" + str);
 	}
 
+	public void addMessageToUser(String str) {
+		messagesToUser.setText(messagesToUser.getText() + "<br>" +str);
+	}
+
 
 	/**
 	 * Create the frame.
@@ -547,7 +551,7 @@ public class DrinkFactoryMachine extends JFrame {
             @Override
             public void run() {
                 System.out.println("fin chauffage");
-                setMessageToUser("chauffage terminé");
+				addMessageToUser("chauffage terminé");
                 repaint();
             }
         };
@@ -649,6 +653,46 @@ public class DrinkFactoryMachine extends JFrame {
     //TODO ajouter	cancelButton.setEnabled(true); dans restart
 	public void doRestart() {
 		doCancel();
+	}
+
+	public void doDosette() {
+		System.out.println("dosette");
+		addMessageToUser("Ajout dosette");
+
+	}
+
+	public void doGrain() {
+		System.out.println("grain");
+		addMessageToUser("Broyage des grains");
+		TimerTask task = new TimerTask() {
+			public void run() {
+				addMessageToUser("Tassage des grains");
+			}
+		};
+		Timer timer = new Timer("Timer");
+		long delay = 1000L;
+		timer.schedule(task, delay);
+		repaint();
+	}
+
+	public void doSachet() {
+		System.out.println("sachet");
+		addMessageToUser("Immersion du thé");
+		TimerTask task = new TimerTask() {
+			public void run() {
+				addMessageToUser("Retrait du thé");
+			}
+		};
+		Timer timer = new Timer("Timer");
+		long delay = 1000L;
+		timer.schedule(task, delay);
+		repaint();
+	}
+
+	public void doGobelet() {
+		System.out.println("gobelet");
+		addMessageToUser("Positionnement du gobelet");
+
 	}
 
 	//TODO ajouter	cancelButton.setEnabled(true); dans restart

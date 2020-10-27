@@ -49,9 +49,9 @@
             <outgoingTransitions xmi:id="_tczVQBavEeuomKyfDgo6Qw" specification="" target="_JosYsBavEeuomKyfDgo6Qw"/>
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_JosYsBavEeuomKyfDgo6Qw" specification="" name="Etat 0" incomingTransitions="_tczVQBavEeuomKyfDgo6Qw">
-            <outgoingTransitions xmi:id="_vnjVkBavEeuomKyfDgo6Qw" specification="[mySelection == &quot;coffee&quot;]" target="_KcLrIBavEeuomKyfDgo6Qw"/>
+            <outgoingTransitions xmi:id="_vnjVkBavEeuomKyfDgo6Qw" specification="[mySelection == &quot;Coffee&quot;]" target="_KcLrIBavEeuomKyfDgo6Qw"/>
             <outgoingTransitions xmi:id="_0WZqUBavEeuomKyfDgo6Qw" specification="[mySelection ==&quot;Expresso&quot;]" target="_Kyi8sBavEeuomKyfDgo6Qw"/>
-            <outgoingTransitions xmi:id="_5XEu4BavEeuomKyfDgo6Qw" specification="[mySelection == &quot;tea&quot;]" target="_LDF6IBavEeuomKyfDgo6Qw"/>
+            <outgoingTransitions xmi:id="_5XEu4BavEeuomKyfDgo6Qw" specification="[mySelection == &quot;Tea&quot;]" target="_LDF6IBavEeuomKyfDgo6Qw"/>
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_KcLrIBavEeuomKyfDgo6Qw" specification="entry / raise doDosette" name="dosette" incomingTransitions="_vnjVkBavEeuomKyfDgo6Qw">
             <outgoingTransitions xmi:id="_97YnkBavEeuomKyfDgo6Qw" specification="after 1 s " target="_LUBSEBavEeuomKyfDgo6Qw"/>
