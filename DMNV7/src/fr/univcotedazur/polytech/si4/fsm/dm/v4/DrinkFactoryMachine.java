@@ -37,13 +37,14 @@ public class DrinkFactoryMachine extends JFrame {
 	private JPanel contentPane;
 	private JLabel messagesToUser;
 	protected DefaultSMStatemachine theFSM; // Declaration de la stateMAchine
-    private int cagnote = 0;
-    private int coffePrice = 35;
-    private int expressoPrice = 50;
-    private int teaPrice = 40;
-	
-	
-	
+	private int cagnote = 0;
+	private int coffePrice = 35;
+	private int expressoPrice = 50;
+	private int teaPrice = 40;
+	TimerService timer;
+	private String selection;
+
+
 	/**
 	 * @wbp.nonvisual location=311,475
 	 */
@@ -64,37 +65,11 @@ public class DrinkFactoryMachine extends JFrame {
 			}
 		});
 	}
-	
+
 	public void setMessageToUser(String str) {
-		messagesToUser.setText("<html>"+str);
+		messagesToUser.setText("<html>" + str);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 
 	/**
 	 * Create the frame.
@@ -282,8 +257,8 @@ public class DrinkFactoryMachine extends JFrame {
 
 		BufferedImage myPicture = null;
 		try {
-			System.out.println(System.getProperty("user.dir") );
-			myPicture = ImageIO.read(new File(System.getProperty("user.dir") +"/src/picts/vide2.jpg"));
+			System.out.println(System.getProperty("user.dir"));
+			myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/vide2.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -307,7 +282,7 @@ public class DrinkFactoryMachine extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				BufferedImage myPicture = null;
 				try {
-					myPicture = ImageIO.read(new File(System.getProperty("user.dir") +"/src/picts/ownCup.jpg"));
+					myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/ownCup.jpg"));
 				} catch (IOException ee) {
 					ee.printStackTrace();
 				}
@@ -316,12 +291,12 @@ public class DrinkFactoryMachine extends JFrame {
 		});
 
 		cancelButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                doCancel();
-                theFSM.raiseCancel();
-            }
-        });
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				doCancel();
+				theFSM.raiseCancel();
+			}
+		});
 
 		coffeeButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -331,7 +306,7 @@ public class DrinkFactoryMachine extends JFrame {
 				theFSM.raiseAnyButton();
 			}
 		});
-		
+
 		expressoButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -368,138 +343,141 @@ public class DrinkFactoryMachine extends JFrame {
 
 			}
 		});
-		
+
 		money50centsButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-			    doCinqanteCents();
+				doCinqanteCents();
 				theFSM.raiseCinquanteCents();
 				theFSM.raiseAnyButton();
 
 			}
 		});
-		
+
 		money25centsButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-			    doVingtCinqCents();
+				doVingtCinqCents();
 				theFSM.raiseVingtCinqCents();
 				theFSM.raiseAnyButton();
 
 			}
 		});
-		
+
 		money10centsButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-			    doDixCents();
+				doDixCents();
 				theFSM.raiseDixCents();
 				theFSM.raiseAnyButton();
 
 			}
-		});		
-		
-		
+		});
+
+
 		// initialisation de la stateMachine
-				theFSM = new DefaultSMStatemachine(); 
-				TimerService timer = new TimerService(); 
-				theFSM.setTimer(timer);
-				// Implementation des méthodes de callBack !!
-				DrinkingFactoryCallBackInterfaceImplementation callback = new DrinkingFactoryCallBackInterfaceImplementation(this);
-				theFSM.getSCInterface().setSCInterfaceOperationCallback(callback);
-			
-				theFSM.init();
-				theFSM.enter();
-				theFSM.getSCInterface().getListeners().add(
-						new DrinkingMachineInterfaceImplementation(this)
-						);
+		theFSM = new DefaultSMStatemachine();
+		timer = new TimerService();
+		theFSM.setTimer(timer);
+		// Implementation des méthodes de callBack !!
+		DrinkingFactoryCallBackInterfaceImplementation callback = new DrinkingFactoryCallBackInterfaceImplementation(this);
+		theFSM.getSCInterface().setSCInterfaceOperationCallback(callback);
 
-				
-
+		theFSM.init();
+		theFSM.enter();
+		theFSM.getSCInterface().getListeners().add(
+				new DrinkingMachineInterfaceImplementation(this)
+		);
 
 	}
 
-    private void doCancel() {
-        System.out.println("doCancel");
-        setMessageToUser("Commande annulé, veuillez récupérer vos " +cagnote());
-        cagnote=0;
-        repaint();
-    }
+	private void doCancel() {
+		System.out.println("doCancel");
+		cagnote = 0;
+		selection = "";
+		setMessageToUser("Selection : " + selection +"<br>" + "Montant inséré : " + cagnote());
+		repaint();
+	}
 
-    private void doCinqanteCents() {
-        System.out.println("50 centimes ajoutés");
-        cagnote+=50;
-        setMessageToUser("50 centimes ajoutés, votre cagnote est de " +cagnote());
-        repaint();
-    }
+	private void doCinqanteCents() {
+		System.out.println("50 centimes ajoutés");
+		cagnote += 50;
+		setMessageToUser("Selection : " + selection +"<br>" + "Montant inséré : " + cagnote());
+		repaint();
+	}
 
-    private void doVingtCinqCents() {
-        System.out.println("20 centimes ajoutés");
-        cagnote+=25;
-        setMessageToUser("20 centimes ajoutés, votre cagnote est de " +cagnote());
-        repaint();
-    }
+	private void doVingtCinqCents() {
+		System.out.println("25 centimes ajoutés");
+		cagnote += 25;
+		setMessageToUser("Selection : " + selection +"<br>" + "Montant inséré : " + cagnote());
 
-    private void doDixCents() {
-        System.out.println("10 centimes ajoutés");
-        cagnote+=10;
-        setMessageToUser("10 centimes ajoutés, votre cagnote est de " +cagnote());
-        repaint();
-    }
+		repaint();
+	}
 
-    public void doCoffee() {
+	private void doDixCents() {
+		System.out.println("10 centimes ajoutés");
+		cagnote += 10;
+		setMessageToUser("Selection : " + selection +"<br>" + "Montant inséré : " + cagnote());
+		repaint();
+	}
+
+	public void doCoffee() {
+		selection = "Coffee";
 		System.out.println("Coffee selected");
-		setMessageToUser("Coffee selected");
+		setMessageToUser("Selection : " + selection +"<br>" + "Montant inséré : " + cagnote());
 		repaint();
 	}
 
 	public void doExpresso() {
+		selection = "Expresso";
 		System.out.println("Expresso selected");
-		setMessageToUser("Expresso selected");
-		repaint();		
+		setMessageToUser("Selection : " + selection +"<br>" + "Montant inséré : " + cagnote());
+		repaint();
 	}
 
 	public void doIcedTea() {
+		selection = "Iced Tea";
 		System.out.println("Iced Tea selected");
-		setMessageToUser("Iced Tea selected");
-		repaint();			
+		setMessageToUser("Selection : " + selection +"<br>" + "Montant inséré : " + cagnote());
+		repaint();
 	}
-	
+
 	public void doSoup() {
+		selection = "Soup";
 		System.out.println("Soup selected");
-		setMessageToUser("Soup selected");
-		repaint();			
+		setMessageToUser("Selection : " + selection +"<br>" + "Montant inséré : " + cagnote());
+		repaint();
 	}
 
 	public void doSugar() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void doSelect() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void doTea() {
+		selection = "Tea";
 		System.out.println("Tea selected");
-		setMessageToUser("Tea selected");
-		repaint();			
+		setMessageToUser("Selection : " + selection +"<br>" + "Montant inséré : " + cagnote());
+		repaint();
 	}
 
 	public void doPay() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	public String cagnote(){
-	    String tunes="";
-	    if(cagnote>99){
-	        tunes = cagnote/100.0 + "€";
-        }
-	    else{
-	        tunes = cagnote +" centimes";
-        }
-	    return tunes;
-    }
+	public String cagnote() {
+		String tunes;
+		if (cagnote > 99) {
+			tunes = cagnote / 100.0 + "€";
+		} else {
+			tunes = cagnote + " cents";
+		}
+		return tunes;
+	}
 }
