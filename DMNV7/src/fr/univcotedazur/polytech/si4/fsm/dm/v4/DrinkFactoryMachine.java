@@ -444,7 +444,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 	}
 
-	private void doCancel() {
+	public void doCancel() {
 		progressBarValue=0;
 		progressBar.setValue(progressBarValue);
 		System.out.println("doCancel");
@@ -637,12 +637,17 @@ public class DrinkFactoryMachine extends JFrame {
 	public String getSelection() {
 		return selection;
 	}
-
+	
     public boolean isHot() {
 	    if(currentTemperature==wantedTemperature){return true;}
 	    return false;
     }
 
     //TODO ajouter	cancelButton.setEnabled(true); dans restart
+	public void doRestart() {
+		doCancel();
+	}
+
+	//TODO ajouter	cancelButton.setEnabled(true); dans restart
 	//TODO revoir timer 45s
 }
