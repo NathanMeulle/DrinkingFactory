@@ -8,8 +8,7 @@ public class DrinkingFactoryCallBackInterfaceImplementation implements SCInterfa
     public DrinkingFactoryCallBackInterfaceImplementation(DrinkFactoryMachine sw) {theGui = sw; }
 	@Override
 	public String getSelection() {
-		// TODO Auto-generated method stub
-		return null;
+		return theGui.getSelection();
 	}
 	@Override
 	public boolean isHot() {
@@ -30,6 +29,6 @@ public class DrinkingFactoryCallBackInterfaceImplementation implements SCInterfa
 		// TODO Auto-generated method stub
 		return false;
 	}
-    
+
 
 }

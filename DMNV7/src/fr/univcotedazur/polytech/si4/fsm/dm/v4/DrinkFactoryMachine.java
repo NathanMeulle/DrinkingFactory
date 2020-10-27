@@ -41,6 +41,9 @@ public class DrinkFactoryMachine extends JFrame {
 	private int coffePrice = 35;
 	private int expressoPrice = 50;
 	private int teaPrice = 40;
+	private int soupPrice = 75;
+	private int IcedTeaPrice = 50;
+
 	TimerService timer;
 	private String selection;
 
@@ -482,5 +485,35 @@ public class DrinkFactoryMachine extends JFrame {
 	    return cagnote/100.0 + "€";
     }
 
+    public void doReceipt() {
+		System.out.println("Receipt created");
+		int rendu = doRendu();
+		if (rendu>0)
+			setMessageToUser("Transaction effectuée, récupérez votre monnaie <br> Rendu : " + rendu/100.0 + "€");
+		else setMessageToUser("Transaction effectuée");
 
+
+	}
+
+
+	private int doRendu() {
+		switch (selection) {
+			case "Coffee":
+				return cagnote - coffePrice;
+			case "Expresso":
+				return cagnote - expressoPrice;
+			case "Tea":
+				return cagnote - teaPrice;
+			case "Soup":
+				return cagnote - soupPrice;
+			case "Iced Tea":
+				return cagnote - IcedTeaPrice;
+		}
+		return 0;
+	}
+
+
+	public String getSelection() {
+		return selection;
+	}
 }
