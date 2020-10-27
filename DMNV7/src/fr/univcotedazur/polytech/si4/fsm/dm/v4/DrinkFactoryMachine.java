@@ -444,6 +444,8 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	private void doCancel() {
+		progressBarValue=0;
+		progressBar.setValue(progressBarValue);
 		System.out.println("doCancel");
 		cagnote = 0;
 		selection = "";
@@ -509,13 +511,13 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doSugar() {
-		// TODO Auto-generated method stub
-
+		progressBarValue+=5;
+		progressBar.setValue(progressBarValue);
 	}
 
 	public void doSelect() {
-		// TODO Auto-generated method stub
-
+		progressBarValue+=20;
+		progressBar.setValue(progressBarValue);
 	}
 
 	public void doTea() {
@@ -526,6 +528,8 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doPay() {
+		progressBarValue+=20;
+		progressBar.setValue(progressBarValue);
 	}
 
     public boolean isPay() {//TODO rajouter les boissons manquantes
