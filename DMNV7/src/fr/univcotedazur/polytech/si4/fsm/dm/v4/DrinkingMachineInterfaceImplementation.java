@@ -7,9 +7,8 @@ class DrinkingMachineInterfaceImplementation implements SCInterfaceListener {
           public DrinkingMachineInterfaceImplementation(DrinkFactoryMachine dm) {theGui = dm; }
 		@Override
 		public void onDoRestartRaised() {
-			// TODO Auto-generated method stub
 
-		}
+        }
 		@Override
 		public void onDoCoffeeRaised() {
 			theGui.doCoffee();
