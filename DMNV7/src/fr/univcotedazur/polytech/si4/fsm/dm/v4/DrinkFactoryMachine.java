@@ -9,7 +9,10 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Hashtable;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -43,7 +46,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private int teaPrice = 40;
 	private int soupPrice = 75;
 	private int IcedTeaPrice = 50;
-
+	private int wantedTemperature = 60;
 	TimerService timer;
 	private String selection;
 
@@ -131,7 +134,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 		JProgressBar progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
-		progressBar.setValue(70);               /// TODO: 27/10/2020  implementer ce set dans les autres methode pour montrer lavance de la preparation
+		progressBar.setValue(0);               /// TODO: 27/10/2020  implementer ce set dans les autres methode pour montrer lavance de la preparation
 		progressBar.setForeground(Color.blue);
 		progressBar.setBackground(Color.DARK_GRAY);
 		progressBar.setBounds(12, 254, 622, 26);
@@ -480,7 +483,27 @@ public class DrinkFactoryMachine extends JFrame {
         if (selection.equals("Expresso")&&(expressoPrice<=cagnote)){return true;}
         return false;
     }
+    
+    public void doHeat() {
+	    int heat = 15;
+	    long delay = 1000*(wantedTemperature-heat)/5;
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("fin chauffage");
+                setMessageToUser("chauffage terminé");
+                repaint();
+            }
+        };
+        System.out.println("début chauffage");
+        setMessageToUser("début du chauffage de l'eau");
+        repaint();
+        Timer timer = new Timer("Timer");
+        timer.schedule(task, delay);
 
+        }
+
+    
 	public String cagnote(){
 	    return cagnote/100.0 + "€";
     }
@@ -494,6 +517,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 
 	}
+
 
 
 	private int doRendu() {
@@ -516,4 +540,5 @@ public class DrinkFactoryMachine extends JFrame {
 	public String getSelection() {
 		return selection;
 	}
+
 }
