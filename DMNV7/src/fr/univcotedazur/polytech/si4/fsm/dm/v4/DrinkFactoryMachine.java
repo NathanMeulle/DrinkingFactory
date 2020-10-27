@@ -41,6 +41,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private static final long serialVersionUID = 2030629304432075314L;
 	private JPanel contentPane;
 	private JLabel messagesToUser;
+    JProgressBar progressBar = new JProgressBar();
 	protected DefaultSMStatemachine theFSM; // Declaration de la stateMAchine
 	private int cagnote = 0;
 	private int coffePrice = 35;
@@ -64,6 +65,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 
 	private int wantedTemperature = 60;
+	private int progressBarValue = 0;
 	TimerService timer;
 	private String selection;
 
@@ -149,7 +151,7 @@ public class DrinkFactoryMachine extends JFrame {
 		soupButton.setBounds(12, 145, 96, 25);
 		contentPane.add(soupButton);
 
-		JProgressBar progressBar = new JProgressBar();
+
 		progressBar.setStringPainted(true);
 		progressBar.setValue(0);               /// TODO: 27/10/2020  implementer ce set dans les autres methode pour montrer lavance de la preparation
 		progressBar.setForeground(Color.blue);
@@ -306,7 +308,6 @@ public class DrinkFactoryMachine extends JFrame {
 				BufferedImage myPicture = null;
 				try {
 					myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/ownCup.jpg"));
-					activateButtons();
 				} catch (IOException ee) {
 					ee.printStackTrace();
 				}
@@ -527,42 +528,42 @@ public class DrinkFactoryMachine extends JFrame {
 	public void doPay() {
 	}
 
-	public boolean isPay() {//TODO rajouter les boissons manquantes
-		if (selection.equals("Coffee") && (coffePrice <= cagnote)) {
-			return true;
-		}
-		if (selection.equals("Tea") && (teaPrice <= cagnote)) {
-			return true;
-		}
-		if (selection.equals("Expresso") && (expressoPrice <= cagnote)) {
-			return true;
-		}
-		return false;
-	}
+    public boolean isPay() {//TODO rajouter les boissons manquantes
+        if (selection.equals("Coffee")&&(coffePrice<=cagnote)){return true;}
+        if (selection.equals("Tea")&&(teaPrice<=cagnote)){return true;}
+        if (selection.equals("Expresso")&&(expressoPrice<=cagnote)){return true;}
+        return false;
+    }
 
-	public void doHeat() {
-		int heat = 15;
-		long delay = 1000 * (wantedTemperature - heat) / 5;
-		TimerTask task = new TimerTask() {
-			@Override
-			public void run() {
-				System.out.println("Fin chauffage");
-				setMessageToUser("Chauffage terminé");
-				repaint();
-			}
-		};
-		System.out.println("début chauffage");
-		setMessageToUser("Début du chauffage de l'eau");
-		repaint();
-		Timer timer = new Timer("Timer");
-		timer.schedule(task, delay);
+    public void doHeat() {
+	    int heat = 15;
+	    long delay = 1000*(wantedTemperature-heat)/5;
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("fin chauffage");
+                setMessageToUser("chauffage terminé");
+                repaint();
+            }
+        };
+        TimerTask repeatedTask = new TimerTask() {
+            public void run() {
+                progressBarValue+=10;
+                progressBar.setValue(progressBarValue);
+            }
+        };
+        System.out.println("début chauffage");
+        setMessageToUser("début du chauffage de l'eau");
+        repaint();
+        Timer timer = new Timer("Timer");
+        timer.scheduleAtFixedRate(repeatedTask, 0, delay/10);
+        timer.schedule(task, delay);
+        }
 
-	}
 
-
-	public String cagnote() {
-		return cagnote / 100.0 + "€";
-	}
+	public String cagnote(){
+	    return cagnote/100.0 + "€";
+    }
 
 	public void doReceipt() {
 		disableButtons();
