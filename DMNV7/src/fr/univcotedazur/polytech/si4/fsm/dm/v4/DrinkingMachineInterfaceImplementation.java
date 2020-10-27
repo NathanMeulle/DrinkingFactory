@@ -61,23 +61,20 @@ class DrinkingMachineInterfaceImplementation implements SCInterfaceListener {
 		}
 		@Override
 		public void onDoDosetteRaised() {
-			// TODO Auto-generated method stub
+			theGui.doDosette();
 
 		}
 		@Override
 		public void onDoGrainRaised() {
-			// TODO Auto-generated method stub
-
+			theGui.doGrain();
 		}
 		@Override
 		public void onDoSachetRaised() {
-			// TODO Auto-generated method stub
-
+          	theGui.doSachet();
 		}
 		@Override
 		public void onDoGobeletRaised() {
-			// TODO Auto-generated method stub
-
+			theGui.doGobelet();
 		}
 		@Override
 		public void onDoHeatRaised() {

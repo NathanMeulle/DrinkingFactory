@@ -1899,7 +1899,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		boolean did_transition = try_transition;
 
 		if (try_transition) {
-			if ((sCInterface.getMySelection()== null?"coffee" ==null :sCInterface.getMySelection().equals("coffee"))) {
+			if ((sCInterface.getMySelection()== null?"coffee" ==null :sCInterface.getMySelection().equals("Coffee"))) {
 				exitSequence_main_prepare_r2_Etat_0();
 				enterSequence_main_prepare_r2_dosette_default();
 				main_prepare_react(false);
@@ -1909,7 +1909,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 					enterSequence_main_prepare_r2_grain_default();
 					main_prepare_react(false);
 				} else {
-					if ((sCInterface.getMySelection()== null?"tea" ==null :sCInterface.getMySelection().equals("tea"))) {
+					if ((sCInterface.getMySelection()== null?"tea" ==null :sCInterface.getMySelection().equals("Tea"))) {
 						exitSequence_main_prepare_r2_Etat_0();
 						enterSequence_main_prepare_r2_sachet_default();
 						main_prepare_react(false);
