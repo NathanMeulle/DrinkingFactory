@@ -443,7 +443,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 	}
 
-	private void doCancel() {
+	public void doCancel() {
 		progressBarValue=0;
 		progressBar.setValue(progressBarValue);
 		System.out.println("doCancel");
@@ -631,6 +631,10 @@ public class DrinkFactoryMachine extends JFrame {
 
 	public String getSelection() {
 		return selection;
+	}
+
+	public void doRestart() {
+		doCancel();
 	}
 
 	//TODO ajouter	cancelButton.setEnabled(true); dans restart

@@ -7,7 +7,7 @@ class DrinkingMachineInterfaceImplementation implements SCInterfaceListener {
           public DrinkingMachineInterfaceImplementation(DrinkFactoryMachine dm) {theGui = dm; }
 		@Override
 		public void onDoRestartRaised() {
-			// TODO Auto-generated method stub
+			theGui.doRestart();
 
 		}
 		@Override
@@ -40,17 +40,12 @@ class DrinkingMachineInterfaceImplementation implements SCInterfaceListener {
 			theGui.doSelect();
 		}
 		@Override
-		public void onDoPrepareRaised() {
-			// TODO Auto-generated method stub
-
-		}
-		@Override
 		public void onDoPayRaised() {
 			theGui.doPay();
 		}
 		@Override
 		public void onDoCancelRaised() {
-			// TODO Auto-generated method stub
+			theGui.doCancel();
 
 		}
 		@Override
