@@ -50,6 +50,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private int IcedTeaPrice = 50;
 	JButton cancelButton;
 
+	private int wantedTemperature = 60;
 	TimerService timer;
 	private String selection;
 
@@ -137,7 +138,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 		JProgressBar progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
-		progressBar.setValue(70);               /// TODO: 27/10/2020  implementer ce set dans les autres methode pour montrer lavance de la preparation
+		progressBar.setValue(0);               /// TODO: 27/10/2020  implementer ce set dans les autres methode pour montrer lavance de la preparation
 		progressBar.setForeground(Color.blue);
 		progressBar.setBackground(Color.DARK_GRAY);
 		progressBar.setBounds(12, 254, 622, 26);
@@ -521,6 +522,26 @@ public class DrinkFactoryMachine extends JFrame {
         return false;
     }
 
+    public void doHeat() {
+	    int heat = 15;
+	    long delay = 1000*(wantedTemperature-heat)/5;
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("fin chauffage");
+                setMessageToUser("chauffage terminé");
+                repaint();
+            }
+        };
+        System.out.println("début chauffage");
+        setMessageToUser("début du chauffage de l'eau");
+        repaint();
+        Timer timer = new Timer("Timer");
+        timer.schedule(task, delay);
+
+        }
+
+
 	public String cagnote(){
 	    return cagnote/100.0 + "€";
     }
@@ -535,6 +556,7 @@ public class DrinkFactoryMachine extends JFrame {
 			setMessageToUser("Transaction effectuée, récupérez votre monnaie <br> Rendu : " + rendu/100.0 + "€");
 		else setMessageToUser("Transaction effectuée");
 	}
+
 
 
 	private int doRendu() {
