@@ -65,6 +65,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 
 	private int wantedTemperature = 60;
+    private double currentTemperature = 15;
 	private int progressBarValue = 0;
 	TimerService timer;
 	private String selection;
@@ -540,8 +541,7 @@ public class DrinkFactoryMachine extends JFrame {
     }
 
     public void doHeat() {
-	    int heat = 15;
-	    long delay = 1000*(wantedTemperature-heat)/5;
+	    long delay = (long) (1000*(wantedTemperature-currentTemperature)/5);
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -552,15 +552,20 @@ public class DrinkFactoryMachine extends JFrame {
         };
         TimerTask repeatedTask = new TimerTask() {
             public void run() {
-                progressBarValue+=10;
+                progressBarValue+=1;
+                currentTemperature+=delay/6000.0;
                 progressBar.setValue(progressBarValue);
+                if (progressBarValue==70){
+                    System.out.println(currentTemperature);
+                    cancel();
+                }
             }
         };
         System.out.println("début chauffage");
         setMessageToUser("début du chauffage de l'eau");
         repaint();
         Timer timer = new Timer("Timer");
-        timer.scheduleAtFixedRate(repeatedTask, 0, delay/10);
+        timer.scheduleAtFixedRate(repeatedTask, 0, delay/30);
         timer.schedule(task, delay);
         }
 
