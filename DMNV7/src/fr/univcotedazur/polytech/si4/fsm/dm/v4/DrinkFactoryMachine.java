@@ -4,6 +4,8 @@ import java.awt.Color;
 
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -47,6 +49,8 @@ public class DrinkFactoryMachine extends JFrame {
 	private int teaPrice = 40;
 	private int soupPrice = 75;
 	private int IcedTeaPrice = 50;
+	JButton cancelButton;
+
 	private int wantedTemperature = 60;
 	private int progressBarValue = 0;
 	TimerService timer;
@@ -279,7 +283,7 @@ public class DrinkFactoryMachine extends JFrame {
 		panel_2.setBounds(538, 217, 96, 33);
 		contentPane.add(panel_2);
 
-		JButton cancelButton = new JButton("Cancel");
+		cancelButton = new JButton("Cancel");
 		cancelButton.setForeground(Color.BLACK);
 		cancelButton.setBackground(Color.WHITE);
 		panel_2.add(cancelButton);
@@ -382,6 +386,34 @@ public class DrinkFactoryMachine extends JFrame {
 			}
 		});
 
+		nfcBiiiipButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switch (selection) {
+					case "Coffee":
+						cagnote += coffePrice;
+						break;
+					case "Expresso":
+						cagnote += expressoPrice;
+						break;
+					case "Tea":
+						cagnote += teaPrice;
+						break;
+					case "Soup":
+						cagnote += soupPrice;
+						break;
+					case "Iced Tea":
+						cagnote += IcedTeaPrice;
+						break;
+				}
+				theFSM.raiseBip();
+				setMessageToUser("Selection : " + selection +"<br>" + "Montant inséré : " + cagnote());
+				repaint();
+				theFSM.raiseAnyButton();
+
+			}
+		});
+
 
 		// initialisation de la stateMachine
 		theFSM = new DefaultSMStatemachine();
@@ -404,7 +436,15 @@ public class DrinkFactoryMachine extends JFrame {
 		System.out.println("doCancel");
 		cagnote = 0;
 		selection = "";
-		setMessageToUser("Selection : " + selection +"<br>" + "Montant inséré : " + cagnote());
+		setMessageToUser("Transaction annulée");
+		TimerTask task = new TimerTask() {
+			public void run() {
+				setMessageToUser("Selection : " + selection +"<br>" + "Montant inséré : " + cagnote());
+			}
+		};
+		Timer timer = new Timer("Timer");
+		long delay = 1000L;
+		timer.schedule(task, delay);
 		repaint();
 	}
 
@@ -475,17 +515,15 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doPay() {
-		// TODO Auto-generated method stub
-
 	}
 
-    public boolean isPay() {
+    public boolean isPay() {//TODO rajouter les boissons manquantes
         if (selection.equals("Coffee")&&(coffePrice<=cagnote)){return true;}
         if (selection.equals("Tea")&&(teaPrice<=cagnote)){return true;}
         if (selection.equals("Expresso")&&(expressoPrice<=cagnote)){return true;}
         return false;
     }
-    
+
     public void doHeat() {
 	    int heat = 15;
 	    long delay = 1000*(wantedTemperature-heat)/5;
@@ -511,19 +549,20 @@ public class DrinkFactoryMachine extends JFrame {
         timer.schedule(task, delay);
         }
 
-    
+
 	public String cagnote(){
 	    return cagnote/100.0 + "€";
     }
 
     public void doReceipt() {
+		cancelButton.removeNotify();
+		cancelButton.setEnabled(false); //TODO : cancel all button
+
 		System.out.println("Receipt created");
 		int rendu = doRendu();
 		if (rendu>0)
 			setMessageToUser("Transaction effectuée, récupérez votre monnaie <br> Rendu : " + rendu/100.0 + "€");
 		else setMessageToUser("Transaction effectuée");
-
-
 	}
 
 
@@ -549,4 +588,5 @@ public class DrinkFactoryMachine extends JFrame {
 		return selection;
 	}
 
+	//TODO ajouter	cancelButton.setEnabled(true); dans restart
 }
