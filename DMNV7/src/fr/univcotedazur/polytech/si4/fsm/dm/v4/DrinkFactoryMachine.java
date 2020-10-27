@@ -511,7 +511,8 @@ public class DrinkFactoryMachine extends JFrame {
 		repaint();
 	}
 
-	public void doSugar() {
+	public void doSugar() {  // TODO: 27/10/2020 gerer avec le slider
+        System.out.println("do sugar");
 		progressBarValue+=5;
 		progressBar.setValue(progressBarValue);
 	}
@@ -556,7 +557,6 @@ public class DrinkFactoryMachine extends JFrame {
                 currentTemperature+=delay/6000.0;
                 progressBar.setValue(progressBarValue);
                 if (progressBarValue==70){
-                    System.out.println(currentTemperature);
                     cancel();
                 }
             }
@@ -637,9 +637,12 @@ public class DrinkFactoryMachine extends JFrame {
 	public String getSelection() {
 		return selection;
 	}
-	
+
     public boolean isHot() {
-	    if(currentTemperature==wantedTemperature){return true;}
+
+	    if(currentTemperature==wantedTemperature){
+	        System.out.println("isHot");
+	        return true;}
 	    return false;
     }
 
