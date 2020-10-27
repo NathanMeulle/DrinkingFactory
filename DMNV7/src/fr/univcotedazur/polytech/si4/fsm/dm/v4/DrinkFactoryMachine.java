@@ -492,14 +492,17 @@ public class DrinkFactoryMachine extends JFrame {
 		
 	}
 
+    public boolean isPay() {
+        if (selection.equals("Coffee")&&(coffePrice<=cagnote)){return true;}
+        if (selection.equals("Tea")&&(teaPrice<=cagnote)){return true;}
+        if (selection.equals("Expresso")&&(expressoPrice<=cagnote)){return true;}
+        return false;
+    }
+
 	public String cagnote(){
-	    String tunes="";
-	    if(cagnote>99){
-	        tunes = cagnote/100.0 + "€";
-        }
-	    else{
-	        tunes = cagnote +" centimes";
-        }
+	    String tunes = cagnote/100.0 + "€";
 	    return tunes;
     }
+
+
 }
