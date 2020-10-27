@@ -638,6 +638,11 @@ public class DrinkFactoryMachine extends JFrame {
 		return selection;
 	}
 
-	//TODO ajouter	cancelButton.setEnabled(true); dans restart
+    public boolean isHot() {
+	    if(currentTemperature==wantedTemperature){return true;}
+	    return false;
+    }
+
+    //TODO ajouter	cancelButton.setEnabled(true); dans restart
 	//TODO revoir timer 45s
 }
