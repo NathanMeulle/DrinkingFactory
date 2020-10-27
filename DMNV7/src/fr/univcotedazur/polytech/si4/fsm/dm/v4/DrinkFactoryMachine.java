@@ -37,7 +37,10 @@ public class DrinkFactoryMachine extends JFrame {
 	private JPanel contentPane;
 	private JLabel messagesToUser;
 	protected DefaultSMStatemachine theFSM; // Declaration de la stateMAchine
-
+    private int cagnote = 0;
+    private int coffePrice = 35;
+    private int expressoPrice = 50;
+    private int teaPrice = 40;
 	
 	
 	
@@ -150,8 +153,8 @@ public class DrinkFactoryMachine extends JFrame {
 
 		JProgressBar progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
-		progressBar.setValue(10);
-		progressBar.setForeground(Color.LIGHT_GRAY);
+		progressBar.setValue(70);               /// TODO: 27/10/2020  implementer ce set dans les autres methode pour montrer lavance de la preparation
+		progressBar.setForeground(Color.blue);
 		progressBar.setBackground(Color.DARK_GRAY);
 		progressBar.setBounds(12, 254, 622, 26);
 		contentPane.add(progressBar);
@@ -311,7 +314,15 @@ public class DrinkFactoryMachine extends JFrame {
 				labelForPictures.setIcon(new ImageIcon(myPicture));
 			}
 		});
-		
+
+		cancelButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                doCancel();
+                theFSM.raiseCancel();
+            }
+        });
+
 		coffeeButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -361,6 +372,7 @@ public class DrinkFactoryMachine extends JFrame {
 		money50centsButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+			    doCinqanteCents();
 				theFSM.raiseCinquanteCents();
 				theFSM.raiseAnyButton();
 
@@ -370,6 +382,7 @@ public class DrinkFactoryMachine extends JFrame {
 		money25centsButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+			    doVingtCinqCents();
 				theFSM.raiseVingtCinqCents();
 				theFSM.raiseAnyButton();
 
@@ -379,6 +392,7 @@ public class DrinkFactoryMachine extends JFrame {
 		money10centsButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+			    doDixCents();
 				theFSM.raiseDixCents();
 				theFSM.raiseAnyButton();
 
@@ -405,7 +419,35 @@ public class DrinkFactoryMachine extends JFrame {
 
 	}
 
-	public void doCoffee() {
+    private void doCancel() {
+        System.out.println("doCancel");
+        setMessageToUser("Commande annulé, veuillez récupérer vos " +cagnote());
+        cagnote=0;
+        repaint();
+    }
+
+    private void doCinqanteCents() {
+        System.out.println("50 centimes ajoutés");
+        cagnote+=50;
+        setMessageToUser("50 centimes ajoutés, votre cagnote est de " +cagnote());
+        repaint();
+    }
+
+    private void doVingtCinqCents() {
+        System.out.println("20 centimes ajoutés");
+        cagnote+=25;
+        setMessageToUser("20 centimes ajoutés, votre cagnote est de " +cagnote());
+        repaint();
+    }
+
+    private void doDixCents() {
+        System.out.println("10 centimes ajoutés");
+        cagnote+=10;
+        setMessageToUser("10 centimes ajoutés, votre cagnote est de " +cagnote());
+        repaint();
+    }
+
+    public void doCoffee() {
 		System.out.println("Coffee selected");
 		setMessageToUser("Coffee selected");
 		repaint();
@@ -449,4 +491,15 @@ public class DrinkFactoryMachine extends JFrame {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public String cagnote(){
+	    String tunes="";
+	    if(cagnote>99){
+	        tunes = cagnote/100.0 + "€";
+        }
+	    else{
+	        tunes = cagnote +" centimes";
+        }
+	    return tunes;
+    }
 }
