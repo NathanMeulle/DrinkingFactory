@@ -516,7 +516,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doSelect() {
-		progressBarValue+=20;
+		progressBarValue= isPay()? 40 : 20;
 		progressBar.setValue(progressBarValue);
 	}
 
@@ -528,7 +528,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doPay() {
-		progressBarValue+=20;
+		progressBarValue= isPay()? 40 : 20;
 		progressBar.setValue(progressBarValue);
 	}
 
