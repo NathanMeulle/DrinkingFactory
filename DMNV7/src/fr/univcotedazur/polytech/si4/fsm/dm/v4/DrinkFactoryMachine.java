@@ -87,7 +87,7 @@ public class DrinkFactoryMachine extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		messagesToUser = new JLabel("<html>Hello ! The Drinking Machine is ready !");
+		messagesToUser = new JLabel("<html>Hello ! La Drinking Machine est prête !");
 		messagesToUser.setForeground(Color.WHITE);
 		messagesToUser.setHorizontalAlignment(SwingConstants.LEFT);
 		messagesToUser.setVerticalAlignment(SwingConstants.TOP);
@@ -377,6 +377,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 		// initialisation de la stateMachine
 		theFSM = new DefaultSMStatemachine();
+		selection ="";
 		timer = new TimerService();
 		theFSM.setTimer(timer);
 		// Implementation des méthodes de callBack !!
@@ -410,7 +411,6 @@ public class DrinkFactoryMachine extends JFrame {
 		System.out.println("25 centimes ajoutés");
 		cagnote += 25;
 		setMessageToUser("Selection : " + selection +"<br>" + "Montant inséré : " + cagnote());
-
 		repaint();
 	}
 
@@ -471,13 +471,16 @@ public class DrinkFactoryMachine extends JFrame {
 
 	}
 
-	public String cagnote() {
-		String tunes;
-		if (cagnote > 99) {
-			tunes = cagnote / 100.0 + "€";
-		} else {
-			tunes = cagnote + " cents";
-		}
-		return tunes;
-	}
+    public boolean isPay() {
+        if (selection.equals("Coffee")&&(coffePrice<=cagnote)){return true;}
+        if (selection.equals("Tea")&&(teaPrice<=cagnote)){return true;}
+        if (selection.equals("Expresso")&&(expressoPrice<=cagnote)){return true;}
+        return false;
+    }
+
+	public String cagnote(){
+	    return cagnote/100.0 + "€";
+    }
+
+
 }

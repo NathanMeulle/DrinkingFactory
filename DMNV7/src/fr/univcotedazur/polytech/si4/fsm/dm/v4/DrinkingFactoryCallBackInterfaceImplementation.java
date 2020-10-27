@@ -18,8 +18,7 @@ public class DrinkingFactoryCallBackInterfaceImplementation implements SCInterfa
 	}
 	@Override
 	public boolean isPay() {
-		// TODO Auto-generated method stub
-		return false;
+		return theGui.isPay();
 	}
 	@Override
 	public boolean isPoor() {
