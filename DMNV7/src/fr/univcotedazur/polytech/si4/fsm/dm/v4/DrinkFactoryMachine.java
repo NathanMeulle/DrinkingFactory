@@ -6,12 +6,13 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Hashtable;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -41,7 +42,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private static final long serialVersionUID = 2030629304432075314L;
 	private JPanel contentPane;
 	private JLabel messagesToUser;
-    JProgressBar progressBar = new JProgressBar();
+	JProgressBar progressBar = new JProgressBar();
 	protected DefaultSMStatemachine theFSM; // Declaration de la stateMAchine
 	private int cagnote = 0;
 	private int coffePrice = 35;
@@ -63,9 +64,13 @@ public class DrinkFactoryMachine extends JFrame {
 	JButton teaButton;
 	JButton soupButton;
 
+	JLabel labelForPictures;
+
+	private final int displayTime = 1;
+
 
 	private int wantedTemperature = 60;
-    private double currentTemperature = 15;
+	private double currentTemperature = 15;
 	private int progressBarValue = 0;
 	TimerService timer;
 	private String selection;
@@ -97,7 +102,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void addMessageToUser(String str) {
-		messagesToUser.setText(messagesToUser.getText() + "<br>" +str);
+		messagesToUser.setText(messagesToUser.getText() + "<br>" + str);
 	}
 
 
@@ -287,12 +292,11 @@ public class DrinkFactoryMachine extends JFrame {
 
 		BufferedImage myPicture = null;
 		try {
-			System.out.println(System.getProperty("user.dir"));
-			myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/vide2.jpg"));
+			myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/vide1.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		JLabel labelForPictures = new JLabel(new ImageIcon(myPicture));
+		labelForPictures = new JLabel(new ImageIcon(myPicture));
 		labelForPictures.setBounds(175, 319, 286, 260);
 		contentPane.add(labelForPictures);
 
@@ -312,7 +316,7 @@ public class DrinkFactoryMachine extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				BufferedImage myPicture = null;
 				try {
-					myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/ownCup.jpg"));
+					myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/ownCup1.jpg"));
 				} catch (IOException ee) {
 					ee.printStackTrace();
 				}
@@ -449,19 +453,22 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doCancel() {
-		progressBarValue=0;
+		progressBarValue = 0;
 		progressBar.setValue(progressBarValue);
 		System.out.println("doCancel");
+		setMessageToUser("Transaction annulée");
+		if (cagnote > 0) {
+			addMessageToUser("Rendue monaie : " + cagnote());
+		}
 		cagnote = 0;
 		selection = "";
-		setMessageToUser("Transaction annulée");
 		TimerTask task = new TimerTask() {
 			public void run() {
 				setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
 			}
 		};
 		Timer timer = new Timer("Timer");
-		long delay = 1000L;
+		long delay = 1000L * displayTime;
 		timer.schedule(task, delay);
 		repaint();
 	}
@@ -516,13 +523,13 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doSugar() {  // TODO: 27/10/2020 gerer avec le slider
-        System.out.println("do sugar");
-		progressBarValue+=5;
+		System.out.println("do sugar");
+		progressBarValue += 5;
 		progressBar.setValue(progressBarValue);
 	}
 
 	public void doSelect() {
-		progressBarValue= isPay()? 40 : 20;
+		progressBarValue = isPay() ? 40 : 20;
 		progressBar.setValue(progressBarValue);
 	}
 
@@ -534,49 +541,56 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doPay() {
-		progressBarValue= isPay()? 40 : 20;
+		int tmp = selection.equals("")? 0 : 20;
+		progressBarValue = isPay() ? 40 : tmp;
 		progressBar.setValue(progressBarValue);
 	}
 
-    public boolean isPay() {//TODO rajouter les boissons manquantes
-        if (selection.equals("Coffee")&&(coffePrice<=cagnote)){return true;}
-        if (selection.equals("Tea")&&(teaPrice<=cagnote)){return true;}
-        if (selection.equals("Expresso")&&(expressoPrice<=cagnote)){return true;}
-        return false;
-    }
+	public boolean isPay() {//TODO rajouter les boissons manquantes
+		if (selection.equals("Coffee") && (coffePrice <= cagnote)) {
+			return true;
+		}
+		if (selection.equals("Tea") && (teaPrice <= cagnote)) {
+			return true;
+		}
+		if (selection.equals("Expresso") && (expressoPrice <= cagnote)) {
+			return true;
+		}
+		return false;
+	}
 
-    public void doHeat() {
-	    long delay = (long) (1000*(wantedTemperature-currentTemperature)/5);
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                System.out.println("fin chauffage");
+	public void doHeat() {
+		long delay = (long) (1000 * (wantedTemperature - currentTemperature) / 5);
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				System.out.println("fin chauffage");
 				addMessageToUser("chauffage terminé");
-                repaint();
-            }
-        };
-        TimerTask repeatedTask = new TimerTask() {
-            public void run() {
-                progressBarValue+=1;
-                currentTemperature+=delay/6000.0;
-                progressBar.setValue(progressBarValue);
-                if (progressBarValue==70){
-                    cancel();
-                }
-            }
-        };
-        System.out.println("début chauffage");
-        setMessageToUser("début du chauffage de l'eau");
-        repaint();
-        Timer timer = new Timer("Timer");
-        timer.scheduleAtFixedRate(repeatedTask, 0, delay/30);
-        timer.schedule(task, delay);
-        }
+				repaint();
+			}
+		};
+		TimerTask repeatedTask = new TimerTask() {
+			public void run() {
+				progressBarValue += 1;
+				currentTemperature += delay / 6000.0;
+				progressBar.setValue(progressBarValue);
+				if (progressBarValue == 70) {
+					cancel();
+				}
+			}
+		};
+		System.out.println("début chauffage");
+		setMessageToUser("Début du chauffage de l'eau");
+		repaint();
+		Timer timer = new Timer("Timer");
+		timer.scheduleAtFixedRate(repeatedTask, 0, delay / 30);
+		timer.schedule(task, delay);
+	}
 
 
-	public String cagnote(){
-	    return cagnote/100.0 + "€";
-    }
+	public String cagnote() {
+		return cagnote / 100.0 + "€";
+	}
 
 	public void doReceipt() {
 		disableButtons();
@@ -634,7 +648,7 @@ public class DrinkFactoryMachine extends JFrame {
 			case "Iced Tea":
 				return cagnote - IcedTeaPrice;
 		}
-		return 0;
+		return cagnote;
 	}
 
 
@@ -642,17 +656,17 @@ public class DrinkFactoryMachine extends JFrame {
 		return selection;
 	}
 
-    public boolean isHot() {
+	public boolean isHot() {
+		if (currentTemperature == wantedTemperature) {
+			System.out.println("isHot");
+			return true;
+		}
+		return false;
+	}
 
-	    if(currentTemperature==wantedTemperature){
-	        System.out.println("isHot");
-	        return true;}
-	    return false;
-    }
-
-    //TODO ajouter	cancelButton.setEnabled(true); dans restart
 	public void doRestart() {
 		doCancel();
+		activateButtons();
 	}
 
 	public void doDosette() {
@@ -670,7 +684,7 @@ public class DrinkFactoryMachine extends JFrame {
 			}
 		};
 		Timer timer = new Timer("Timer");
-		long delay = 1000L;
+		long delay = 1000L * displayTime;
 		timer.schedule(task, delay);
 		repaint();
 	}
@@ -684,7 +698,7 @@ public class DrinkFactoryMachine extends JFrame {
 			}
 		};
 		Timer timer = new Timer("Timer");
-		long delay = 1000L;
+		long delay = 1000L * displayTime;
 		timer.schedule(task, delay);
 		repaint();
 	}
@@ -692,9 +706,27 @@ public class DrinkFactoryMachine extends JFrame {
 	public void doGobelet() {
 		System.out.println("gobelet");
 		addMessageToUser("Positionnement du gobelet");
+		BufferedImage myPicture = null;
+		try {
+			myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/gobelet1.jpg"));
+		} catch (IOException ee) {
+			ee.printStackTrace();
+		}
+		labelForPictures.setIcon(new ImageIcon(myPicture));
 
+	}
+
+	public void doPoor() {
+		BufferedImage myPicture = null;
+		try {
+			myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/pooring1.jpg"));
+		} catch (IOException ee) {
+			ee.printStackTrace();
+		}
+		labelForPictures.setIcon(new ImageIcon(myPicture));
 	}
 
 	//TODO ajouter	cancelButton.setEnabled(true); dans restart
 	//TODO revoir timer 45s
+	//TODO java doc + code propre + refacto
 }

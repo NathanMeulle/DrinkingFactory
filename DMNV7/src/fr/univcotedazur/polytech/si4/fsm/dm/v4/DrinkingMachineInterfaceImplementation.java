@@ -56,7 +56,7 @@ class DrinkingMachineInterfaceImplementation implements SCInterfaceListener {
 		}
 		@Override
 		public void onDoPoorRaised() {
-			// TODO Auto-generated method stub
+			theGui.doPoor();
 
 		}
 		@Override
