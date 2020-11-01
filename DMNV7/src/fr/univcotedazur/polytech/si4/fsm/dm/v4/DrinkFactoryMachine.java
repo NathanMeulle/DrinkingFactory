@@ -50,6 +50,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private int teaPrice = 40;
 	private int soupPrice = 75;
 	private int IcedTeaPrice = 50;
+	boolean poor=false;
 	JButton cancelButton;
 	JButton nfcBiiiipButton;
 	JButton icedTeaButton;
@@ -309,8 +310,7 @@ public class DrinkFactoryMachine extends JFrame {
 		cancelButton.setForeground(Color.BLACK);
 		cancelButton.setBackground(Color.WHITE);
 		panel_2.add(cancelButton);
-
-		// listeners
+//------------------------------------------------------LISTENERS----------------------------------------------------------------//
 		addCupButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -451,7 +451,34 @@ public class DrinkFactoryMachine extends JFrame {
 		);
 
 	}
+	//------------------------------------------------------METHOD IS----------------------------------------------------------------//
+	public boolean isPay() {//TODO rajouter les boissons manquantes
+		if (selection.equals("Coffee") && (coffePrice <= cagnote)) {
+			return true;
+		}
+		if (selection.equals("Tea") && (teaPrice <= cagnote)) {
+			return true;
+		}
+		if (selection.equals("Expresso") && (expressoPrice <= cagnote)) {
+			return true;
+		}
+		return false;
+	}
 
+	public boolean isHot() {
+		if (currentTemperature == wantedTemperature) {
+			System.out.println("isHot");
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isPoor() {
+		if (poor)
+			System.out.println("isPoor");
+		return poor;
+	}
+	//------------------------------------------------------METHOD DO----------------------------------------------------------------//
 	public void doCancel() {
 		progressBarValue = 0;
 		progressBar.setValue(progressBarValue);
@@ -546,35 +573,19 @@ public class DrinkFactoryMachine extends JFrame {
 		progressBar.setValue(progressBarValue);
 	}
 
-	public boolean isPay() {//TODO rajouter les boissons manquantes
-		if (selection.equals("Coffee") && (coffePrice <= cagnote)) {
-			return true;
-		}
-		if (selection.equals("Tea") && (teaPrice <= cagnote)) {
-			return true;
-		}
-		if (selection.equals("Expresso") && (expressoPrice <= cagnote)) {
-			return true;
-		}
-		return false;
-	}
 
 	public void doHeat() {
 		long delay = (long) (1000 * (wantedTemperature - currentTemperature) / 5);
-		TimerTask task = new TimerTask() {
-			@Override
-			public void run() {
-				System.out.println("fin chauffage");
-				addMessageToUser("chauffage terminé");
-				repaint();
-			}
-		};
+
 		TimerTask repeatedTask = new TimerTask() {
 			public void run() {
 				progressBarValue += 1;
 				currentTemperature += delay / 6000.0;
 				progressBar.setValue(progressBarValue);
-				if (progressBarValue == 70) {
+				if (progressBarValue == 75) {
+					System.out.println("fin chauffage");
+					addMessageToUser("chauffage terminé");
+					repaint();
 					cancel();
 				}
 			}
@@ -584,13 +595,8 @@ public class DrinkFactoryMachine extends JFrame {
 		repaint();
 		Timer timer = new Timer("Timer");
 		timer.scheduleAtFixedRate(repeatedTask, 0, delay / 30);
-		timer.schedule(task, delay);
 	}
 
-
-	public String cagnote() {
-		return cagnote / 100.0 + "€";
-	}
 
 	public void doReceipt() {
 		disableButtons();
@@ -601,39 +607,6 @@ public class DrinkFactoryMachine extends JFrame {
 		else setMessageToUser("Transaction effectuée");
 		cagnote = 0;
 	}
-
-	private void disableButtons() {
-		cancelButton.setEnabled(false);
-		nfcBiiiipButton.setEnabled(false);
-		icedTeaButton.setEnabled(false);
-		money50centsButton.setEnabled(false);
-		money25centsButton.setEnabled(false);
-		money10centsButton.setEnabled(false);
-		temperatureSlider.setEnabled(false);
-		sugarSlider.setEnabled(false);
-		sizeSlider.setEnabled(false);
-		coffeeButton.setEnabled(false);
-		expressoButton.setEnabled(false);
-		teaButton.setEnabled(false);
-		soupButton.setEnabled(false);
-	}
-
-	private void activateButtons() {
-		cancelButton.setEnabled(true);
-		nfcBiiiipButton.setEnabled(true);
-		icedTeaButton.setEnabled(true);
-		money50centsButton.setEnabled(true);
-		money25centsButton.setEnabled(true);
-		money10centsButton.setEnabled(true);
-		temperatureSlider.setEnabled(true);
-		sugarSlider.setEnabled(true);
-		sizeSlider.setEnabled(true);
-		coffeeButton.setEnabled(true);
-		expressoButton.setEnabled(true);
-		teaButton.setEnabled(true);
-		soupButton.setEnabled(true);
-	}
-
 
 	private int doRendu() {
 		switch (selection) {
@@ -649,19 +622,6 @@ public class DrinkFactoryMachine extends JFrame {
 				return cagnote - IcedTeaPrice;
 		}
 		return cagnote;
-	}
-
-
-	public String getSelection() {
-		return selection;
-	}
-
-	public boolean isHot() {
-		if (currentTemperature == wantedTemperature) {
-			System.out.println("isHot");
-			return true;
-		}
-		return false;
 	}
 
 	public void doRestart() {
@@ -705,6 +665,8 @@ public class DrinkFactoryMachine extends JFrame {
 
 	public void doGobelet() {
 		System.out.println("gobelet");
+		progressBarValue+=5;
+		progressBar.setValue(progressBarValue);
 		addMessageToUser("Positionnement du gobelet");
 		BufferedImage myPicture = null;
 		try {
@@ -723,10 +685,73 @@ public class DrinkFactoryMachine extends JFrame {
 		} catch (IOException ee) {
 			ee.printStackTrace();
 		}
+		long delay = 2000;
+		TimerTask repeatedTask = new TimerTask() {
+			public void run() {
+				progressBarValue += 1;
+				progressBar.setValue(progressBarValue);
+				if (progressBarValue == 100) {
+					System.out.println("fin de versage");
+					addMessageToUser("versage terminé");
+					repaint();
+					poor=true;
+					cancel();
+				}
+			}
+		};
+		System.out.println("début versage");
+		setMessageToUser("Début du versage de la boisson");
+		repaint();
+		Timer timer = new Timer("Timer");
+		timer.scheduleAtFixedRate(repeatedTask, 0, delay / 20);
 		labelForPictures.setIcon(new ImageIcon(myPicture));
 	}
 
+	//---------------------------------------------------OTHERS----------------------------------------------------------------//
+
+
+	public String cagnote() {
+		return cagnote / 100.0 + "€";
+	}
+	private void disableButtons() {
+		cancelButton.setEnabled(false);
+		nfcBiiiipButton.setEnabled(false);
+		icedTeaButton.setEnabled(false);
+		money50centsButton.setEnabled(false);
+		money25centsButton.setEnabled(false);
+		money10centsButton.setEnabled(false);
+		temperatureSlider.setEnabled(false);
+		sugarSlider.setEnabled(false);
+		sizeSlider.setEnabled(false);
+		coffeeButton.setEnabled(false);
+		expressoButton.setEnabled(false);
+		teaButton.setEnabled(false);
+		soupButton.setEnabled(false);
+	}
+
+	private void activateButtons() {
+		cancelButton.setEnabled(true);
+		nfcBiiiipButton.setEnabled(true);
+		icedTeaButton.setEnabled(true);
+		money50centsButton.setEnabled(true);
+		money25centsButton.setEnabled(true);
+		money10centsButton.setEnabled(true);
+		temperatureSlider.setEnabled(true);
+		sugarSlider.setEnabled(true);
+		sizeSlider.setEnabled(true);
+		coffeeButton.setEnabled(true);
+		expressoButton.setEnabled(true);
+		teaButton.setEnabled(true);
+		soupButton.setEnabled(true);
+	}
+
+
+
+	public String getSelection() {
+		return selection;
+	}
 	//TODO ajouter	cancelButton.setEnabled(true); dans restart
 	//TODO revoir timer 45s
 	//TODO java doc + code propre + refacto
+	// TODO: 01/11/2020 ajout des images pour les nouveaux etats 
 }
