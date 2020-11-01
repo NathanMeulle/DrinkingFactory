@@ -24,8 +24,7 @@ public class DrinkingFactoryCallBackInterfaceImplementation implements SCInterfa
 	}
 	@Override
 	public boolean isTaken() {
-		// TODO Auto-generated method stub
-		return false;
+		return theGui.isTaken();
 	}
 
 

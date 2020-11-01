@@ -1,37 +1,21 @@
 package fr.univcotedazur.polytech.si4.fsm.dm.v4;
 
-import java.awt.Color;
+import dmnv6.TimerService;
+import dmnv6.defaultsm.DefaultSMStatemachine;
 
-import java.awt.EventQueue;
-import java.awt.Font;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Hashtable;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JSeparator;
-import javax.swing.JSlider;
-import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.EmptyBorder;
-
-import dmnv6.TimerService;
-import dmnv6.defaultsm.DefaultSMStatemachine;
 
 
 public class DrinkFactoryMachine extends JFrame {
@@ -50,7 +34,9 @@ public class DrinkFactoryMachine extends JFrame {
 	private int teaPrice = 40;
 	private int soupPrice = 75;
 	private int IcedTeaPrice = 50;
-	boolean poor=false;
+	boolean poor;
+	boolean taken;
+
 	JButton cancelButton;
 	JButton nfcBiiiipButton;
 	JButton icedTeaButton;
@@ -164,7 +150,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 
 		progressBar.setStringPainted(true);
-		progressBar.setValue(0);               /// TODO: 27/10/2020  implementer ce set dans les autres methode pour montrer lavance de la preparation
+		progressBar.setValue(0);
 		progressBar.setForeground(Color.blue);
 		progressBar.setBackground(Color.DARK_GRAY);
 		progressBar.setBounds(12, 254, 622, 26);
@@ -436,6 +422,8 @@ public class DrinkFactoryMachine extends JFrame {
 
 
 		// initialisation de la stateMachine
+		taken = false;
+		poor = false;
 		theFSM = new DefaultSMStatemachine();
 		selection = "";
 		timer = new TimerService();
@@ -480,17 +468,15 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 	//------------------------------------------------------METHOD DO----------------------------------------------------------------//
 	public void doCancel() {
-		progressBarValue = 0;
-		progressBar.setValue(progressBarValue);
 		System.out.println("doCancel");
 		setMessageToUser("Transaction annulée");
 		if (cagnote > 0) {
 			addMessageToUser("Rendue monaie : " + cagnote());
 		}
-		cagnote = 0;
-		selection = "";
+
 		TimerTask task = new TimerTask() {
 			public void run() {
+				doRestart();
 				setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
 			}
 		};
@@ -576,13 +562,12 @@ public class DrinkFactoryMachine extends JFrame {
 
 	public void doHeat() {
 		long delay = (long) (1000 * (wantedTemperature - currentTemperature) / 5);
-
 		TimerTask repeatedTask = new TimerTask() {
 			public void run() {
 				progressBarValue += 1;
 				currentTemperature += delay / 6000.0;
 				progressBar.setValue(progressBarValue);
-				if (progressBarValue == 75) {
+				if (progressBarValue == 75) { //TODO : pb la chaleur reagrde la progress bar... ce devrait etre l'inverse !
 					System.out.println("fin chauffage");
 					addMessageToUser("chauffage terminé");
 					repaint();
@@ -625,8 +610,25 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doRestart() {
-		doCancel();
+		theFSM.raiseAnyButton();
+		BufferedImage myPicture = null;
+		try {
+			myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/vide1.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		labelForPictures.setIcon(new ImageIcon(myPicture));
+		progressBarValue = 0;
+		progressBar.setValue(progressBarValue);
+		System.out.println("doRestart");
+		cagnote = 0;
+		selection = "";
+		currentTemperature = 15;
+		taken = false;
+		poor = false;
 		activateButtons();
+		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
+		repaint();
 	}
 
 	public void doDosette() {
@@ -679,9 +681,9 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doPoor() {
-		BufferedImage myPicture = null;
+		BufferedImage pooringPicture = null;
 		try {
-			myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/pooring1.jpg"));
+			pooringPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/pooring1.jpg"));
 		} catch (IOException ee) {
 			ee.printStackTrace();
 		}
@@ -691,6 +693,13 @@ public class DrinkFactoryMachine extends JFrame {
 				progressBarValue += 1;
 				progressBar.setValue(progressBarValue);
 				if (progressBarValue == 100) {
+					BufferedImage finishPicture = null;
+					try {
+						finishPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/gobelet1.jpg"));
+					} catch (IOException ee) {
+						ee.printStackTrace();
+					}
+					labelForPictures.setIcon(new ImageIcon(finishPicture));
 					System.out.println("fin de versage");
 					addMessageToUser("versage terminé");
 					repaint();
@@ -704,7 +713,7 @@ public class DrinkFactoryMachine extends JFrame {
 		repaint();
 		Timer timer = new Timer("Timer");
 		timer.scheduleAtFixedRate(repeatedTask, 0, delay / 20);
-		labelForPictures.setIcon(new ImageIcon(myPicture));
+		labelForPictures.setIcon(new ImageIcon(pooringPicture));
 	}
 
 	//---------------------------------------------------OTHERS----------------------------------------------------------------//
@@ -750,8 +759,13 @@ public class DrinkFactoryMachine extends JFrame {
 	public String getSelection() {
 		return selection;
 	}
+
+	public boolean isTaken() {
+		return true;
+
+	}
 	//TODO ajouter	cancelButton.setEnabled(true); dans restart
 	//TODO revoir timer 45s
 	//TODO java doc + code propre + refacto
-	// TODO: 01/11/2020 ajout des images pour les nouveaux etats 
+	// TODO: 01/11/2020 ajout des images pour les nouveaux etats
 }
