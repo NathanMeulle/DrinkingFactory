@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:sgraph="http://www.yakindu.org/sct/sgraph/2.0.0">
-  <sgraph:Statechart xmi:id="_Z1-u0PQBEeqcIuQ6E47TZw" specification="@EventDriven&#xA;// Use the event driven execution model.&#xA;// Runs a run-to-completion step&#xA;// each time an event is raised.&#xA;// Switch to cycle based behavior&#xA;// by specifying '@CycleBased(200)'&#xA;// instead.&#xA;&#xA;@ChildFirstExecution&#xA;// In composite states, execute&#xA;// child states first.&#xA;// @ParentFirstExecution does the opposite.&#xA;&#xA;interface:&#xA;// Define events&#xA;in event anyButton&#xA;in event Coffee&#xA;in event Expresso&#xA;in event Tea&#xA;in event Soup&#xA;in event IcedTea&#xA;&#xA;in event CinquanteCents&#xA;in event VingtCinqCents&#xA;in event DixCents&#xA;in event Bip&#xA;in event Cancel&#xA;&#xA;out event doRestart&#xA;&#xA;out event doCoffee&#xA;out event doExpresso&#xA;out event doTea&#xA;out event doSoup&#xA;out event doIcedTea&#xA;out event doSugar&#xA;&#xA;&#xA;out event doSelect&#xA;out event doPay&#xA;out event doCancel&#xA;out event doReceipt&#xA;out event doPoor&#xA;out event doDosette&#xA;out event doGrain&#xA;out event doSachet&#xA;out event doGobelet&#xA;out event doHeat&#xA;out event doInfuse&#xA;out event doRetake&#xA;&#xA;operation getSelection():string&#xA;operation isHot():boolean&#xA;operation isPay():boolean&#xA;operation isPoor():boolean&#xA;operation isTaken():boolean&#xA;&#xA;var mySelection : string&#xA;var selection : boolean&#xA;var pay : boolean&#xA;var hot : boolean&#xA;var poor:boolean&#xA;var taken:boolean&#xA;&#xA;internal:&#xA;event ready&#xA;&#xA;&#xA;// and variables here. &#xA;// Use CTRL + Space for content assist." name="default">
+  <sgraph:Statechart xmi:id="_Z1-u0PQBEeqcIuQ6E47TZw" specification="@EventDriven&#xA;// Use the event driven execution model.&#xA;// Runs a run-to-completion step&#xA;// each time an event is raised.&#xA;// Switch to cycle based behavior&#xA;// by specifying '@CycleBased(200)'&#xA;// instead.&#xA;&#xA;@ChildFirstExecution&#xA;// In composite states, execute&#xA;// child states first.&#xA;// @ParentFirstExecution does the opposite.&#xA;&#xA;interface:&#xA;// Define events&#xA;in event anyButton&#xA;in event Coffee&#xA;in event Expresso&#xA;in event Tea&#xA;in event Soup&#xA;in event IcedTea&#xA;&#xA;in event CinquanteCents&#xA;in event VingtCinqCents&#xA;in event DixCents&#xA;in event Bip&#xA;in event Cancel&#xA;&#xA;out event doRestart&#xA;&#xA;out event doCoffee&#xA;out event doExpresso&#xA;out event doTea&#xA;out event doSoup&#xA;out event doIcedTea&#xA;out event doSugar&#xA;&#xA;&#xA;out event doSelect&#xA;out event doPay&#xA;out event doCancel&#xA;out event doReceipt&#xA;out event doPoor&#xA;out event doDosette&#xA;out event doGrain&#xA;out event doSachet&#xA;out event doGobelet&#xA;out event doHeat&#xA;out event doInfuse&#xA;out event doRetake&#xA;&#xA;operation getSelection():string&#xA;operation isHot():boolean&#xA;operation isPay():boolean&#xA;operation isPoor():boolean&#xA;operation isTaken():boolean&#xA;&#xA;var mySelection : string&#xA;var selection : boolean&#xA;var pay : boolean&#xA;&#xA;internal:&#xA;event ready&#xA;&#xA;&#xA;// and variables here. &#xA;// Use CTRL + Space for content assist." name="default">
     <regions xmi:id="_cDgGUA-MEeuVyKXKi1g3Eg" name="main">
       <vertices xsi:type="sgraph:State" xmi:id="_cDgGUQ-MEeuVyKXKi1g3Eg" name="order" incomingTransitions="_cDhUeQ-MEeuVyKXKi1g3Eg _WjvIQBauEeuomKyfDgo6Qw _mgfN8BawEeuomKyfDgo6Qw">
         <outgoingTransitions xmi:id="_cDgtYA-MEeuVyKXKi1g3Eg" specification="every 15 ms [selection &amp;&amp; pay]" target="_cHxRMBaxEeuomKyfDgo6Qw"/>
@@ -31,10 +31,10 @@
         <outgoingTransitions xmi:id="_cDhUeQ-MEeuVyKXKi1g3Eg" specification="" target="_cDgGUQ-MEeuVyKXKi1g3Eg"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_qs1kgBauEeuomKyfDgo6Qw" specification="" name="prepare" incomingTransitions="_guBDkBaxEeuomKyfDgo6Qw">
-        <outgoingTransitions xmi:id="_TQVy8BawEeuomKyfDgo6Qw" specification="[poor &amp;&amp; mySelection!=&quot;tea&quot;]" target="_oPLZ0BavEeuomKyfDgo6Qw"/>
+        <outgoingTransitions xmi:id="_TQVy8BawEeuomKyfDgo6Qw" specification="every 100 ms [isPoor() &amp;&amp; mySelection!=&quot;Tea&quot;]" target="_oPLZ0BavEeuomKyfDgo6Qw"/>
         <regions xmi:id="_qs1kgxauEeuomKyfDgo6Qw" name="r1">
-          <vertices xsi:type="sgraph:State" xmi:id="_zanM8BauEeuomKyfDgo6Qw" specification="every 200ms / hot = isHot()&#xA;entry / raise doHeat" name="heating" incomingTransitions="_3kS_IBauEeuomKyfDgo6Qw">
-            <outgoingTransitions xmi:id="_9FyRwBauEeuomKyfDgo6Qw" specification="[hot]" target="_0mNdYBauEeuomKyfDgo6Qw"/>
+          <vertices xsi:type="sgraph:State" xmi:id="_zanM8BauEeuomKyfDgo6Qw" specification="entry / raise doHeat" name="heating" incomingTransitions="_3kS_IBauEeuomKyfDgo6Qw">
+            <outgoingTransitions xmi:id="_9FyRwBauEeuomKyfDgo6Qw" specification="every 100 ms [isHot()]" target="_0mNdYBauEeuomKyfDgo6Qw"/>
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_0mNdYBauEeuomKyfDgo6Qw" name="waiting" incomingTransitions="_9FyRwBauEeuomKyfDgo6Qw">
             <outgoingTransitions xmi:id="_-1qT8BauEeuomKyfDgo6Qw" specification="ready" target="_1Np34BauEeuomKyfDgo6Qw"/>
@@ -63,18 +63,18 @@
             <outgoingTransitions xmi:id="__9PKkBavEeuomKyfDgo6Qw" specification="after 1 s" target="_LUBSEBavEeuomKyfDgo6Qw"/>
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_LUBSEBavEeuomKyfDgo6Qw" specification="entry / raise doGobelet" name="gobelet" incomingTransitions="_97YnkBavEeuomKyfDgo6Qw __B-cMBavEeuomKyfDgo6Qw __9PKkBavEeuomKyfDgo6Qw">
-            <outgoingTransitions xmi:id="_MnOJ4BawEeuomKyfDgo6Qw" specification="every 100 ms [hot]" target="_LkLN8BavEeuomKyfDgo6Qw"/>
+            <outgoingTransitions xmi:id="_MnOJ4BawEeuomKyfDgo6Qw" specification="every 100 ms [isHot()]" target="_LkLN8BavEeuomKyfDgo6Qw"/>
           </vertices>
-          <vertices xsi:type="sgraph:State" xmi:id="_LkLN8BavEeuomKyfDgo6Qw" specification="entry / raise ready&#xA;entry / raise doPoor&#xA;every 200 ms  / poor = isPoor()" name="poor" incomingTransitions="_MnOJ4BawEeuomKyfDgo6Qw">
-            <outgoingTransitions xmi:id="_f2QKkBawEeuomKyfDgo6Qw" specification="[poor &amp;&amp; mySelection!=&quot;tea&quot;]" target="_cKylcBawEeuomKyfDgo6Qw"/>
+          <vertices xsi:type="sgraph:State" xmi:id="_LkLN8BavEeuomKyfDgo6Qw" specification="entry / raise ready&#xA;entry / raise doPoor&#xA;" name="poor" incomingTransitions="_MnOJ4BawEeuomKyfDgo6Qw">
+            <outgoingTransitions xmi:id="_f2QKkBawEeuomKyfDgo6Qw" specification="every 100 ms [isPoor() &amp;&amp; mySelection!=&quot;Tea&quot;]" target="_cKylcBawEeuomKyfDgo6Qw"/>
           </vertices>
           <vertices xsi:type="sgraph:State" xmi:id="_cKylcBawEeuomKyfDgo6Qw" specification="entry / raise doInfuse" name="Infuse" incomingTransitions="_f2QKkBawEeuomKyfDgo6Qw">
             <outgoingTransitions xmi:id="_h27o4BawEeuomKyfDgo6Qw" specification="after 10 s / raise doRetake()" target="_oPLZ0BavEeuomKyfDgo6Qw"/>
           </vertices>
         </regions>
       </vertices>
-      <vertices xsi:type="sgraph:State" xmi:id="_oPLZ0BavEeuomKyfDgo6Qw" specification="every 200 ms / taken = isTaken()" name="waiting recuperation" incomingTransitions="_TQVy8BawEeuomKyfDgo6Qw _h27o4BawEeuomKyfDgo6Qw">
-        <outgoingTransitions xmi:id="_mgfN8BawEeuomKyfDgo6Qw" specification="[taken] / raise doRestart" target="_cDgGUQ-MEeuVyKXKi1g3Eg"/>
+      <vertices xsi:type="sgraph:State" xmi:id="_oPLZ0BavEeuomKyfDgo6Qw" specification="" name="waiting recuperation" incomingTransitions="_TQVy8BawEeuomKyfDgo6Qw _h27o4BawEeuomKyfDgo6Qw">
+        <outgoingTransitions xmi:id="_mgfN8BawEeuomKyfDgo6Qw" specification="every 100 ms [isTaken()] / raise doRestart&#xA;" target="_cDgGUQ-MEeuVyKXKi1g3Eg"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_cHxRMBaxEeuomKyfDgo6Qw" specification="entry / raise doReceipt&#xA;entry / mySelection = getSelection()" name="Receipt" incomingTransitions="_cDgtYA-MEeuVyKXKi1g3Eg">
         <outgoingTransitions xmi:id="_guBDkBaxEeuomKyfDgo6Qw" specification="after 1 s" target="_qs1kgBauEeuomKyfDgo6Qw"/>
@@ -702,7 +702,7 @@
     <edges xmi:id="_MnOw8BawEeuomKyfDgo6Qw" type="Transition" element="_MnOJ4BawEeuomKyfDgo6Qw" source="_GDvO_xawEeuomKyfDgo6Qw" target="_GDvPCxawEeuomKyfDgo6Qw">
       <children xsi:type="notation:DecorationNode" xmi:id="_MnOw9BawEeuomKyfDgo6Qw" type="TransitionExpression">
         <styles xsi:type="notation:ShapeStyle" xmi:id="_MnOw9RawEeuomKyfDgo6Qw"/>
-        <layoutConstraint xsi:type="notation:Location" xmi:id="_MnOw9hawEeuomKyfDgo6Qw" y="10"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_MnOw9hawEeuomKyfDgo6Qw" x="2" y="18"/>
       </children>
       <styles xsi:type="notation:ConnectorStyle" xmi:id="_MnOw8RawEeuomKyfDgo6Qw" routing="Rectilinear" lineColor="4210752"/>
       <styles xsi:type="notation:FontStyle" xmi:id="_MnOw8xawEeuomKyfDgo6Qw" fontName="Verdana"/>
