@@ -53,6 +53,7 @@ public class DrinkFactoryMachine extends JFrame {
 	JButton expressoButton;
 	JButton teaButton;
 	JButton soupButton;
+	JButton addCupButton;
 
 	JLabel labelForPictures;
 
@@ -274,7 +275,7 @@ public class DrinkFactoryMachine extends JFrame {
 		separator.setBounds(12, 292, 622, 15);
 		contentPane.add(separator);
 
-		JButton addCupButton = new JButton("Add cup");
+		addCupButton = new JButton("Add cup");
 		addCupButton.setForeground(Color.BLACK);
 		addCupButton.setBackground(Color.WHITE);
 		addCupButton.setBounds(45, 336, 96, 25);
@@ -739,6 +740,7 @@ public class DrinkFactoryMachine extends JFrame {
 		expressoButton.setEnabled(false);
 		teaButton.setEnabled(false);
 		soupButton.setEnabled(false);
+		addCupButton.setEnabled(false);
 	}
 
 	private void activateButtons() {
@@ -755,6 +757,8 @@ public class DrinkFactoryMachine extends JFrame {
 		expressoButton.setEnabled(true);
 		teaButton.setEnabled(true);
 		soupButton.setEnabled(true);
+		addCupButton.setEnabled(true);
+
 	}
 
 
@@ -764,11 +768,17 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public boolean isTaken() {
-		return true;
+		TimerTask task = new TimerTask() {
+			public void run() {
+				taken = true;
+			}
+		};
+		Timer timer = new Timer("Timer");
+		long delay = 5000L * displayTime;
+		timer.schedule(task, delay);
+		return taken;
 
 	}
-	//TODO ajouter	cancelButton.setEnabled(true); dans restart
-	//TODO revoir timer 45s
-	//TODO java doc + code propre + refacto
-	// TODO: 01/11/2020 ajout des images pour les nouveaux etats
+	//TODO sliders
+	//TODO appCup prise en charge
 }
