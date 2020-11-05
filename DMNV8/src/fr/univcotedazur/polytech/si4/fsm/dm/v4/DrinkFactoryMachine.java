@@ -37,6 +37,8 @@ public class DrinkFactoryMachine extends JFrame {
 	private int teaPrice = 40;
 	private int soupPrice = 75;
 	private int IcedTeaPrice = 50;
+	long poorDelay = 2000;
+	long currentPoorDelay=0;
 	boolean poor;
 	boolean taken;
 
@@ -465,9 +467,12 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public boolean isPoor() {
-		if (poor)
+
+		if (poorDelay==currentPoorDelay){
 			System.out.println("isPoor");
-		return poor;
+			return true;
+		}
+		return false;
 	}
 	//------------------------------------------------------METHOD DO----------------------------------------------------------------//
 	public void doCancel() {
@@ -570,7 +575,7 @@ public class DrinkFactoryMachine extends JFrame {
 				progressBarValue += 1;
 				currentTemperature += delay / 6000.0;
 				progressBar.setValue(progressBarValue);
-				if (progressBarValue == 75) { //TODO : pb la chaleur reagrde la progress bar... ce devrait etre l'inverse !
+				if (isHot()) { //TODO : pb la chaleur reagrde la progress bar... ce devrait etre l'inverse !
 					System.out.println("fin chauffage");
 					addMessageToUser("chauffage terminé");
 					repaint();
@@ -627,6 +632,7 @@ public class DrinkFactoryMachine extends JFrame {
 		cagnote = 0;
 		selection = "";
 		currentTemperature = 15;
+		currentPoorDelay=0;
 		taken = false;
 		poor = false;
 		activateButtons();
@@ -690,12 +696,12 @@ public class DrinkFactoryMachine extends JFrame {
 		} catch (IOException ee) {
 			ee.printStackTrace();
 		}
-		long delay = 2000;
 		TimerTask repeatedTask = new TimerTask() {
 			public void run() {
 				progressBarValue += 1;
 				progressBar.setValue(progressBarValue);
-				if (progressBarValue == 100) {
+				currentPoorDelay +=poorDelay / 20;
+				if (isPoor()) {
 					BufferedImage finishPicture = null;
 					try {
 						finishPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/gobelet1.jpg"));
@@ -706,7 +712,6 @@ public class DrinkFactoryMachine extends JFrame {
 					System.out.println("fin de versage");
 					addMessageToUser("versage terminé");
 					repaint();
-					poor=true;
 					cancel();
 				}
 			}
@@ -715,7 +720,7 @@ public class DrinkFactoryMachine extends JFrame {
 		setMessageToUser("Début du versage de la boisson");
 		repaint();
 		Timer timer = new Timer("Timer");
-		timer.scheduleAtFixedRate(repeatedTask, 0, delay / 20);
+		timer.scheduleAtFixedRate(repeatedTask, 0, poorDelay / 20);
 		labelForPictures.setIcon(new ImageIcon(pooringPicture));
 	}
 
@@ -771,4 +776,6 @@ public class DrinkFactoryMachine extends JFrame {
 	//TODO revoir timer 45s
 	//TODO java doc + code propre + refacto
 	// TODO: 01/11/2020 ajout des images pour les nouveaux etats
+	// TODO: 05/11/2020 ajout du retrait sachet pour que tea marche
+	
 }
