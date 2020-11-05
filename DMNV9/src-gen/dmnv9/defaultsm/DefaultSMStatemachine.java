@@ -562,6 +562,24 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 			}
 		}
 		
+		private boolean doFinish;
+		
+		
+		public boolean isRaisedDoFinish() {
+			synchronized(DefaultSMStatemachine.this) {
+				return doFinish;
+			}
+		}
+		
+		protected void raiseDoFinish() {
+			synchronized(DefaultSMStatemachine.this) {
+				doFinish = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onDoFinishRaised();
+				}
+			}
+		}
+		
 		private String mySelection;
 		
 		public synchronized String getMySelection() {
@@ -638,6 +656,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		doHeat = false;
 		doInfuse = false;
 		doRetake = false;
+		doFinish = false;
 		}
 		
 	}
@@ -1065,6 +1084,10 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		return sCInterface.isRaisedDoRetake();
 	}
 	
+	public synchronized boolean isRaisedDoFinish() {
+		return sCInterface.isRaisedDoFinish();
+	}
+	
 	public synchronized String getMySelection() {
 		return sCInterface.getMySelection();
 	}
@@ -1175,6 +1198,8 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 	/* Entry action for state 'waiting recuperation'. */
 	private void entryAction_main_waiting_recuperation() {
 		timer.setTimer(this, 11, 100, true);
+		
+		sCInterface.raiseDoFinish();
 	}
 	
 	/* Entry action for state 'Receipt'. */
@@ -1931,7 +1956,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((timeEvents[8]) && ((sCInterface.operationCallback.isPoor() && (sCInterface.getMySelection()== null?"Tea" !=null : !sCInterface.getMySelection().equals("Tea")))))) {
+			if (((timeEvents[8]) && ((sCInterface.operationCallback.isPoor() && (sCInterface.getMySelection()== null?"Tea" ==null :sCInterface.getMySelection().equals("Tea")))))) {
 				exitSequence_main_prepare_r2_poor();
 				enterSequence_main_prepare_r2_Infuse_default();
 				main_prepare_react(false);

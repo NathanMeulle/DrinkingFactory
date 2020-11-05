@@ -32,15 +32,16 @@ public class DrinkFactoryMachine extends JFrame {
 	JProgressBar progressBar = new JProgressBar();
 	protected DefaultSMStatemachine theFSM; // Declaration de la stateMAchine
 	private int cagnote = 0;
-	private int coffePrice = 35;
-	private int expressoPrice = 50;
-	private int teaPrice = 40;
-	private int soupPrice = 75;
-	private int IcedTeaPrice = 50;
+	private final int coffePrice = 35;
+	private final int expressoPrice = 50;
+	private final int teaPrice = 40;
+	private final int soupPrice = 75;
+	private final int IcedTeaPrice = 50;
 	long poorDelay = 2000;
 	long currentPoorDelay=0;
 	boolean poor;
 	boolean taken;
+	Timer timerTaken;
 
 	JButton cancelButton;
 	JButton nfcBiiiipButton;
@@ -61,13 +62,11 @@ public class DrinkFactoryMachine extends JFrame {
 
 	private final int displayTime = 1;
 
-
-	private int wantedTemperature = 60;
+	Hashtable<Integer, JLabel> temperatureTable;
 	private double currentTemperature = 15;
 	private int progressBarValue = 0;
 	TimerService timer;
 	private String selection;
-
 
 	/**
 	 * @wbp.nonvisual location=311,475
@@ -197,7 +196,7 @@ public class DrinkFactoryMachine extends JFrame {
 		temperatureSlider.setMaximum(3);
 		temperatureSlider.setBounds(301, 188, 200, 54);
 
-		Hashtable<Integer, JLabel> temperatureTable = new Hashtable<Integer, JLabel>();
+		temperatureTable = new Hashtable<>();
 		temperatureTable.put(0, new JLabel("20°C"));
 		temperatureTable.put(1, new JLabel("35°C"));
 		temperatureTable.put(2, new JLabel("60°C"));
@@ -460,7 +459,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public boolean isHot() {
-		if (currentTemperature == wantedTemperature) {
+		if (currentTemperature >= Integer.parseInt(temperatureTable.get(temperatureSlider.getValue()).getText().substring(0, 2))) {
 			System.out.println("isHot");
 			return true;
 		}
@@ -468,9 +467,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public boolean isPoor() {
-
-		if (poorDelay==currentPoorDelay){
-			System.out.println("isPoor");
+		if ((1+sizeSlider.getValue())*1000==currentPoorDelay){
 			return true;
 		}
 		return false;
@@ -478,16 +475,16 @@ public class DrinkFactoryMachine extends JFrame {
 
 
 	public boolean isTaken() {
-		TimerTask task = new TimerTask() {
+		TimerTask taskTaken = new TimerTask() {
 			public void run() {
 				taken = true;
+				//System.out.println("bugbugbugbugbug");
+				cancel();
 			}
 		};
-
-		Timer timer = new Timer("Timer");
-		long delay = 5000L * displayTime;
-		timer.schedule(task, delay);
-		System.out.println("gobelet retiré/pris 														salut");
+		timerTaken = new Timer("TimerTaken");
+		long delayTaken = 5000L * displayTime;
+		timerTaken.schedule(taskTaken, delayTaken);
 		return taken;
 
 	}
@@ -561,10 +558,12 @@ public class DrinkFactoryMachine extends JFrame {
 		repaint();
 	}
 
-	public void doSugar() {  // TODO: 27/10/2020 gerer avec le slider
-		System.out.println("do sugar");
+	public void doSugar() {
+		addMessageToUser(String.format("Ajout de %d sucre", sugarSlider.getValue()) + (sugarSlider.getValue()>1?"s":""));
+		System.out.println("do sugar : " + sugarSlider.getValue());
 		progressBarValue += 5;
 		progressBar.setValue(progressBarValue);
+
 	}
 
 	public void doSelect() {
@@ -587,13 +586,17 @@ public class DrinkFactoryMachine extends JFrame {
 
 
 	public void doHeat() {
+		int wantedTemperature = Integer.parseInt(temperatureTable.get(temperatureSlider.getValue()).getText().substring(0, 2));
+		System.out.println("temperature position : " + temperatureSlider.getValue() + " ie " + wantedTemperature + "°C");
+
 		long delay = (long) (1000 * (wantedTemperature - currentTemperature) / 5);
+		int progress = (1000 * (75 - progressBarValue) / 5);
 		TimerTask repeatedTask = new TimerTask() {
 			public void run() {
-				progressBarValue += 1;
+				progressBarValue += progress / 6000;
 				currentTemperature += delay / 6000.0;
 				progressBar.setValue(progressBarValue);
-				if (isHot()) { //TODO : pb la chaleur reagrde la progress bar... ce devrait etre l'inverse !
+				if (isHot()) {
 					System.out.println("fin chauffage");
 					addMessageToUser("chauffage terminé");
 					repaint();
@@ -653,6 +656,9 @@ public class DrinkFactoryMachine extends JFrame {
 		currentPoorDelay=0;
 		taken = false;
 		poor = false;
+		temperatureSlider.setValue(2);
+		sugarSlider.setValue(1);
+		sizeSlider.setValue(1);
 		activateButtons();
 		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
 		repaint();
@@ -680,10 +686,10 @@ public class DrinkFactoryMachine extends JFrame {
 
 	public void doSachet() {
 		System.out.println("sachet");
-		addMessageToUser("Immersion du thé");
+		addMessageToUser("Préparation du thé");
 		TimerTask task = new TimerTask() {
 			public void run() {
-				addMessageToUser("Retrait du thé");
+				addMessageToUser("Immersion du thé");
 			}
 		};
 		Timer timer = new Timer("Timer");
@@ -772,6 +778,9 @@ public class DrinkFactoryMachine extends JFrame {
 		teaButton.setEnabled(false);
 		soupButton.setEnabled(false);
 		addCupButton.setEnabled(false);
+		temperatureSlider.setEnabled(false);
+		sugarSlider.setEnabled(false);
+		sizeSlider.setEnabled(false);
 	}
 
 	private void activateButtons() {
@@ -789,6 +798,9 @@ public class DrinkFactoryMachine extends JFrame {
 		teaButton.setEnabled(true);
 		soupButton.setEnabled(true);
 		addCupButton.setEnabled(true);
+		temperatureSlider.setEnabled(true);
+		sugarSlider.setEnabled(true);
+		sizeSlider.setEnabled(true);
 
 	}
 
@@ -798,6 +810,9 @@ public class DrinkFactoryMachine extends JFrame {
 		return selection;
 	}
 
+	public void doFinish() {
+		addMessageToUser("C'est prêt !");
+	}
 
 
 //---------------------------------------------------OTHERS----------------------------------------------------------------//
@@ -805,5 +820,7 @@ public class DrinkFactoryMachine extends JFrame {
 	// TODO: 05/11/2020 ajout du retrait sachet pour que tea marche
 	//TODO sliders
 	//TODO appCup prise en charge
+	//TODO : sur slider raise Any Button
+	// TODO slider size + adaptation progress bar
 
 }

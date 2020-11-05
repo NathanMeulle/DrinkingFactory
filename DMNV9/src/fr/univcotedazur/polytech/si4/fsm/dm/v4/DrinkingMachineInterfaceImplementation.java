@@ -51,7 +51,6 @@ class DrinkingMachineInterfaceImplementation implements SCInterfaceListener {
 		@Override
 		public void onDoReceiptRaised() {
           	theGui.doReceipt();
-			// TODO Auto-generated method stub
 
 		}
 		@Override
@@ -88,5 +87,10 @@ class DrinkingMachineInterfaceImplementation implements SCInterfaceListener {
 		public void onDoRetakeRaised() {
 			theGui.doRetake();
 		}
+
+	@Override
+	public void onDoFinishRaised() {
+		theGui.doFinish();
+	}
 
 }
