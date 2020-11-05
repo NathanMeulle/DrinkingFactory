@@ -475,6 +475,23 @@ public class DrinkFactoryMachine extends JFrame {
 		}
 		return false;
 	}
+
+
+	public boolean isTaken() {
+		TimerTask task = new TimerTask() {
+			public void run() {
+				taken = true;
+			}
+		};
+
+		Timer timer = new Timer("Timer");
+		long delay = 5000L * displayTime;
+		timer.schedule(task, delay);
+		System.out.println("gobelet retiré/pris 														salut");
+		return taken;
+
+	}
+	//------------------------------------------------------METHOD IS----------------------------------------------------------------//
 	//------------------------------------------------------METHOD DO----------------------------------------------------------------//
 	public void doCancel() {
 		System.out.println("doCancel");
@@ -725,7 +742,16 @@ public class DrinkFactoryMachine extends JFrame {
 		labelForPictures.setIcon(new ImageIcon(pooringPicture));
 	}
 
-	//---------------------------------------------------OTHERS----------------------------------------------------------------//
+	public void doRetake() {
+		System.out.println("retrait du sachet");
+	}
+	public void doInfuse() {
+		System.out.println("infusion");
+		setMessageToUser("infusion en cours");
+		repaint();
+	}
+	//------------------------------------------------------METHOD DO----------------------------------------------------------------//
+	//--------------------------------------------------------OTHERS----------------------------------------------------------------//
 
 
 	public String cagnote() {
@@ -772,18 +798,10 @@ public class DrinkFactoryMachine extends JFrame {
 		return selection;
 	}
 
-	public boolean isTaken() {
-		TimerTask task = new TimerTask() {
-			public void run() {
-				taken = true;
-			}
-		};
-		Timer timer = new Timer("Timer");
-		long delay = 5000L * displayTime;
-		timer.schedule(task, delay);
-		return taken;
 
-	}
+
+//---------------------------------------------------OTHERS----------------------------------------------------------------//
+
 	// TODO: 05/11/2020 ajout du retrait sachet pour que tea marche
 	//TODO sliders
 	//TODO appCup prise en charge

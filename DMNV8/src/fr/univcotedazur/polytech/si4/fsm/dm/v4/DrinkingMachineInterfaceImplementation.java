@@ -79,17 +79,14 @@ class DrinkingMachineInterfaceImplementation implements SCInterfaceListener {
 		@Override
 		public void onDoHeatRaised() {
 			theGui.doHeat();
-
 		}
 		@Override
 		public void onDoInfuseRaised() {
-			// TODO Auto-generated method stub
-
+			theGui.doInfuse();
 		}
 		@Override
 		public void onDoRetakeRaised() {
-			// TODO Auto-generated method stub
-
+			theGui.doRetake();
 		}
 
 }
