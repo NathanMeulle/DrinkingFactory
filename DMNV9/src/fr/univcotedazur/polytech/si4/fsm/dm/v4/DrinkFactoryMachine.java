@@ -6,6 +6,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import dmnv9.TimerService;
 import dmnv9.defaultsm.DefaultSMStatemachine;
@@ -424,6 +426,24 @@ public class DrinkFactoryMachine extends JFrame {
 
 			}
 		});
+		temperatureSlider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				theFSM.raiseAnyButton();
+			}
+		});
+		sugarSlider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				theFSM.raiseAnyButton();
+			}
+		});
+		sizeSlider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				theFSM.raiseAnyButton();
+			}
+		});
 
 
 		// initialisation de la stateMachine
@@ -563,7 +583,6 @@ public class DrinkFactoryMachine extends JFrame {
 		System.out.println("do sugar : " + sugarSlider.getValue());
 		progressBarValue += 5;
 		progressBar.setValue(progressBarValue);
-
 	}
 
 	public void doSelect() {
