@@ -41,6 +41,7 @@ public class DrinkFactoryMachine extends JFrame {
 	long currentPoorDelay=0;
 	boolean poor;
 	boolean taken;
+	boolean cupAdded = false;
 	Timer timerTaken;
 
 	JButton cancelButton;
@@ -312,6 +313,9 @@ public class DrinkFactoryMachine extends JFrame {
 					ee.printStackTrace();
 				}
 				labelForPictures.setIcon(new ImageIcon(myPicture));
+				progressBarValue+=5;
+				progressBar.setValue(progressBarValue);
+				cupAdded=true;
 			}
 		});
 
@@ -660,6 +664,7 @@ public class DrinkFactoryMachine extends JFrame {
 		currentPoorDelay=0;
 		taken = false;
 		poor = false;
+		cupAdded =false;
 		temperatureSlider.setValue(2);
 		sugarSlider.setValue(1);
 		sizeSlider.setValue(1);
@@ -703,24 +708,29 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doGobelet() {
-		System.out.println("gobelet");
-		progressBarValue+=5;
-		progressBar.setValue(progressBarValue);
-		addMessageToUser("Positionnement du gobelet");
-		BufferedImage myPicture = null;
-		try {
-			myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/gobelet1.jpg"));
-		} catch (IOException ee) {
-			ee.printStackTrace();
+		if(!cupAdded){
+			System.out.println("gobelet");
+			progressBarValue+=5;
+			progressBar.setValue(progressBarValue);
+			addMessageToUser("Positionnement du gobelet");
+			BufferedImage myPicture = null;
+			try {
+				myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/gobelet1.jpg"));
+			} catch (IOException ee) {
+				ee.printStackTrace();
+			}
+			labelForPictures.setIcon(new ImageIcon(myPicture));
 		}
-		labelForPictures.setIcon(new ImageIcon(myPicture));
 
 	}
 
 	public void doPoor() {
 		BufferedImage pooringPicture = null;
 		try {
-			pooringPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/pooring1.jpg"));
+			if(!cupAdded)
+				pooringPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/pooring1.jpg"));
+			else
+				pooringPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/pooringOwnCup1.jpg"));
 		} catch (IOException ee) {
 			ee.printStackTrace();
 		}
@@ -732,7 +742,10 @@ public class DrinkFactoryMachine extends JFrame {
 				if (isPoor()) {
 					BufferedImage finishPicture = null;
 					try {
-						finishPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/gobelet1.jpg"));
+						if(!cupAdded)
+							finishPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/gobelet1.jpg"));
+						else
+							finishPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/ownCup1.jpg"));
 					} catch (IOException ee) {
 						ee.printStackTrace();
 					}
