@@ -814,7 +814,11 @@ public class DrinkFactoryMachine extends JFrame {
 		addMessageToUser("C'est prêt !");
 		labelForPictures.setEnabled(true);
 	}
-
+	
+	public void doWash() {
+		setMessageToUser("Washing in progress");
+		System.out.println("Washing");
+	}
 	//------------------------------------------------------METHOD DO----------------------------------------------------------------//
 	//--------------------------------------------------------OTHERS----------------------------------------------------------------//
 
@@ -882,10 +886,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 	}
 
-	public void doWash() {
-		setMessageToUser("Washing in progress");
-		System.out.println("Washing");
-	}
+
 //---------------------------------------------------OTHERS----------------------------------------------------------------//
 
 	// TODO: 06/11/2020 nouvelle gestion de la progress bar
@@ -893,6 +894,6 @@ public class DrinkFactoryMachine extends JFrame {
 	// TODO: 06/11/2020 gerer stock
 	// TODO: 06/11/2020 programme de fideliter
 	// TODO: 06/11/2020 (optionnel) faire la soupe et l'iced tea
-	// TODO: 06/11/2020 ajout des sons et du popcorn 
+	// TODO: 06/11/2020 ajout des sons et du popcorn
 
 }
