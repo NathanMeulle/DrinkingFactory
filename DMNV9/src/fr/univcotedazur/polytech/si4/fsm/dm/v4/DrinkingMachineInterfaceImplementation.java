@@ -10,7 +10,13 @@ class DrinkingMachineInterfaceImplementation implements SCInterfaceListener {
 			theGui.doRestart();
 
         }
-		@Override
+
+	@Override
+	public void onDoWashRaised() {
+		theGui.doWash();
+	}
+
+	@Override
 		public void onDoCoffeeRaised() {
 			theGui.doCoffee();
 

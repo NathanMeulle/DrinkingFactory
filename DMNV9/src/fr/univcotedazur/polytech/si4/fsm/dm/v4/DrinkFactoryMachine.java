@@ -881,6 +881,10 @@ public class DrinkFactoryMachine extends JFrame {
 			poorDelay = 3000;
 
 	}
+
+	public void doWash() {
+		//TODO
+	}
 //---------------------------------------------------OTHERS----------------------------------------------------------------//
 
 	// TODO: 05/11/2020 ajout du retrait sachet pour que tea marche

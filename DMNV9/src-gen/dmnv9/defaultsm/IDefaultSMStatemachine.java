@@ -36,6 +36,8 @@ public interface IDefaultSMStatemachine extends ITimerCallback,IStatemachine {
 		
 		public boolean isRaisedDoRestart();
 		
+		public boolean isRaisedDoWash();
+		
 		public boolean isRaisedDoCoffee();
 		
 		public boolean isRaisedDoExpresso();
@@ -47,6 +49,8 @@ public interface IDefaultSMStatemachine extends ITimerCallback,IStatemachine {
 		public boolean isRaisedDoIcedTea();
 		
 		public boolean isRaisedDoSugar();
+		
+		public void raiseAddCup();
 		
 		public boolean isRaisedDoSelect();
 		
@@ -94,6 +98,7 @@ public interface IDefaultSMStatemachine extends ITimerCallback,IStatemachine {
 	public interface SCInterfaceListener {
 	
 		public void onDoRestartRaised();
+		public void onDoWashRaised();
 		public void onDoCoffeeRaised();
 		public void onDoExpressoRaised();
 		public void onDoTeaRaised();
