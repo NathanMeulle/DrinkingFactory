@@ -888,10 +888,11 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 //---------------------------------------------------OTHERS----------------------------------------------------------------//
 
-	// TODO: 05/11/2020 ajout du retrait sachet pour que tea marche
-	//TODO sliders
-	//TODO appCup prise en charge
-	//TODO : sur slider raise Any Button
-	// TODO slider size + adaptation progress bar
+	// TODO: 06/11/2020 nouvelle gestion de la progress bar
+	// TODO: 06/11/2020 faire les options
+	// TODO: 06/11/2020 gerer stock
+	// TODO: 06/11/2020 programme de fideliter
+	// TODO: 06/11/2020 (optionnel) faire la soupe et l'iced tea
+	// TODO: 06/11/2020 ajout des sons et du popcorn 
 
 }
