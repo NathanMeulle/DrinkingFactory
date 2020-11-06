@@ -711,6 +711,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		main_order_clock_timer,
 		main_prepare,
 		main_prepare_r1_heating,
+		main_prepare_r1_Waiting,
 		main_prepare_r2_Etat_0,
 		main_prepare_r2_dosette,
 		main_prepare_r2_grain,
@@ -813,6 +814,9 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 				break;
 			case main_prepare_r1_heating:
 				main_prepare_r1_heating_react(true);
+				break;
+			case main_prepare_r1_Waiting:
+				main_prepare_r1_Waiting_react(true);
 				break;
 			case main_prepare_r2_Etat_0:
 				main_prepare_r2_Etat_0_react(true);
@@ -925,6 +929,8 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 					main_prepare.ordinal()&& stateVector[0].ordinal() <= State.main_prepare_r2_gobelet.ordinal();
 		case main_prepare_r1_heating:
 			return stateVector[0] == State.main_prepare_r1_heating;
+		case main_prepare_r1_Waiting:
+			return stateVector[0] == State.main_prepare_r1_Waiting;
 		case main_prepare_r2_Etat_0:
 			return stateVector[1] == State.main_prepare_r2_Etat_0;
 		case main_prepare_r2_dosette:
@@ -1343,17 +1349,17 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		stateVector[1] = State.main_order_clock_timer;
 	}
 	
-	/* 'default' enter sequence for state prepare */
-	private void enterSequence_main_prepare_default() {
-		enterSequence_main_prepare_r1_default();
-		enterSequence_main_prepare_r2_default();
-	}
-	
 	/* 'default' enter sequence for state heating */
 	private void enterSequence_main_prepare_r1_heating_default() {
 		entryAction_main_prepare_r1_heating();
 		nextStateIndex = 0;
 		stateVector[0] = State.main_prepare_r1_heating;
+	}
+	
+	/* 'default' enter sequence for state Waiting */
+	private void enterSequence_main_prepare_r1_Waiting_default() {
+		nextStateIndex = 0;
+		stateVector[0] = State.main_prepare_r1_Waiting;
 	}
 	
 	/* 'default' enter sequence for state Etat 0 */
@@ -1455,16 +1461,6 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 	}
 	
 	/* 'default' enter sequence for region r1 */
-	private void enterSequence_main_prepare_r1_default() {
-		react_main_prepare_r1__entry_Default();
-	}
-	
-	/* 'default' enter sequence for region r2 */
-	private void enterSequence_main_prepare_r2_default() {
-		react_main_prepare_r2__entry_Default();
-	}
-	
-	/* 'default' enter sequence for region r1 */
 	private void enterSequence_main_Prepare2_r1_default() {
 		react_main_Prepare2_r1__entry_Default();
 	}
@@ -1513,6 +1509,12 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		stateVector[0] = State.$NullState$;
 		
 		exitAction_main_prepare_r1_heating();
+	}
+	
+	/* Default exit sequence for state Waiting */
+	private void exitSequence_main_prepare_r1_Waiting() {
+		nextStateIndex = 0;
+		stateVector[0] = State.$NullState$;
 	}
 	
 	/* Default exit sequence for state Etat 0 */
@@ -1618,6 +1620,9 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		case main_prepare_r1_heating:
 			exitSequence_main_prepare_r1_heating();
 			break;
+		case main_prepare_r1_Waiting:
+			exitSequence_main_prepare_r1_Waiting();
+			break;
 		case main_waiting_recuperation:
 			exitSequence_main_waiting_recuperation();
 			break;
@@ -1698,6 +1703,9 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		case main_prepare_r1_heating:
 			exitSequence_main_prepare_r1_heating();
 			break;
+		case main_prepare_r1_Waiting:
+			exitSequence_main_prepare_r1_Waiting();
+			break;
 		default:
 			break;
 		}
@@ -1767,16 +1775,6 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 	}
 	
 	/* Default react sequence for initial entry  */
-	private void react_main_prepare_r1__entry_Default() {
-		enterSequence_main_prepare_r1_heating_default();
-	}
-	
-	/* Default react sequence for initial entry  */
-	private void react_main_prepare_r2__entry_Default() {
-		enterSequence_main_prepare_r2_Etat_0_default();
-	}
-	
-	/* Default react sequence for initial entry  */
 	private void react_main_Prepare2_r1__entry_Default() {
 		enterSequence_main_Prepare2_r1_sugar_default();
 	}
@@ -1789,6 +1787,12 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 	/* The reactions of state null. */
 	private void react_main__sync0() {
 		enterSequence_main_Prepare2_default();
+	}
+	
+	/* The reactions of state null. */
+	private void react_main__sync1() {
+		enterSequence_main_prepare_r1_heating_default();
+		enterSequence_main_prepare_r2_Etat_0_default();
 	}
 	
 	private boolean react() {
@@ -1901,7 +1905,21 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((((timeEvents[2]) && (sCInterface.operationCallback.isHot())) && isStateActive(State.main_prepare_r2_gobelet)) && ((timeEvents[6]) && (sCInterface.operationCallback.isHot())))) {
+			if (((timeEvents[2]) && (sCInterface.operationCallback.isHot()))) {
+				exitSequence_main_prepare_r1_heating();
+				enterSequence_main_prepare_r1_Waiting_default();
+			} else {
+				did_transition = false;
+			}
+		}
+		return did_transition;
+	}
+	
+	private boolean main_prepare_r1_Waiting_react(boolean try_transition) {
+		boolean did_transition = try_transition;
+		
+		if (try_transition) {
+			if ((isStateActive(State.main_prepare_r2_gobelet) && ((timeEvents[6]) && (sCInterface.operationCallback.isHot())))) {
 				exitSequence_main_prepare();
 				react_main__sync0();
 			} else {
@@ -1999,7 +2017,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((((timeEvents[6]) && (sCInterface.operationCallback.isHot())) && isStateActive(State.main_prepare_r1_heating)) && ((timeEvents[2]) && (sCInterface.operationCallback.isHot())))) {
+			if ((((timeEvents[6]) && (sCInterface.operationCallback.isHot())) && isStateActive(State.main_prepare_r1_Waiting))) {
 				exitSequence_main_prepare();
 				react_main__sync0();
 			} else {
@@ -2036,8 +2054,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		if (try_transition) {
 			if (timeEvents[8]) {
 				exitSequence_main_Receipt();
-				enterSequence_main_prepare_default();
-				react();
+				react_main__sync1();
 			} else {
 				did_transition = false;
 			}
