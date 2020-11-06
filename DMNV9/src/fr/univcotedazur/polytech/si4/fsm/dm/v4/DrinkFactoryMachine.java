@@ -633,15 +633,15 @@ public class DrinkFactoryMachine extends JFrame {
 	private int doRendu() {
 		switch (selection) {
 			case "Coffee":
-				return cagnote - coffePrice;
+				return cagnote - coffePrice + (cupAdded ? 10:0);
 			case "Expresso":
-				return cagnote - expressoPrice;
+				return cagnote - expressoPrice + (cupAdded ? 10:0);
 			case "Tea":
-				return cagnote - teaPrice;
+				return cagnote - teaPrice + (cupAdded ? 10:0);
 			case "Soup":
-				return cagnote - soupPrice;
+				return cagnote - soupPrice + (cupAdded ? 10:0);
 			case "Iced Tea":
-				return cagnote - IcedTeaPrice;
+				return cagnote - IcedTeaPrice + (cupAdded ? 10:0);
 		}
 		return cagnote;
 	}
