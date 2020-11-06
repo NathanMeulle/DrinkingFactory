@@ -6,6 +6,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -13,8 +15,7 @@ import dmnv9.TimerService;
 import dmnv9.defaultsm.DefaultSMStatemachine;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -34,11 +35,11 @@ public class DrinkFactoryMachine extends JFrame {
 	JProgressBar progressBar = new JProgressBar();
 	protected DefaultSMStatemachine theFSM; // Declaration de la stateMAchine
 	private int cagnote = 0;
-	private final int coffePrice = 35;
-	private final int expressoPrice = 50;
-	private final int teaPrice = 40;
-	private final int soupPrice = 75;
-	private final int IcedTeaPrice = 50;
+	private int coffePrice = 35;
+	private int expressoPrice = 50;
+	private int teaPrice = 40;
+	private int soupPrice = 75;
+	private int icedTeaPrice = 50;
 	long poorDelay;
 	long currentPoorDelay=0;
 	boolean poor;
@@ -61,7 +62,7 @@ public class DrinkFactoryMachine extends JFrame {
 	JButton soupButton;
 	JButton addCupButton;
 
-	JLabel labelForPictures;
+	JButton labelForPictures;
 
 	private final int displayTime = 1;
 
@@ -291,7 +292,7 @@ public class DrinkFactoryMachine extends JFrame {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		labelForPictures = new JLabel(new ImageIcon(myPicture));
+		labelForPictures = new JButton(new ImageIcon(myPicture));
 		labelForPictures.setBounds(175, 319, 286, 260);
 		contentPane.add(labelForPictures);
 
@@ -305,6 +306,25 @@ public class DrinkFactoryMachine extends JFrame {
 		cancelButton.setBackground(Color.WHITE);
 		panel_2.add(cancelButton);
 //------------------------------------------------------LISTENERS----------------------------------------------------------------//
+		labelForPictures.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				BufferedImage myPicture = null;
+				try {
+					myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/vide1.jpg"));
+				} catch (IOException ee) {
+					ee.printStackTrace();
+				}
+				labelForPictures.setIcon(new ImageIcon(myPicture));
+				expressoPrice = 50;
+				coffePrice = 35;
+				soupPrice = 75;
+				icedTeaPrice = 50;
+				teaPrice = 40;
+				cupAdded=false;
+				taken=true;
+			}
+		});
 		addCupButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -315,9 +335,14 @@ public class DrinkFactoryMachine extends JFrame {
 					ee.printStackTrace();
 				}
 				labelForPictures.setIcon(new ImageIcon(myPicture));
-				progressBarValue+=5;
 				progressBar.setValue(progressBarValue);
 				cupAdded=true;
+				expressoPrice = 40;
+				coffePrice = 25;
+				soupPrice = 65;
+				icedTeaPrice = 40;
+				teaPrice = 30;
+				isPay();
 			}
 		});
 
@@ -420,7 +445,7 @@ public class DrinkFactoryMachine extends JFrame {
 						cagnote += soupPrice;
 						break;
 					case "Iced Tea":
-						cagnote += IcedTeaPrice;
+						cagnote += icedTeaPrice;
 						break;
 				}
 				theFSM.raiseBip();
@@ -500,18 +525,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 
 	public boolean isTaken() {
-		TimerTask taskTaken = new TimerTask() {
-			public void run() {
-				taken = true;
-				//System.out.println("bugbugbugbugbug");
-				cancel();
-			}
-		};
-		timerTaken = new Timer("TimerTaken");
-		long delayTaken = 5000L * displayTime;
-		timerTaken.schedule(taskTaken, delayTaken);
 		return taken;
-
 	}
 	//------------------------------------------------------METHOD IS----------------------------------------------------------------//
 	//------------------------------------------------------METHOD DO----------------------------------------------------------------//
@@ -652,15 +666,15 @@ public class DrinkFactoryMachine extends JFrame {
 	private int doRendu() {
 		switch (selection) {
 			case "Coffee":
-				return cagnote - coffePrice + (cupAdded ? 10:0);
+				return cagnote - coffePrice;
 			case "Expresso":
-				return cagnote - expressoPrice + (cupAdded ? 10:0);
+				return cagnote - expressoPrice;
 			case "Tea":
-				return cagnote - teaPrice + (cupAdded ? 10:0);
+				return cagnote - teaPrice;
 			case "Soup":
-				return cagnote - soupPrice + (cupAdded ? 10:0);
+				return cagnote - soupPrice;
 			case "Iced Tea":
-				return cagnote - IcedTeaPrice + (cupAdded ? 10:0);
+				return cagnote - icedTeaPrice;
 		}
 		return cagnote;
 	}
@@ -683,7 +697,6 @@ public class DrinkFactoryMachine extends JFrame {
 		currentPoorDelay=0;
 		taken = false;
 		poor = false;
-		cupAdded =false;
 		temperatureSlider.setValue(2);
 		sugarSlider.setValue(1);
 		sizeSlider.setValue(1);
@@ -739,6 +752,7 @@ public class DrinkFactoryMachine extends JFrame {
 				ee.printStackTrace();
 			}
 			labelForPictures.setIcon(new ImageIcon(myPicture));
+			taken=false;
 		}
 
 	}
@@ -798,6 +812,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 	public void doFinish() {
 		addMessageToUser("C'est prêt !");
+		labelForPictures.setEnabled(true);
 	}
 
 	//------------------------------------------------------METHOD DO----------------------------------------------------------------//
@@ -825,6 +840,7 @@ public class DrinkFactoryMachine extends JFrame {
 		temperatureSlider.setEnabled(false);
 		sugarSlider.setEnabled(false);
 		sizeSlider.setEnabled(false);
+		labelForPictures.setEnabled(false);
 	}
 
 	private void activateButtons() {
