@@ -883,7 +883,8 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doWash() {
-		//TODO
+		setMessageToUser("Washing in progress");
+		System.out.println("Washing");
 	}
 //---------------------------------------------------OTHERS----------------------------------------------------------------//
 
