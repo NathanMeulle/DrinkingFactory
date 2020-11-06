@@ -37,7 +37,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private final int teaPrice = 40;
 	private final int soupPrice = 75;
 	private final int IcedTeaPrice = 50;
-	long poorDelay = 2000;
+	long poorDelay;
 	long currentPoorDelay=0;
 	boolean poor;
 	boolean taken;
@@ -467,7 +467,8 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public boolean isPoor() {
-		if ((1+sizeSlider.getValue())*1000==currentPoorDelay){
+		if (currentPoorDelay>=poorDelay){
+			System.out.println("isPoor");
 			return true;
 		}
 		return false;
@@ -590,10 +591,9 @@ public class DrinkFactoryMachine extends JFrame {
 		System.out.println("temperature position : " + temperatureSlider.getValue() + " ie " + wantedTemperature + "°C");
 
 		long delay = (long) (1000 * (wantedTemperature - currentTemperature) / 5);
-		int progress = (1000 * (75 - progressBarValue) / 5);
 		TimerTask repeatedTask = new TimerTask() {
 			public void run() {
-				progressBarValue += progress / 6000;
+				progressBarValue += 1;
 				currentTemperature += delay / 6000.0;
 				progressBar.setValue(progressBarValue);
 				if (isHot()) {
@@ -620,6 +620,10 @@ public class DrinkFactoryMachine extends JFrame {
 			setMessageToUser("Transaction effectuée, récupérez votre monnaie <br> Rendu : " + rendu / 100.0 + "€");
 		else setMessageToUser("Transaction effectuée");
 		cagnote = 0;
+		int size =sizeSlider.getValue();
+		System.out.println("size = " + sizeSlider.getValue());
+		defineDelayPoor(size);
+		System.out.println("poor delay = " + poorDelay);
 	}
 
 	private int doRendu() {
@@ -724,7 +728,7 @@ public class DrinkFactoryMachine extends JFrame {
 			public void run() {
 				progressBarValue += 1;
 				progressBar.setValue(progressBarValue);
-				currentPoorDelay +=poorDelay / 20;
+				currentPoorDelay +=poorDelay / 20.0;
 				if (isPoor()) {
 					BufferedImage finishPicture = null;
 					try {
@@ -748,14 +752,22 @@ public class DrinkFactoryMachine extends JFrame {
 		labelForPictures.setIcon(new ImageIcon(pooringPicture));
 	}
 
+
+
 	public void doRetake() {
 		System.out.println("retrait du sachet");
 	}
+
 	public void doInfuse() {
 		System.out.println("infusion");
 		setMessageToUser("infusion en cours");
 		repaint();
 	}
+
+	public void doFinish() {
+		addMessageToUser("C'est prêt !");
+	}
+
 	//------------------------------------------------------METHOD DO----------------------------------------------------------------//
 	//--------------------------------------------------------OTHERS----------------------------------------------------------------//
 
@@ -810,11 +822,17 @@ public class DrinkFactoryMachine extends JFrame {
 		return selection;
 	}
 
-	public void doFinish() {
-		addMessageToUser("C'est prêt !");
+
+
+	private void defineDelayPoor(int size) {
+		if(size==0)
+			poorDelay = 2000;
+		if(size==1)
+			poorDelay = 2500;
+		if(size==2)
+			poorDelay = 3000;
+
 	}
-
-
 //---------------------------------------------------OTHERS----------------------------------------------------------------//
 
 	// TODO: 05/11/2020 ajout du retrait sachet pour que tea marche
