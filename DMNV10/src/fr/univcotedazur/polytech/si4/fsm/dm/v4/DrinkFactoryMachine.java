@@ -34,14 +34,23 @@ public class DrinkFactoryMachine extends JFrame {
 	private JLabel messagesToUser;
 	JProgressBar progressBar = new JProgressBar();
 	protected DefaultSMStatemachine theFSM; // Declaration de la stateMAchine
+
 	private int cagnote = 0;
 	private int coffePrice = 35;
 	private int expressoPrice = 50;
 	private int teaPrice = 40;
 	private int soupPrice = 75;
 	private int icedTeaPrice = 50;
+
+	private int stockCoffe = 10 ; // nombre de dosette de cafee
+	private int stockTea = 1 ; // nombre de sachet de the
+	private int stockExpresso = 0 ; // nombre de packet de grain pour lexpresso
+	private int stockIcedTea = 1 ; // nombre de sachet pour l iced tea
+	private int stockSoup = 10 ; // nombre de dose de soupe
+
 	long poorDelay;
 	long currentPoorDelay=0;
+
 	boolean poor;
 	boolean taken;
 	boolean cupAdded = false;
@@ -544,6 +553,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 
 		// initialisation de la stateMachine
+		enableButtonCauseOfStock();
 		taken = false;
 		poor = false;
 		theFSM = new DefaultSMStatemachine();
@@ -652,6 +662,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doCoffee() {
+		stockCoffe-=1;
 		milkButton.setEnabled(true);
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
@@ -665,6 +676,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doExpresso() {
+		stockExpresso-=1;
 		milkButton.setEnabled(true);
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
@@ -678,6 +690,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doTea() {
+		stockTea-=1;
 		milkButton.setEnabled(true);
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
@@ -692,6 +705,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 
 	public void doIcedTea() {
+		stockIcedTea-=1;
 		milkButton.setEnabled(false);
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
@@ -705,6 +719,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doSoup() {
+		stockSoup-=1;
 		milkButton.setEnabled(false);
 		croutonButton.setEnabled(true);
 		siropErableButton.setEnabled(false);
@@ -828,6 +843,7 @@ public class DrinkFactoryMachine extends JFrame {
 		sizeSlider.setValue(1);
 		reinitialiseSugarSlider();
 		activateButtons();
+		enableButtonCauseOfStock();
 		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
 		repaint();
 	}
@@ -1093,7 +1109,23 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 
-
+	public void enableButtonCauseOfStock(){
+		if(stockSoup<=0){
+			soupButton.setEnabled(false);
+		}
+		if(stockCoffe<=0){
+			coffeeButton.setEnabled(false);
+		}
+		if(stockExpresso<=0){
+			expressoButton.setEnabled(false);
+		}
+		if(stockIcedTea<=0){
+			icedTeaButton.setEnabled(false);
+		}
+		if(stockTea<=0){
+			teaButton.setEnabled(false);
+		}
+	}
 
 //---------------------------------------------------OTHERS----------------------------------------------------------------//
 
