@@ -1115,8 +1115,8 @@ public class DrinkFactoryMachine extends JFrame {
 	// TODO: 06/11/2020 nouvelle gestion de la progress bar
 	// TODO: 06/11/2020 faire les options
 	// TODO: 06/11/2020 gerer stock
-	// TODO: 06/11/2020 programme de fidelité
+	// TODO: 06/11/2020 programme de fidelité (creer la classe client avec un id et une liste de ces achats)
 	// TODO: 06/11/2020 ajout des sons et du popcorn
-	// TODO: 11/11/2020 affichage prompteur dans sur la machine 
+	// TODO: 11/11/2020 affichage prompteur dans sur la machine
 
 }
