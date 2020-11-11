@@ -1,6 +1,6 @@
 package fr.univcotedazur.polytech.si4.fsm.dm.v4;
 
-import dmnv9.defaultsm.IDefaultSMStatemachine.SCInterfaceOperationCallback;
+import dmnv10.defaultsm.IDefaultSMStatemachine.SCInterfaceOperationCallback;
 
 public class DrinkingFactoryCallBackInterfaceImplementation implements SCInterfaceOperationCallback {
 
@@ -14,6 +14,12 @@ public class DrinkingFactoryCallBackInterfaceImplementation implements SCInterfa
 	public boolean isHot() {
 		return theGui.isHot();
 	}
+
+	@Override
+	public boolean isCool() {
+		return theGui.isCool();
+	}
+
 	@Override
 	public boolean isPay() {
 		return theGui.isPay();

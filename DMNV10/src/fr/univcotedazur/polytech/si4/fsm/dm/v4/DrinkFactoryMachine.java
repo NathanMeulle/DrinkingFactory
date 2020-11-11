@@ -11,8 +11,8 @@ import javax.swing.event.AncestorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import dmnv9.TimerService;
-import dmnv9.defaultsm.DefaultSMStatemachine;
+import dmnv10.TimerService;
+import dmnv10.defaultsm.DefaultSMStatemachine;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -45,7 +45,6 @@ public class DrinkFactoryMachine extends JFrame {
 	boolean poor;
 	boolean taken;
 	boolean cupAdded = false;
-	Timer timerTaken;
 
 	JButton cancelButton;
 	JButton nfcBiiiipButton;
@@ -61,8 +60,13 @@ public class DrinkFactoryMachine extends JFrame {
 	JButton teaButton;
 	JButton soupButton;
 	JButton addCupButton;
+	JCheckBox milkButton;
+	JCheckBox croutonButton;
+	JCheckBox siropErableButton;
+	JCheckBox glaceVanilleButton;
 
 	JButton labelForPictures;
+	JLabel lblSugar;
 
 	private final int displayTime = 1;
 
@@ -157,6 +161,49 @@ public class DrinkFactoryMachine extends JFrame {
 		soupButton.setBounds(12, 145, 96, 25);
 		contentPane.add(soupButton);
 
+		icedTeaButton = new JButton("Iced Tea");
+		icedTeaButton.setForeground(Color.DARK_GRAY);
+		icedTeaButton.setBackground(Color.WHITE);
+		icedTeaButton.setBounds(12, 182, 96, 25);
+		contentPane.add(icedTeaButton);
+
+
+		JLabel optionLabel = new JLabel("<html>Options proposées :");
+		optionLabel.setForeground(Color.WHITE);
+		optionLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		optionLabel.setVerticalAlignment(SwingConstants.TOP);
+		optionLabel.setBackground(Color.WHITE);
+		optionLabel.setBounds(12, 300, 165, 175);
+		contentPane.add(optionLabel);
+
+		milkButton = new JCheckBox("Nuage de lait");
+		milkButton.setForeground(Color.WHITE);
+		milkButton.setBackground(Color.DARK_GRAY);
+		milkButton.setBounds(45, 330, 120, 25);
+		milkButton.setEnabled(false);
+		contentPane.add(milkButton);
+
+		siropErableButton = new JCheckBox("Sirop d'érable");
+		siropErableButton.setForeground(Color.WHITE);
+		siropErableButton.setBackground(Color.DARK_GRAY);
+		siropErableButton.setBounds(45, 367, 120, 25);
+		siropErableButton.setEnabled(false);
+		contentPane.add(siropErableButton);
+
+		glaceVanilleButton = new JCheckBox("Glace Vanille");
+		glaceVanilleButton.setForeground(Color.WHITE);
+		glaceVanilleButton.setBackground(Color.DARK_GRAY);
+		glaceVanilleButton.setBounds(45, 404, 120, 25);
+		glaceVanilleButton.setEnabled(false);
+		contentPane.add(glaceVanilleButton);
+
+		croutonButton = new JCheckBox("Croutons");
+		croutonButton.setForeground(Color.WHITE);
+		croutonButton.setBackground(Color.DARK_GRAY);
+		croutonButton.setBounds(45, 441, 120, 25);
+		croutonButton.setEnabled(false);
+		contentPane.add(croutonButton);
+
 
 		progressBar.setStringPainted(true);
 		progressBar.setValue(0);
@@ -200,25 +247,11 @@ public class DrinkFactoryMachine extends JFrame {
 		temperatureSlider.setMaximum(3);
 		temperatureSlider.setBounds(301, 188, 200, 54);
 
-		temperatureTable = new Hashtable<>();
-		temperatureTable.put(0, new JLabel("20°C"));
-		temperatureTable.put(1, new JLabel("35°C"));
-		temperatureTable.put(2, new JLabel("60°C"));
-		temperatureTable.put(3, new JLabel("85°C"));
-		for (JLabel l : temperatureTable.values()) {
-			l.setForeground(Color.WHITE);
-		}
-		temperatureSlider.setLabelTable(temperatureTable);
+		reinitialiseTemperatureSlider();
 
 		contentPane.add(temperatureSlider);
 
-		icedTeaButton = new JButton("Iced Tea");
-		icedTeaButton.setForeground(Color.DARK_GRAY);
-		icedTeaButton.setBackground(Color.WHITE);
-		icedTeaButton.setBounds(12, 182, 96, 25);
-		contentPane.add(icedTeaButton);
-
-		JLabel lblSugar = new JLabel("Sugar");
+		lblSugar = new JLabel("Sugar");
 		lblSugar.setForeground(Color.WHITE);
 		lblSugar.setBackground(Color.DARK_GRAY);
 		lblSugar.setHorizontalAlignment(SwingConstants.CENTER);
@@ -283,7 +316,7 @@ public class DrinkFactoryMachine extends JFrame {
 		addCupButton = new JButton("Add cup");
 		addCupButton.setForeground(Color.BLACK);
 		addCupButton.setBackground(Color.WHITE);
-		addCupButton.setBounds(45, 336, 96, 25);
+		addCupButton.setBounds(505, 336, 96, 25);
 		contentPane.add(addCupButton);
 
 		BufferedImage myPicture = null;
@@ -342,7 +375,6 @@ public class DrinkFactoryMachine extends JFrame {
 				soupPrice = 65;
 				icedTeaPrice = 40;
 				teaPrice = 30;
-				isPay();
 			}
 		});
 
@@ -473,6 +505,42 @@ public class DrinkFactoryMachine extends JFrame {
 				theFSM.raiseAnyButton();
 			}
 		});
+		milkButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//doMilk();
+				//theFSM.raiseMilkButton();
+				theFSM.raiseAnyButton();
+			}
+		});
+		siropErableButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//doSiropErable();
+				//theFSM.raiseSiropErable();
+				theFSM.raiseAnyButton();
+			}
+		});
+
+		glaceVanilleButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//doGlaceVanille();
+				//theFSM.raiseGlaceVanille();
+				theFSM.raiseAnyButton();
+
+			}
+		});
+
+		croutonButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//doCrouton();
+				//theFSM.raiseCrouton();
+				theFSM.raiseAnyButton();
+
+			}
+		});
 
 
 		// initialisation de la stateMachine
@@ -494,14 +562,20 @@ public class DrinkFactoryMachine extends JFrame {
 
 	}
 	//------------------------------------------------------METHOD IS----------------------------------------------------------------//
-	public boolean isPay() {//TODO rajouter les boissons manquantes
-		if (selection.equals("Coffee") && (coffePrice <= cagnote)) {
+	public boolean isPay() {
+		if (selection.equals("Coffee") && (coffePrice + (milkButton.isSelected()?10:0) + (siropErableButton.isSelected()?10:0) + (glaceVanilleButton.isSelected()?40:0) <= cagnote)) {
 			return true;
 		}
-		if (selection.equals("Tea") && (teaPrice <= cagnote)) {
+		if (selection.equals("Tea") && (teaPrice + (milkButton.isSelected()?10:0) + (siropErableButton.isSelected()?10:0) <= cagnote)) {
 			return true;
 		}
-		if (selection.equals("Expresso") && (expressoPrice <= cagnote)) {
+		if (selection.equals("Expresso") && (expressoPrice + (milkButton.isSelected()?10:0) + (siropErableButton.isSelected()?10:0) + (glaceVanilleButton.isSelected()?40:0) <= cagnote)) {
+			return true;
+		}
+		if (selection.equals("Soup") && (soupPrice + (croutonButton.isSelected()?30:0) <= cagnote)) {
+			return true;
+		}
+		if (selection.equals("IcedTea") && (icedTeaPrice + (milkButton.isSelected()?10:0) + (siropErableButton.isSelected()?10:0) + sizeSlider.getValue()*25 <= cagnote)) {
 			return true;
 		}
 		return false;
@@ -510,6 +584,14 @@ public class DrinkFactoryMachine extends JFrame {
 	public boolean isHot() {
 		if (currentTemperature >= Integer.parseInt(temperatureTable.get(temperatureSlider.getValue()).getText().substring(0, 2))) {
 			System.out.println("isHot");
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isCool() {
+		if (currentTemperature <= Integer.parseInt(temperatureTable.get(temperatureSlider.getValue()).getText().substring(0, 2))) {
+			System.out.println("isCool");
 			return true;
 		}
 		return false;
@@ -570,6 +652,12 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doCoffee() {
+		milkButton.setEnabled(true);
+		croutonButton.setEnabled(false);
+		siropErableButton.setEnabled(true);
+		glaceVanilleButton.setEnabled(true);
+		reinitialiseSugarSlider();
+		reinitialiseTemperatureSlider();
 		selection = "Coffee";
 		System.out.println("Coffee selected");
 		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
@@ -577,13 +665,39 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doExpresso() {
+		milkButton.setEnabled(true);
+		croutonButton.setEnabled(false);
+		siropErableButton.setEnabled(true);
+		glaceVanilleButton.setEnabled(true);
+		reinitialiseSugarSlider();
+		reinitialiseTemperatureSlider();
 		selection = "Expresso";
 		System.out.println("Expresso selected");
 		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
 		repaint();
 	}
 
+	public void doTea() {
+		milkButton.setEnabled(true);
+		croutonButton.setEnabled(false);
+		siropErableButton.setEnabled(true);
+		glaceVanilleButton.setEnabled(false);
+		reinitialiseSugarSlider();
+		reinitialiseTemperatureSlider();
+		selection = "Tea";
+		System.out.println("Tea selected");
+		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
+		repaint();
+	}
+
+
 	public void doIcedTea() {
+		milkButton.setEnabled(false);
+		croutonButton.setEnabled(false);
+		siropErableButton.setEnabled(true);
+		glaceVanilleButton.setEnabled(false);
+		reinitialiseSugarSlider();
+		changeTemperatureSliderForIcedTea();
 		selection = "Iced Tea";
 		System.out.println("Iced Tea selected");
 		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
@@ -591,6 +705,12 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doSoup() {
+		milkButton.setEnabled(false);
+		croutonButton.setEnabled(true);
+		siropErableButton.setEnabled(false);
+		glaceVanilleButton.setEnabled(false);
+		createSpicesSlider();
+		reinitialiseTemperatureSlider();
 		selection = "Soup";
 		System.out.println("Soup selected");
 		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
@@ -598,22 +718,24 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doSugar() {
-		addMessageToUser(String.format("Ajout de %d sucre", sugarSlider.getValue()) + (sugarSlider.getValue()>1?"s":""));
+		addMessageToUser(String.format("Ajout de %d sucre", sugarSlider.getValue()) + (sugarSlider.getValue() > 1 ? "s" : ""));
 		System.out.println("do sugar : " + sugarSlider.getValue());
+		progressBarValue += 5;
+		progressBar.setValue(progressBarValue);
+
+	}
+
+	public void doSpices() {
+		addMessageToUser(String.format("Ajout de %d doses d'épices", sugarSlider.getValue()) + (sugarSlider.getValue() > 1 ? "s" : ""));
+		System.out.println("do spices : " + sugarSlider.getValue());
 		progressBarValue += 5;
 		progressBar.setValue(progressBarValue);
 	}
 
+
 	public void doSelect() {
 		progressBarValue = isPay() ? 40 : 20;
 		progressBar.setValue(progressBarValue);
-	}
-
-	public void doTea() {
-		selection = "Tea";
-		System.out.println("Tea selected");
-		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
-		repaint();
 	}
 
 	public void doPay() {
@@ -646,6 +768,10 @@ public class DrinkFactoryMachine extends JFrame {
 		repaint();
 		Timer timer = new Timer("Timer");
 		timer.scheduleAtFixedRate(repeatedTask, 0, delay / 30);
+	}
+
+	public void doCool() {
+		//TODO
 	}
 
 
@@ -700,6 +826,7 @@ public class DrinkFactoryMachine extends JFrame {
 		temperatureSlider.setValue(2);
 		sugarSlider.setValue(1);
 		sizeSlider.setValue(1);
+		reinitialiseSugarSlider();
 		activateButtons();
 		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
 		repaint();
@@ -708,7 +835,6 @@ public class DrinkFactoryMachine extends JFrame {
 	public void doDosette() {
 		System.out.println("dosette");
 		addMessageToUser("Ajout dosette");
-
 	}
 
 	public void doGrain() {
@@ -728,6 +854,26 @@ public class DrinkFactoryMachine extends JFrame {
 	public void doSachet() {
 		System.out.println("sachet");
 		addMessageToUser("Préparation du thé");
+		TimerTask task = new TimerTask() {
+			public void run() {
+				addMessageToUser("Immersion du thé");
+			}
+		};
+		Timer timer = new Timer("Timer");
+		long delay = 1000L * displayTime;
+		timer.schedule(task, delay);
+		repaint();
+	}
+
+	public void doSoupDose() {
+		System.out.println("dosette");
+		addMessageToUser("Ajout dosette");
+	}
+
+
+	public void doIcedTeaSachet() {
+		System.out.println("IcedTea sachet");
+		addMessageToUser("Préparation du thé glacé");
 		TimerTask task = new TimerTask() {
 			public void run() {
 				addMessageToUser("Immersion du thé");
@@ -814,10 +960,21 @@ public class DrinkFactoryMachine extends JFrame {
 		addMessageToUser("C'est prêt !");
 		labelForPictures.setEnabled(true);
 	}
-	
+
 	public void doWash() {
 		setMessageToUser("Washing in progress");
 		System.out.println("Washing");
+		while(progressBarValue>=0){
+			progressBarValue--;
+			progressBar.setValue(progressBarValue);
+			repaint();
+			try {
+				//100 * 50 milliseconds = 5 seconds
+				Thread.sleep((long) 50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	//------------------------------------------------------METHOD DO----------------------------------------------------------------//
 	//--------------------------------------------------------OTHERS----------------------------------------------------------------//
@@ -845,6 +1002,11 @@ public class DrinkFactoryMachine extends JFrame {
 		sugarSlider.setEnabled(false);
 		sizeSlider.setEnabled(false);
 		labelForPictures.setEnabled(false);
+		milkButton.setEnabled(false);
+		croutonButton.setEnabled(false);
+		System.out.println("tatatatat");
+		siropErableButton.setEnabled(false);
+		glaceVanilleButton.setEnabled(false);
 	}
 
 	private void activateButtons() {
@@ -865,6 +1027,10 @@ public class DrinkFactoryMachine extends JFrame {
 		temperatureSlider.setEnabled(true);
 		sugarSlider.setEnabled(true);
 		sizeSlider.setEnabled(true);
+		milkButton.setEnabled(true);
+		croutonButton.setEnabled(true);
+		siropErableButton.setEnabled(true);
+		glaceVanilleButton.setEnabled(true);
 
 	}
 
@@ -887,13 +1053,54 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 
+	public void createSpicesSlider(){
+		lblSugar.setText("Spices");
+	}
+
+	public void reinitialiseSugarSlider(){
+		lblSugar.setText("Sugar");
+	}
+
+	public void changeTemperatureSliderForIcedTea(){
+		temperatureSlider.setValue(3);
+		sizeSlider.setMaximum(1);
+		sizeSlider.setValue(0);
+		temperatureTable = new Hashtable<>();
+		temperatureTable.put(0, new JLabel("02°C"));
+		temperatureTable.put(1, new JLabel("05°C"));
+		temperatureTable.put(2, new JLabel("07°C"));
+		temperatureTable.put(3, new JLabel("12°C"));
+		for (JLabel l : temperatureTable.values()) {
+			l.setForeground(Color.WHITE);
+		}
+		temperatureSlider.setLabelTable(temperatureTable);
+
+	}
+
+	public void reinitialiseTemperatureSlider(){
+		temperatureSlider.setValue(2);
+		sizeSlider.setMaximum(2);
+		sizeSlider.setValue(1);
+		temperatureTable = new Hashtable<>();
+		temperatureTable.put(0, new JLabel("20°C"));
+		temperatureTable.put(1, new JLabel("35°C"));
+		temperatureTable.put(2, new JLabel("60°C"));
+		temperatureTable.put(3, new JLabel("85°C"));
+		for (JLabel l : temperatureTable.values()) {
+			l.setForeground(Color.WHITE);
+		}
+		temperatureSlider.setLabelTable(temperatureTable);
+	}
+
+
+
+
 //---------------------------------------------------OTHERS----------------------------------------------------------------//
 
 	// TODO: 06/11/2020 nouvelle gestion de la progress bar
 	// TODO: 06/11/2020 faire les options
 	// TODO: 06/11/2020 gerer stock
-	// TODO: 06/11/2020 programme de fideliter
-	// TODO: 06/11/2020 (optionnel) faire la soupe et l'iced tea
+	// TODO: 06/11/2020 programme de fidelité
 	// TODO: 06/11/2020 ajout des sons et du popcorn
 
 }
