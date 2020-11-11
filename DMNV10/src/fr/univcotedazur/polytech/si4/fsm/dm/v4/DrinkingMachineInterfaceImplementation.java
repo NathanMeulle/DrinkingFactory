@@ -60,16 +60,6 @@ class DrinkingMachineInterfaceImplementation implements SCInterfaceListener {
 	}
 
 	@Override
-	public void onDoSelectRaised() {
-		theGui.doSelect();
-	}
-
-	@Override
-	public void onDoPayRaised() {
-		theGui.doPay();
-	}
-
-	@Override
 	public void onDoCancelRaised() {
 		theGui.doCancel();
 

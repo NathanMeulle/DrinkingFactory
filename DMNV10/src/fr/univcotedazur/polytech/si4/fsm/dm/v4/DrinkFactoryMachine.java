@@ -6,22 +6,16 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import dmnv10.TimerService;
 import dmnv10.defaultsm.DefaultSMStatemachine;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Hashtable;
+import java.util.*;
 import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class DrinkFactoryMachine extends JFrame {
@@ -41,15 +35,16 @@ public class DrinkFactoryMachine extends JFrame {
 	private int teaPrice = 40;
 	private int soupPrice = 75;
 	private int icedTeaPrice = 50;
+	private int montant;
 
-	private int stockCoffe = 10 ; // nombre de dosette de cafee
-	private int stockTea = 1 ; // nombre de sachet de the
-	private int stockExpresso = 0 ; // nombre de packet de grain pour lexpresso
-	private int stockIcedTea = 1 ; // nombre de sachet pour l iced tea
-	private int stockSoup = 10 ; // nombre de dose de soupe
+	private int stockCoffe = 10; // nombre de dosette de cafee
+	private int stockTea = 2; // nombre de sachet de the
+	private int stockExpresso = 2; // nombre de packet de grain pour lexpresso
+	private int stockIcedTea = 1; // nombre de sachet pour l iced tea
+	private int stockSoup = 10; // nombre de dose de soupe
 
 	long poorDelay;
-	long currentPoorDelay=0;
+	long currentPoorDelay = 0;
 
 	boolean poor;
 	boolean taken;
@@ -281,26 +276,26 @@ public class DrinkFactoryMachine extends JFrame {
 		lblTemperature.setBounds(363, 173, 96, 15);
 		contentPane.add(lblTemperature);
 
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.DARK_GRAY);
-		lblCoins.setLabelFor(panel);
-		panel.setBounds(538, 25, 96, 97);
-		contentPane.add(panel);
+		JPanel moneyPanel = new JPanel();
+		moneyPanel.setBackground(Color.DARK_GRAY);
+		lblCoins.setLabelFor(moneyPanel);
+		moneyPanel.setBounds(538, 25, 96, 97);
+		contentPane.add(moneyPanel);
 
 		money50centsButton = new JButton("0.50 €");
 		money50centsButton.setForeground(Color.BLACK);
 		money50centsButton.setBackground(Color.WHITE);
-		panel.add(money50centsButton);
+		moneyPanel.add(money50centsButton);
 
 		money25centsButton = new JButton("0.25 €");
 		money25centsButton.setForeground(Color.BLACK);
 		money25centsButton.setBackground(Color.WHITE);
-		panel.add(money25centsButton);
+		moneyPanel.add(money25centsButton);
 
 		money10centsButton = new JButton("0.10 €");
 		money10centsButton.setForeground(Color.BLACK);
 		money10centsButton.setBackground(Color.WHITE);
-		panel.add(money10centsButton);
+		moneyPanel.add(money10centsButton);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.DARK_GRAY);
@@ -348,199 +343,124 @@ public class DrinkFactoryMachine extends JFrame {
 		cancelButton.setBackground(Color.WHITE);
 		panel_2.add(cancelButton);
 //------------------------------------------------------LISTENERS----------------------------------------------------------------//
-		labelForPictures.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				BufferedImage myPicture = null;
-				try {
-					myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/vide1.jpg"));
-				} catch (IOException ee) {
-					ee.printStackTrace();
-				}
-				labelForPictures.setIcon(new ImageIcon(myPicture));
-				expressoPrice = 50;
-				coffePrice = 35;
-				soupPrice = 75;
-				icedTeaPrice = 50;
-				teaPrice = 40;
-				cupAdded=false;
-				taken=true;
+		labelForPictures.addActionListener(e -> {
+			BufferedImage myPicture1 = null;
+			try {
+				myPicture1 = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/vide1.jpg"));
+			} catch (IOException ee) {
+				ee.printStackTrace();
 			}
+			labelForPictures.setIcon(new ImageIcon(myPicture1));
+			expressoPrice = 50;
+			coffePrice = 35;
+			soupPrice = 75;
+			icedTeaPrice = 50;
+			teaPrice = 40;
+			cupAdded = false;
+			taken = true;
 		});
-		addCupButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				BufferedImage myPicture = null;
-				try {
-					myPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/ownCup1.jpg"));
-				} catch (IOException ee) {
-					ee.printStackTrace();
-				}
-				labelForPictures.setIcon(new ImageIcon(myPicture));
-				cupAdded=true;
-				expressoPrice = 40;
-				coffePrice = 25;
-				soupPrice = 65;
-				icedTeaPrice = 40;
-				teaPrice = 30;
+		addCupButton.addActionListener(e -> {
+			BufferedImage myPicture12 = null;
+			try {
+				myPicture12 = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/ownCup1.jpg"));
+			} catch (IOException ee) {
+				ee.printStackTrace();
 			}
+			labelForPictures.setIcon(new ImageIcon(myPicture12));
+			cupAdded = true;
+			expressoPrice = 40;
+			coffePrice = 25;
+			soupPrice = 65;
+			icedTeaPrice = 40;
+			teaPrice = 30;
 		});
 
-		cancelButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doCancel();
-				theFSM.raiseCancel();
-			}
+		cancelButton.addActionListener(e -> {
+			doCancel();
+			theFSM.raiseCancel();
 		});
 
-		coffeeButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doCoffee();
-				theFSM.raiseCoffee();
-				theFSM.raiseAnyButton();
-			}
+		coffeeButton.addActionListener(e -> {
+			doCoffee();
+			theFSM.raiseCoffee();
+			theFSM.raiseAnyButton();
 		});
 
-		expressoButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doExpresso();
-				theFSM.raiseExpresso();
-				theFSM.raiseAnyButton();
+		expressoButton.addActionListener(e -> {
+			doExpresso();
+			theFSM.raiseExpresso();
+			theFSM.raiseAnyButton();
 
-			}
 		});
-		teaButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doTea();
-				theFSM.raiseTea();
-				theFSM.raiseAnyButton();
+		teaButton.addActionListener(e -> {
+			doTea();
+			theFSM.raiseTea();
+			theFSM.raiseAnyButton();
 
-			}
 		});
-		soupButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doSoup();
-				theFSM.raiseSoup();
-				theFSM.raiseAnyButton();
+		soupButton.addActionListener(e -> {
+			doSoup();
+			theFSM.raiseSoup();
+			theFSM.raiseAnyButton();
 
-			}
 		});
-		icedTeaButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doIcedTea();
-				theFSM.raiseIcedTea();
-				theFSM.raiseAnyButton();
-			}
+		icedTeaButton.addActionListener(e -> {
+			doIcedTea();
+			theFSM.raiseIcedTea();
+			theFSM.raiseAnyButton();
 		});
-		money50centsButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doCinqanteCents();
-				theFSM.raiseCinquanteCents();
-				theFSM.raiseAnyButton();
+		money50centsButton.addActionListener(e -> {
+			doCinqanteCents();
+			theFSM.raiseCinquanteCents();
+			theFSM.raiseAnyButton();
 
-			}
 		});
 
-		money25centsButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doVingtCinqCents();
-				theFSM.raiseVingtCinqCents();
-				theFSM.raiseAnyButton();
+		money25centsButton.addActionListener(e -> {
+			doVingtCinqCents();
+			theFSM.raiseVingtCinqCents();
+			theFSM.raiseAnyButton();
 
-			}
 		});
 
-		money10centsButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doDixCents();
-				theFSM.raiseDixCents();
-				theFSM.raiseAnyButton();
+		money10centsButton.addActionListener(e -> {
+			doDixCents();
+			theFSM.raiseDixCents();
+			theFSM.raiseAnyButton();
 
-			}
 		});
 
-		nfcBiiiipButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				switch (selection) {
-					case "Coffee":
-						cagnote += coffePrice;
-						break;
-					case "Expresso":
-						cagnote += expressoPrice;
-						break;
-					case "Tea":
-						cagnote += teaPrice;
-						break;
-					case "Soup":
-						cagnote += soupPrice;
-						break;
-					case "Iced Tea":
-						cagnote += icedTeaPrice;
-						break;
-				}
-				theFSM.raiseBip();
-				setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
-				repaint();
-				theFSM.raiseAnyButton();
+		nfcBiiiipButton.addActionListener(e -> {
+			switch (selection) {
+				case "Coffee":
+					cagnote += coffePrice;
+					break;
+				case "Expresso":
+					cagnote += expressoPrice;
+					break;
+				case "Tea":
+					cagnote += teaPrice;
+					break;
+				case "Soup":
+					cagnote += soupPrice;
+					break;
+				case "Iced Tea":
+					cagnote += icedTeaPrice;
+					break;
+			}
+			theFSM.raiseBip();
+			setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
+			repaint();
+			theFSM.raiseAnyButton();
 
-			}
 		});
-		temperatureSlider.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				theFSM.raiseAnyButton();
-			}
-		});
-		sugarSlider.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				theFSM.raiseAnyButton();
-			}
-		});
-		sizeSlider.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				theFSM.raiseAnyButton();
-			}
-		});
-		milkButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				theFSM.raiseAnyButton();
-			}
-		});
-		siropErableButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				theFSM.raiseAnyButton();
-			}
-		});
-
-		glaceVanilleButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				theFSM.raiseAnyButton();
-
-			}
-		});
-
-		croutonButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				theFSM.raiseAnyButton();
-
-			}
-		});
+		temperatureSlider.addChangeListener(e -> theFSM.raiseAnyButton());
+		sugarSlider.addChangeListener(e -> theFSM.raiseAnyButton());
+		sizeSlider.addChangeListener(e -> theFSM.raiseAnyButton());
+		milkButton.addActionListener(e -> theFSM.raiseAnyButton());
+		siropErableButton.addActionListener(e -> theFSM.raiseAnyButton());
+		glaceVanilleButton.addActionListener(e -> theFSM.raiseAnyButton());
+		croutonButton.addActionListener(e -> theFSM.raiseAnyButton());
 
 
 		// initialisation de la stateMachine
@@ -562,24 +482,27 @@ public class DrinkFactoryMachine extends JFrame {
 		);
 
 	}
+
 	//------------------------------------------------------METHOD IS----------------------------------------------------------------//
 	public boolean isPay() {
-		if (selection.equals("Coffee") && (coffePrice + (milkButton.isSelected()?10:0) + (siropErableButton.isSelected()?10:0) + (glaceVanilleButton.isSelected()?40:0) <= cagnote)) {
-			return true;
+		switch (selection) {
+			case "Coffee":
+				montant = coffePrice + (milkButton.isSelected() ? 10 : 0) + (siropErableButton.isSelected() ? 10 : 0) + (glaceVanilleButton.isSelected() ? 40 : 0);
+				break;
+			case "Tea":
+				montant = teaPrice + (milkButton.isSelected() ? 10 : 0) + (siropErableButton.isSelected() ? 10 : 0);
+				break;
+			case "Expresso":
+				montant = expressoPrice + (milkButton.isSelected() ? 10 : 0) + (siropErableButton.isSelected() ? 10 : 0) + (glaceVanilleButton.isSelected() ? 40 : 0);
+				break;
+			case "Soup":
+				montant = soupPrice + (croutonButton.isSelected() ? 30 : 0);
+				break;
+			case "IcedTea":
+				montant = icedTeaPrice + (milkButton.isSelected() ? 10 : 0) + (siropErableButton.isSelected() ? 10 : 0) + sizeSlider.getValue() * 25;
+				break;
 		}
-		if (selection.equals("Tea") && (teaPrice + (milkButton.isSelected()?10:0) + (siropErableButton.isSelected()?10:0) <= cagnote)) {
-			return true;
-		}
-		if (selection.equals("Expresso") && (expressoPrice + (milkButton.isSelected()?10:0) + (siropErableButton.isSelected()?10:0) + (glaceVanilleButton.isSelected()?40:0) <= cagnote)) {
-			return true;
-		}
-		if (selection.equals("Soup") && (soupPrice + (croutonButton.isSelected()?30:0) <= cagnote)) {
-			return true;
-		}
-		if (selection.equals("IcedTea") && (icedTeaPrice + (milkButton.isSelected()?10:0) + (siropErableButton.isSelected()?10:0) + sizeSlider.getValue()*25 <= cagnote)) {
-			return true;
-		}
-		return false;
+		return montant <= cagnote;
 	}
 
 	public boolean isHot() {
@@ -607,17 +530,15 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public boolean isMilk() {
-		System.out.println("milk : " + milkButton.isSelected());
 		return milkButton.isSelected();
 	}
 
 	public boolean isGlace() {
-		System.out.println("glace : "+glaceVanilleButton.isSelected());
 		return glaceVanilleButton.isSelected();
 	}
 
 	public boolean isPoor() {
-		if (currentPoorDelay>=poorDelay){
+		if (currentPoorDelay >= poorDelay) {
 			System.out.println("isPoor");
 			return true;
 		}
@@ -628,6 +549,7 @@ public class DrinkFactoryMachine extends JFrame {
 	public boolean isTaken() {
 		return taken;
 	}
+
 	//------------------------------------------------------METHOD IS----------------------------------------------------------------//
 	//------------------------------------------------------METHOD DO----------------------------------------------------------------//
 	public void doCancel() {
@@ -717,7 +639,7 @@ public class DrinkFactoryMachine extends JFrame {
 		glaceVanilleButton.setEnabled(false);
 		reinitialiseSugarSlider();
 		changeTemperatureSliderForIcedTea();
-		selection = "Iced Tea";
+		selection = "IcedTea";
 		System.out.println("Iced Tea selected");
 		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
 		repaint();
@@ -778,6 +700,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doCool() {
+		System.out.println("Cooling");
 		//TODO
 	}
 
@@ -790,7 +713,7 @@ public class DrinkFactoryMachine extends JFrame {
 			setMessageToUser("Transaction effectuée, récupérez votre monnaie <br> Rendu : " + rendu / 100.0 + "€");
 		else setMessageToUser("Transaction effectuée");
 		cagnote = 0;
-		int size =sizeSlider.getValue();
+		int size = sizeSlider.getValue();
 		System.out.println("size = " + sizeSlider.getValue());
 		defineDelayPoor(size);
 		System.out.println("poor delay = " + poorDelay);
@@ -799,15 +722,15 @@ public class DrinkFactoryMachine extends JFrame {
 	private int doRendu() {
 		switch (selection) {
 			case "Coffee":
-				return cagnote - (coffePrice + (milkButton.isSelected()?10:0) + (siropErableButton.isSelected()?10:0) + (glaceVanilleButton.isSelected()?40:0));
+				return cagnote - montant;
 			case "Expresso":
-				return cagnote - (expressoPrice + (milkButton.isSelected()?10:0) + (siropErableButton.isSelected()?10:0) + (glaceVanilleButton.isSelected()?40:0));
+				return cagnote - montant;
 			case "Tea":
-				return cagnote - (teaPrice + (milkButton.isSelected()?10:0) + (siropErableButton.isSelected()?10:0));
+				return cagnote - montant;
 			case "Soup":
-				return cagnote - (soupPrice + (croutonButton.isSelected()?30:0)) ;
+				return cagnote - montant;
 			case "Iced Tea":
-				return cagnote - (icedTeaPrice + (milkButton.isSelected()?10:0) + (siropErableButton.isSelected()?10:0) + sizeSlider.getValue()*25);
+				return cagnote - montant;
 		}
 		return cagnote;
 	}
@@ -827,7 +750,7 @@ public class DrinkFactoryMachine extends JFrame {
 		cagnote = 0;
 		selection = "";
 		currentTemperature = 15;
-		currentPoorDelay=0;
+		currentPoorDelay = 0;
 		taken = false;
 		poor = false;
 		temperatureSlider.setValue(2);
@@ -841,13 +764,13 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doDosette() {
-		stockCoffe-=1;
+		stockCoffe -= 1;
 		System.out.println("dosette");
 		addMessageToUser("Ajout dosette");
 	}
 
 	public void doGrain() {
-		stockExpresso-=1;
+		stockExpresso -= 1;
 		System.out.println("grain");
 		addMessageToUser("Broyage des grains");
 		TimerTask task = new TimerTask() {
@@ -862,7 +785,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doSachet() {
-		stockTea-=1;
+		stockTea -= 1;
 		System.out.println("sachet");
 		addMessageToUser("Préparation du thé");
 		TimerTask task = new TimerTask() {
@@ -877,14 +800,14 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doSoupDose() {
-		stockSoup-=1;
+		stockSoup -= 1;
 		System.out.println("dosette");
 		addMessageToUser("Ajout dosette");
 	}
 
 
 	public void doIcedTeaSachet() {
-		stockIcedTea-=1;
+		stockIcedTea -= 1;
 		System.out.println("IcedTea sachet");
 		addMessageToUser("Préparation du thé glacé");
 		TimerTask task = new TimerTask() {
@@ -899,7 +822,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doGobelet() {
-		if(!cupAdded){
+		if (!cupAdded) {
 			System.out.println("gobelet");
 			addMessageToUser("Positionnement du gobelet");
 			BufferedImage myPicture = null;
@@ -909,10 +832,11 @@ public class DrinkFactoryMachine extends JFrame {
 				ee.printStackTrace();
 			}
 			labelForPictures.setIcon(new ImageIcon(myPicture));
-			taken=false;
+			taken = false;
 		}
 
 	}
+
 	public void doMilk() {
 		System.out.println("milk");
 		addMessageToUser("Ajout lait");
@@ -929,14 +853,17 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doCrouton() {
-		System.out.println("croutons");
-		addMessageToUser("Ajout croutons");
+		//TODO controle à mettre dans la FSM... en attendant :
+		if(croutonButton.isSelected()) {
+			System.out.println("croutons");
+			addMessageToUser("Ajout croutons");
+		}
 	}
 
 	public void doPoor() {
 		BufferedImage pooringPicture = null;
 		try {
-			if(!cupAdded)
+			if (!cupAdded)
 				pooringPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/pooring1.jpg"));
 			else
 				pooringPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/pooringOwnCup1.jpg"));
@@ -945,11 +872,11 @@ public class DrinkFactoryMachine extends JFrame {
 		}
 		TimerTask repeatedTask = new TimerTask() {
 			public void run() {
-				currentPoorDelay +=poorDelay / 20.0;
+				currentPoorDelay += poorDelay / 20.0;
 				if (isPoor()) {
 					BufferedImage finishPicture = null;
 					try {
-						if(!cupAdded)
+						if (!cupAdded)
 							finishPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/gobelet1.jpg"));
 						else
 							finishPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/ownCup1.jpg"));
@@ -958,20 +885,19 @@ public class DrinkFactoryMachine extends JFrame {
 					}
 					labelForPictures.setIcon(new ImageIcon(finishPicture));
 					System.out.println("fin de versage");
-					addMessageToUser("versage terminé");
+					setMessageToUser("Versage terminé");
 					repaint();
 					cancel();
 				}
 			}
 		};
 		System.out.println("début versage");
-		setMessageToUser("Début du versage de la boisson");
+		addMessageToUser("Début du versage de la boisson");
 		repaint();
 		Timer timer = new Timer("Timer");
 		timer.scheduleAtFixedRate(repeatedTask, 0, poorDelay / 20);
 		labelForPictures.setIcon(new ImageIcon(pooringPicture));
 	}
-
 
 
 	public void doRetake() {
@@ -980,7 +906,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 	public void doInfuse() {
 		System.out.println("infusion");
-		setMessageToUser("infusion en cours");
+		addMessageToUser("infusion en cours");
 		repaint();
 	}
 
@@ -992,17 +918,6 @@ public class DrinkFactoryMachine extends JFrame {
 	public void doWash() {
 		setMessageToUser("Washing in progress");
 		System.out.println("Washing");
-		while(progressBarValue>=0){
-			progressBarValue--;
-			progressBar.setValue(progressBarValue);
-			repaint();
-			try {
-				//100 * 50 milliseconds = 5 seconds
-				Thread.sleep((long) 50);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 	//------------------------------------------------------METHOD DO----------------------------------------------------------------//
 	//--------------------------------------------------------OTHERS----------------------------------------------------------------//
@@ -1011,6 +926,10 @@ public class DrinkFactoryMachine extends JFrame {
 	public String cagnote() {
 		return cagnote / 100.0 + "€";
 	}
+
+	/**
+	 * désactive les boutons lors de la préparation
+	 */
 	private void disableButtons() {
 		cancelButton.setEnabled(false);
 		nfcBiiiipButton.setEnabled(false);
@@ -1036,6 +955,9 @@ public class DrinkFactoryMachine extends JFrame {
 		glaceVanilleButton.setEnabled(false);
 	}
 
+	/**
+	 * réactive les boutons après la préparation
+	 */
 	private void activateButtons() {
 		cancelButton.setEnabled(true);
 		nfcBiiiipButton.setEnabled(true);
@@ -1054,17 +976,15 @@ public class DrinkFactoryMachine extends JFrame {
 		temperatureSlider.setEnabled(true);
 		sugarSlider.setEnabled(true);
 		sizeSlider.setEnabled(true);
-		milkButton.setEnabled(true);
-		croutonButton.setEnabled(true);
-		siropErableButton.setEnabled(true);
-		glaceVanilleButton.setEnabled(true);
+		milkButton.setEnabled(false);
+		croutonButton.setEnabled(false);
+		siropErableButton.setEnabled(false);
+		glaceVanilleButton.setEnabled(false);
 		milkButton.setSelected(false);
 		croutonButton.setSelected(false);
 		siropErableButton.setSelected(false);
 		glaceVanilleButton.setSelected(false);
-
 	}
-
 
 
 	public String getSelection() {
@@ -1072,27 +992,25 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 
-
 	private void defineDelayPoor(int size) {
-		if(size==0)
+		if (size == 0)
 			poorDelay = 2000;
-		if(size==1)
+		if (size == 1)
 			poorDelay = 2500;
-		if(size==2)
+		if (size == 2)
 			poorDelay = 3000;
-
 	}
 
 
-	public void createSpicesSlider(){
+	public void createSpicesSlider() {
 		lblSugar.setText("Spices");
 	}
 
-	public void reinitialiseSugarSlider(){
+	public void reinitialiseSugarSlider() {
 		lblSugar.setText("Sugar");
 	}
 
-	public void changeTemperatureSliderForIcedTea(){
+	public void changeTemperatureSliderForIcedTea() {
 		temperatureSlider.setValue(3);
 		sizeSlider.setMaximum(1);
 		sizeSlider.setValue(0);
@@ -1108,7 +1026,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 	}
 
-	public void reinitialiseTemperatureSlider(){
+	public void reinitialiseTemperatureSlider() {
 		temperatureSlider.setValue(2);
 		sizeSlider.setMaximum(2);
 		sizeSlider.setValue(1);
@@ -1124,31 +1042,32 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 
-	public void enableButtonCauseOfStock(){
-		if(stockSoup<=0){
+	public void enableButtonCauseOfStock() {
+		if (stockSoup <= 0) {
 			soupButton.setEnabled(false);
 		}
-		if(stockCoffe<=0){
+		if (stockCoffe <= 0) {
 			coffeeButton.setEnabled(false);
 		}
-		if(stockExpresso<=0){
+		if (stockExpresso <= 0) {
 			expressoButton.setEnabled(false);
 		}
-		if(stockIcedTea<=0){
+		if (stockIcedTea <= 0) {
 			icedTeaButton.setEnabled(false);
 		}
-		if(stockTea<=0){
+		if (stockTea <= 0) {
 			teaButton.setEnabled(false);
 		}
 	}
 
 //---------------------------------------------------OTHERS----------------------------------------------------------------//
 
-	// TODO: 06/11/2020 nouvelle gestion de la progress bar
-	// TODO: 06/11/2020 faire les options
+	// TODO: 06/11/2020 Corriger Soup et Iced Tea Bugs
 	// TODO: 06/11/2020 gerer stock
 	// TODO: 06/11/2020 programme de fidelité
-	// TODO: 06/11/2020 ajout des sons et du popcorn
+	//Optionnel
+	// TODO: 06/11/2020 nouvelle gestion de la progress bar
 	// TODO: 11/11/2020 affichage prompteur dans sur la machine
+	// TODO: 06/11/2020 ajout des sons et du popcorn
 
 }

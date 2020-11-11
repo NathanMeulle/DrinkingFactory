@@ -472,42 +472,6 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 			}
 		}
 		
-		private boolean doSelect;
-		
-		
-		public boolean isRaisedDoSelect() {
-			synchronized(DefaultSMStatemachine.this) {
-				return doSelect;
-			}
-		}
-		
-		protected void raiseDoSelect() {
-			synchronized(DefaultSMStatemachine.this) {
-				doSelect = true;
-				for (SCInterfaceListener listener : listeners) {
-					listener.onDoSelectRaised();
-				}
-			}
-		}
-		
-		private boolean doPay;
-		
-		
-		public boolean isRaisedDoPay() {
-			synchronized(DefaultSMStatemachine.this) {
-				return doPay;
-			}
-		}
-		
-		protected void raiseDoPay() {
-			synchronized(DefaultSMStatemachine.this) {
-				doPay = true;
-				for (SCInterfaceListener listener : listeners) {
-					listener.onDoPayRaised();
-				}
-			}
-		}
-		
 		private boolean doCancel;
 		
 		
@@ -831,8 +795,6 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		doSpices = false;
 		doMilk = false;
 		doGlace = false;
-		doSelect = false;
-		doPay = false;
 		doCancel = false;
 		doReceipt = false;
 		doPoor = false;
@@ -1302,14 +1264,6 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		return sCInterface.isRaisedDoGlace();
 	}
 	
-	public synchronized boolean isRaisedDoSelect() {
-		return sCInterface.isRaisedDoSelect();
-	}
-	
-	public synchronized boolean isRaisedDoPay() {
-		return sCInterface.isRaisedDoPay();
-	}
-	
 	public synchronized boolean isRaisedDoCancel() {
 		return sCInterface.isRaisedDoCancel();
 	}
@@ -1390,7 +1344,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		sCInterface.setPay(value);
 	}
 	
-	private boolean check_main_prepare_r1__choice_0_tr1_tr1() {
+	private boolean check_main_prepare_r1__choice_0_tr0_tr0() {
 		return (sCInterface.getMySelection()== null?"IcedTea" ==null :sCInterface.getMySelection().equals("IcedTea"));
 	}
 	
@@ -1426,11 +1380,11 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		return sCInterface.operationCallback.isGlace();
 	}
 	
-	private void effect_main_prepare_r1__choice_0_tr1() {
+	private void effect_main_prepare_r1__choice_0_tr0() {
 		enterSequence_main_prepare_r1_cooling_default();
 	}
 	
-	private void effect_main_prepare_r1__choice_0_tr0() {
+	private void effect_main_prepare_r1__choice_0_tr1() {
 		enterSequence_main_prepare_r1_heating_default();
 	}
 	
@@ -2358,10 +2312,10 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 	
 	/* The reactions of state null. */
 	private void react_main_prepare_r1__choice_0() {
-		if (check_main_prepare_r1__choice_0_tr1_tr1()) {
-			effect_main_prepare_r1__choice_0_tr1();
-		} else {
+		if (check_main_prepare_r1__choice_0_tr0_tr0()) {
 			effect_main_prepare_r1__choice_0_tr0();
+		} else {
+			effect_main_prepare_r1__choice_0_tr1();
 		}
 	}
 	
@@ -2481,13 +2435,13 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		if (try_transition) {
 			if ((sCInterface.coffee || (sCInterface.expresso || (sCInterface.tea || (sCInterface.soup || sCInterface.icedTea))))) {
 				exitSequence_main_order_pay_select_pay();
-				sCInterface.raiseDoSelect();
+				sCInterface.raiseAnyButton();
 				
 				enterSequence_main_order_pay_select_select_default();
 			} else {
 				if ((sCInterface.cinquanteCents || (sCInterface.vingtCinqCents || (sCInterface.dixCents || (sCInterface.bip || sCInterface.addCup))))) {
 					exitSequence_main_order_pay_select_pay();
-					sCInterface.raiseDoPay();
+					sCInterface.raiseAnyButton();
 					
 					enterSequence_main_order_pay_select_pay_default();
 				} else {
@@ -2504,13 +2458,13 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		if (try_transition) {
 			if ((sCInterface.coffee || (sCInterface.expresso || (sCInterface.tea || (sCInterface.soup || (sCInterface.icedTea || sCInterface.addCup)))))) {
 				exitSequence_main_order_pay_select_select();
-				sCInterface.raiseDoSelect();
+				sCInterface.raiseAnyButton();
 				
 				enterSequence_main_order_pay_select_select_default();
 			} else {
 				if ((sCInterface.cinquanteCents || (sCInterface.vingtCinqCents || (sCInterface.dixCents || sCInterface.bip)))) {
 					exitSequence_main_order_pay_select_select();
-					sCInterface.raiseDoPay();
+					sCInterface.raiseAnyButton();
 					
 					enterSequence_main_order_pay_select_pay_default();
 				} else {

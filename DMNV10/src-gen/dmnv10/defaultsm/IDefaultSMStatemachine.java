@@ -62,10 +62,6 @@ public interface IDefaultSMStatemachine extends ITimerCallback,IStatemachine {
 		
 		public boolean isRaisedDoGlace();
 		
-		public boolean isRaisedDoSelect();
-		
-		public boolean isRaisedDoPay();
-		
 		public boolean isRaisedDoCancel();
 		
 		public boolean isRaisedDoReceipt();
@@ -126,8 +122,6 @@ public interface IDefaultSMStatemachine extends ITimerCallback,IStatemachine {
 		public void onDoSpicesRaised();
 		public void onDoMilkRaised();
 		public void onDoGlaceRaised();
-		public void onDoSelectRaised();
-		public void onDoPayRaised();
 		public void onDoCancelRaised();
 		public void onDoReceiptRaised();
 		public void onDoPoorRaised();
