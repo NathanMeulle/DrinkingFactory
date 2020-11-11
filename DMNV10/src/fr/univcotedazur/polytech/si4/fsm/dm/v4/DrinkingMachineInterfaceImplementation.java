@@ -50,6 +50,16 @@ class DrinkingMachineInterfaceImplementation implements SCInterfaceListener {
 	}
 
 	@Override
+	public void onDoErableRaised() {
+		theGui.doErable();
+	}
+
+	@Override
+	public void onDoCroutonRaised() {
+		theGui.doCrouton();
+	}
+
+	@Override
 	public void onDoSelectRaised() {
 		theGui.doSelect();
 	}
@@ -138,6 +148,18 @@ class DrinkingMachineInterfaceImplementation implements SCInterfaceListener {
 	@Override
 	public void onDoSpicesRaised() {
 		theGui.doSpices();
+
+	}
+
+	@Override
+	public void onDoMilkRaised() {
+		theGui.doMilk();
+
+	}
+
+	@Override
+	public void onDoGlaceRaised() {
+		theGui.doGlace();
 
 	}
 

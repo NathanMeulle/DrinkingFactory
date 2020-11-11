@@ -34,6 +34,8 @@ public interface IDefaultSMStatemachine extends ITimerCallback,IStatemachine {
 		
 		public void raiseCancel();
 		
+		public void raiseAddCup();
+		
 		public boolean isRaisedDoRestart();
 		
 		public boolean isRaisedDoWash();
@@ -50,7 +52,15 @@ public interface IDefaultSMStatemachine extends ITimerCallback,IStatemachine {
 		
 		public boolean isRaisedDoSugar();
 		
-		public void raiseAddCup();
+		public boolean isRaisedDoErable();
+		
+		public boolean isRaisedDoCrouton();
+		
+		public boolean isRaisedDoSpices();
+		
+		public boolean isRaisedDoMilk();
+		
+		public boolean isRaisedDoGlace();
 		
 		public boolean isRaisedDoSelect();
 		
@@ -84,8 +94,6 @@ public interface IDefaultSMStatemachine extends ITimerCallback,IStatemachine {
 		
 		public boolean isRaisedDoFinish();
 		
-		public boolean isRaisedDoSpices();
-		
 		public String getMySelection();
 		
 		public void setMySelection(String value);
@@ -113,6 +121,11 @@ public interface IDefaultSMStatemachine extends ITimerCallback,IStatemachine {
 		public void onDoSoupRaised();
 		public void onDoIcedTeaRaised();
 		public void onDoSugarRaised();
+		public void onDoErableRaised();
+		public void onDoCroutonRaised();
+		public void onDoSpicesRaised();
+		public void onDoMilkRaised();
+		public void onDoGlaceRaised();
 		public void onDoSelectRaised();
 		public void onDoPayRaised();
 		public void onDoCancelRaised();
@@ -129,7 +142,6 @@ public interface IDefaultSMStatemachine extends ITimerCallback,IStatemachine {
 		public void onDoInfuseRaised();
 		public void onDoRetakeRaised();
 		public void onDoFinishRaised();
-		public void onDoSpicesRaised();
 		}
 	
 	public interface SCInterfaceOperationCallback {
@@ -145,6 +157,14 @@ public interface IDefaultSMStatemachine extends ITimerCallback,IStatemachine {
 		public boolean isPoor();
 		
 		public boolean isTaken();
+		
+		public boolean isErable();
+		
+		public boolean isCrouton();
+		
+		public boolean isMilk();
+		
+		public boolean isGlace();
 		
 	}
 	

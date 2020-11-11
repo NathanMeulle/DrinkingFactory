@@ -33,5 +33,25 @@ public class DrinkingFactoryCallBackInterfaceImplementation implements SCInterfa
 		return theGui.isTaken();
 	}
 
+	@Override
+	public boolean isErable() {
+		return theGui.isErable();
+	}
+
+	@Override
+	public boolean isCrouton() {
+		return theGui.isCrouton();
+	}
+
+	@Override
+	public boolean isMilk() {
+		return theGui.isMilk();
+	}
+
+	@Override
+	public boolean isGlace() {
+		return theGui.isGlace();
+	}
+
 
 }
