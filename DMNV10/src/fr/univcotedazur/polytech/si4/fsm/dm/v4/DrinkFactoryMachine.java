@@ -508,16 +508,12 @@ public class DrinkFactoryMachine extends JFrame {
 		milkButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//doMilk();
-				//theFSM.raiseMilkButton();
 				theFSM.raiseAnyButton();
 			}
 		});
 		siropErableButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//doSiropErable();
-				//theFSM.raiseSiropErable();
 				theFSM.raiseAnyButton();
 			}
 		});
@@ -525,8 +521,6 @@ public class DrinkFactoryMachine extends JFrame {
 		glaceVanilleButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//doGlaceVanille();
-				//theFSM.raiseGlaceVanille();
 				theFSM.raiseAnyButton();
 
 			}
@@ -535,8 +529,6 @@ public class DrinkFactoryMachine extends JFrame {
 		croutonButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//doCrouton();
-				//theFSM.raiseCrouton();
 				theFSM.raiseAnyButton();
 
 			}
@@ -595,6 +587,24 @@ public class DrinkFactoryMachine extends JFrame {
 			return true;
 		}
 		return false;
+	}
+
+	public boolean isErable() {
+		return siropErableButton.isSelected();
+	}
+
+	public boolean isCrouton() {
+		return croutonButton.isSelected();
+	}
+
+	public boolean isMilk() {
+		System.out.println("milk : " + milkButton.isSelected());
+		return milkButton.isSelected();
+	}
+
+	public boolean isGlace() {
+		System.out.println("glace : "+glaceVanilleButton.isSelected());
+		return glaceVanilleButton.isSelected();
 	}
 
 	public boolean isPoor() {
@@ -792,15 +802,15 @@ public class DrinkFactoryMachine extends JFrame {
 	private int doRendu() {
 		switch (selection) {
 			case "Coffee":
-				return cagnote - coffePrice;
+				return cagnote - (coffePrice + (milkButton.isSelected()?10:0) + (siropErableButton.isSelected()?10:0) + (glaceVanilleButton.isSelected()?40:0));
 			case "Expresso":
-				return cagnote - expressoPrice;
+				return cagnote - (expressoPrice + (milkButton.isSelected()?10:0) + (siropErableButton.isSelected()?10:0) + (glaceVanilleButton.isSelected()?40:0));
 			case "Tea":
-				return cagnote - teaPrice;
+				return cagnote - (teaPrice + (milkButton.isSelected()?10:0) + (siropErableButton.isSelected()?10:0));
 			case "Soup":
-				return cagnote - soupPrice;
+				return cagnote - (soupPrice + (croutonButton.isSelected()?30:0)) ;
 			case "Iced Tea":
-				return cagnote - icedTeaPrice;
+				return cagnote - (icedTeaPrice + (milkButton.isSelected()?10:0) + (siropErableButton.isSelected()?10:0) + sizeSlider.getValue()*25);
 		}
 		return cagnote;
 	}
@@ -901,6 +911,25 @@ public class DrinkFactoryMachine extends JFrame {
 			taken=false;
 		}
 
+	}
+	public void doMilk() {
+		System.out.println("milk");
+		addMessageToUser("Ajout lait");
+	}
+
+	public void doGlace() {
+		System.out.println("glace");
+		addMessageToUser("Ajout glace");
+	}
+
+	public void doErable() {
+		addMessageToUser(String.format("Ajout de %d dose%s de sirop d'erable", sugarSlider.getValue(), (sugarSlider.getValue() > 1 ? "s" : "")));
+		System.out.println("do erable : " + sugarSlider.getValue());
+	}
+
+	public void doCrouton() {
+		System.out.println("croutons");
+		addMessageToUser("Ajout croutons");
 	}
 
 	public void doPoor() {
@@ -1004,7 +1033,6 @@ public class DrinkFactoryMachine extends JFrame {
 		labelForPictures.setEnabled(false);
 		milkButton.setEnabled(false);
 		croutonButton.setEnabled(false);
-		System.out.println("tatatatat");
 		siropErableButton.setEnabled(false);
 		glaceVanilleButton.setEnabled(false);
 	}
@@ -1031,6 +1059,10 @@ public class DrinkFactoryMachine extends JFrame {
 		croutonButton.setEnabled(true);
 		siropErableButton.setEnabled(true);
 		glaceVanilleButton.setEnabled(true);
+		milkButton.setSelected(false);
+		croutonButton.setSelected(false);
+		siropErableButton.setSelected(false);
+		glaceVanilleButton.setSelected(false);
 
 	}
 
@@ -1091,7 +1123,6 @@ public class DrinkFactoryMachine extends JFrame {
 		}
 		temperatureSlider.setLabelTable(temperatureTable);
 	}
-
 
 
 
