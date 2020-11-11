@@ -377,7 +377,6 @@ public class DrinkFactoryMachine extends JFrame {
 					ee.printStackTrace();
 				}
 				labelForPictures.setIcon(new ImageIcon(myPicture));
-				progressBar.setValue(progressBarValue);
 				cupAdded=true;
 				expressoPrice = 40;
 				coffePrice = 25;
@@ -662,7 +661,6 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doCoffee() {
-		stockCoffe-=1;
 		milkButton.setEnabled(true);
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
@@ -676,7 +674,6 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doExpresso() {
-		stockExpresso-=1;
 		milkButton.setEnabled(true);
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
@@ -690,7 +687,6 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doTea() {
-		stockTea-=1;
 		milkButton.setEnabled(true);
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
@@ -705,7 +701,6 @@ public class DrinkFactoryMachine extends JFrame {
 
 
 	public void doIcedTea() {
-		stockIcedTea-=1;
 		milkButton.setEnabled(false);
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
@@ -719,7 +714,6 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doSoup() {
-		stockSoup-=1;
 		milkButton.setEnabled(false);
 		croutonButton.setEnabled(true);
 		siropErableButton.setEnabled(false);
@@ -735,28 +729,18 @@ public class DrinkFactoryMachine extends JFrame {
 	public void doSugar() {
 		addMessageToUser(String.format("Ajout de %d sucre", sugarSlider.getValue()) + (sugarSlider.getValue() > 1 ? "s" : ""));
 		System.out.println("do sugar : " + sugarSlider.getValue());
-		progressBarValue += 5;
-		progressBar.setValue(progressBarValue);
-
 	}
 
 	public void doSpices() {
 		addMessageToUser(String.format("Ajout de %d doses d'épices", sugarSlider.getValue()) + (sugarSlider.getValue() > 1 ? "s" : ""));
 		System.out.println("do spices : " + sugarSlider.getValue());
-		progressBarValue += 5;
-		progressBar.setValue(progressBarValue);
 	}
 
 
 	public void doSelect() {
-		progressBarValue = isPay() ? 40 : 20;
-		progressBar.setValue(progressBarValue);
 	}
 
 	public void doPay() {
-		int tmp = selection.equals("")? 0 : 20;
-		progressBarValue = isPay() ? 40 : tmp;
-		progressBar.setValue(progressBarValue);
 	}
 
 
@@ -767,9 +751,7 @@ public class DrinkFactoryMachine extends JFrame {
 		long delay = (long) (1000 * (wantedTemperature - currentTemperature) / 5);
 		TimerTask repeatedTask = new TimerTask() {
 			public void run() {
-				progressBarValue += 1;
 				currentTemperature += delay / 6000.0;
-				progressBar.setValue(progressBarValue);
 				if (isHot()) {
 					System.out.println("fin chauffage");
 					addMessageToUser("chauffage terminé");
@@ -849,11 +831,13 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doDosette() {
+		stockCoffe-=1;
 		System.out.println("dosette");
 		addMessageToUser("Ajout dosette");
 	}
 
 	public void doGrain() {
+		stockExpresso-=1;
 		System.out.println("grain");
 		addMessageToUser("Broyage des grains");
 		TimerTask task = new TimerTask() {
@@ -868,6 +852,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doSachet() {
+		stockTea-=1;
 		System.out.println("sachet");
 		addMessageToUser("Préparation du thé");
 		TimerTask task = new TimerTask() {
@@ -882,12 +867,14 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doSoupDose() {
+		stockSoup-=1;
 		System.out.println("dosette");
 		addMessageToUser("Ajout dosette");
 	}
 
 
 	public void doIcedTeaSachet() {
+		stockIcedTea-=1;
 		System.out.println("IcedTea sachet");
 		addMessageToUser("Préparation du thé glacé");
 		TimerTask task = new TimerTask() {
@@ -904,8 +891,6 @@ public class DrinkFactoryMachine extends JFrame {
 	public void doGobelet() {
 		if(!cupAdded){
 			System.out.println("gobelet");
-			progressBarValue+=5;
-			progressBar.setValue(progressBarValue);
 			addMessageToUser("Positionnement du gobelet");
 			BufferedImage myPicture = null;
 			try {
@@ -931,8 +916,6 @@ public class DrinkFactoryMachine extends JFrame {
 		}
 		TimerTask repeatedTask = new TimerTask() {
 			public void run() {
-				progressBarValue += 1;
-				progressBar.setValue(progressBarValue);
 				currentPoorDelay +=poorDelay / 20.0;
 				if (isPoor()) {
 					BufferedImage finishPicture = null;
@@ -1134,5 +1117,6 @@ public class DrinkFactoryMachine extends JFrame {
 	// TODO: 06/11/2020 gerer stock
 	// TODO: 06/11/2020 programme de fidelité
 	// TODO: 06/11/2020 ajout des sons et du popcorn
+	// TODO: 11/11/2020 affichage prompteur dans sur la machine 
 
 }
