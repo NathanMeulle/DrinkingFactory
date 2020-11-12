@@ -762,7 +762,6 @@ public class DrinkFactoryMachine extends JFrame {
 		currentPoorDelay = 0;
 		taken = false;
 		poor = false;
-		currentTemperatureChange = false;
 		temperatureSlider.setValue(2);
 		sugarSlider.setValue(1);
 		sizeSlider.setValue(1);
@@ -880,33 +879,32 @@ public class DrinkFactoryMachine extends JFrame {
 		} catch (IOException ee) {
 			ee.printStackTrace();
 		}
-		TimerTask repeatedTask = new TimerTask() {
-			public void run() {
-				currentPoorDelay += poorDelay / 20.0;
-				if (isPoor()) {
-					BufferedImage finishPicture = null;
-					try {
-						if (!cupAdded)
-							finishPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/gobelet1.jpg"));
-						else
-							finishPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/ownCup1.jpg"));
-					} catch (IOException ee) {
-						ee.printStackTrace();
-					}
-					labelForPictures.setIcon(new ImageIcon(finishPicture));
-					System.out.println("fin de versage");
-					setMessageToUser("Versage terminé");
-					repaint();
-					cancel();
-				}
+
+		if(currentTemperatureChange){
+			System.out.println("début versage");
+			addMessageToUser("Début du versage de la boisson");
+			repaint();
+			labelForPictures.setIcon(new ImageIcon(pooringPicture));
+			currentTemperatureChange = false;
+		}
+
+		currentPoorDelay +=  500;
+
+		if (isPoor()) {
+			BufferedImage finishPicture = null;
+			try {
+				if (!cupAdded)
+					finishPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/gobelet1.jpg"));
+				else
+					finishPicture = ImageIO.read(new File(System.getProperty("user.dir") + "/src/picts/ownCup1.jpg"));
+			} catch (IOException ee) {
+				ee.printStackTrace();
 			}
-		};
-		System.out.println("début versage");
-		addMessageToUser("Début du versage de la boisson");
-		repaint();
-		Timer timer = new Timer("Timer");
-		timer.scheduleAtFixedRate(repeatedTask, 0, poorDelay / 20);
-		labelForPictures.setIcon(new ImageIcon(pooringPicture));
+			labelForPictures.setIcon(new ImageIcon(finishPicture));
+			System.out.println("fin de versage");
+			setMessageToUser("Versage terminé");
+			repaint();
+		}
 	}
 
 
