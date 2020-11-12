@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 import java.util.Timer;
 
 
@@ -28,6 +29,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private JLabel messagesToUser;
 	JProgressBar progressBar = new JProgressBar();
 	protected DefaultSMStatemachine theFSM; // Declaration de la stateMAchine
+	private List<Person> persons = new ArrayList<>();
 
 	private int cagnote = 0;
 	private int coffePrice = 35;
