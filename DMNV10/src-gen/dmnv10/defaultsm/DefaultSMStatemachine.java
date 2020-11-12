@@ -1562,7 +1562,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		
 		timer.setTimer(this, 17, 100, true);
 		
-		timer.setTimer(this, 18, (1 * 1000), true);
+		timer.setTimer(this, 18, 500, true);
 	}
 	
 	/* Entry action for state 'Infuse'. */
