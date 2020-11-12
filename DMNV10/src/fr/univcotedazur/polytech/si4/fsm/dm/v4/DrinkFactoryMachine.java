@@ -49,6 +49,7 @@ public class DrinkFactoryMachine extends JFrame {
 	boolean poor;
 	boolean taken;
 	boolean cupAdded = false;
+	boolean currentTemperatureChange = false;
 
 	JButton cancelButton;
 	JButton nfcBiiiipButton;
@@ -681,28 +682,41 @@ public class DrinkFactoryMachine extends JFrame {
 		System.out.println("temperature position : " + temperatureSlider.getValue() + " ie " + wantedTemperature + "°C");
 
 		long delay = (long) (1000 * (wantedTemperature - currentTemperature) / 5);
-		TimerTask repeatedTask = new TimerTask() {
-			public void run() {
-				currentTemperature += delay / 6000.0;
-				if (isHot()) {
-					System.out.println("fin chauffage");
-					addMessageToUser("chauffage terminé");
-					repaint();
-					cancel();
-				}
-			}
-		};
-		System.out.println("début chauffage");
-		setMessageToUser("Début du chauffage de l'eau");
-		repaint();
-		Timer timer = new Timer("Timer");
-		timer.scheduleAtFixedRate(repeatedTask, 0, delay / 30);
+
+		currentTemperature += delay / 6000.0;
+		if (isHot()) {
+			System.out.println("fin chauffage");
+			addMessageToUser("chauffage terminé");
+			repaint();
+		}
+		if(!currentTemperatureChange){
+			System.out.println("début chauffage");
+			setMessageToUser("Début du chauffage de l'eau");
+			repaint();
+			currentTemperatureChange = true;
+		}
 	}
 
 	public void doCool() {
 		System.out.println("Cooling");
-		//TODO
+		int wantedTemperature = Integer.parseInt(temperatureTable.get(temperatureSlider.getValue()).getText().substring(0, 2));
+		System.out.println("temperature position : " + temperatureSlider.getValue() + " ie " + wantedTemperature + "°C");
+
+		long delay = (long) (1000 * (currentTemperature - wantedTemperature) / 5);
+		currentTemperature -= delay / 6000.0;
+		if (isCool()) {
+			System.out.println("fin refroidissage");
+			addMessageToUser("refroidissement terminé");
+			repaint();
+		}
+		if(!currentTemperatureChange){
+			System.out.println("début refroidissmenet");
+			setMessageToUser("Début du refroidissement de l'eau");
+			repaint();
+			currentTemperatureChange = true;
+		}
 	}
+
 
 
 	public void doReceipt() {
@@ -753,6 +767,7 @@ public class DrinkFactoryMachine extends JFrame {
 		currentPoorDelay = 0;
 		taken = false;
 		poor = false;
+		currentTemperatureChange = false;
 		temperatureSlider.setValue(2);
 		sugarSlider.setValue(1);
 		sizeSlider.setValue(1);
