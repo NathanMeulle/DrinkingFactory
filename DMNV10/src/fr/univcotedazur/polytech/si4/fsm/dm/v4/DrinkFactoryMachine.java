@@ -670,13 +670,6 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 
-	public void doSelect() {
-	}
-
-	public void doPay() {
-	}
-
-
 	public void doHeat() {
 		int wantedTemperature = Integer.parseInt(temperatureTable.get(temperatureSlider.getValue()).getText().substring(0, 2));
 		System.out.println("temperature position : " + temperatureSlider.getValue() + " ie " + wantedTemperature + "°C");
