@@ -11,13 +11,16 @@ public class Person {
         achats.add(achat);
     }
 
-    public int addAchat(int achat){
+    public String getId() {
+        return id;
+    }
+
+    public List<Integer> getAchats() {
+        return achats;
+    }
+
+    public void addAchat(int achat){
         achats.add(achat);
-        if(achats.size()>10){
-            achats.remove(achat);
-            return remise();
-        }
-        return 0;
     }
 
     public int remise(){

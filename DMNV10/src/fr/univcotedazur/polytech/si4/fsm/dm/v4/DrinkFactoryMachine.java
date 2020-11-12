@@ -496,6 +496,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 	//------------------------------------------------------METHOD IS----------------------------------------------------------------//
 	public boolean isPay() {
+		int remise;
 		switch (selection) {
 			case "Coffee":
 				montant = coffePrice + (milkButton.isSelected() ? 10 : 0) + (siropErableButton.isSelected() ? 10 : 0) + (glaceVanilleButton.isSelected() ? 40 : 0);
@@ -513,7 +514,9 @@ public class DrinkFactoryMachine extends JFrame {
 				montant = icedTeaPrice + (siropErableButton.isSelected() ? 10 : 0) + sizeSlider.getValue() * 25;
 				break;
 		}
-		return montant <= cagnote;
+		Person person = getPerson(id.getText());
+
+		return montant - ((person != null && person.getAchats().size()>=10)? person.remise() : 0) <= cagnote;
 	}
 
 	public boolean isHot() {
@@ -725,8 +728,16 @@ public class DrinkFactoryMachine extends JFrame {
 
 
 	public void doReceipt() {
+		if(getPerson(id.getText())==null){
+			persons.add(new Person(id.getText(), montant));
+		}
+		else{
+			Person person = getPerson(id.getText());
+			person.addAchat(montant);
+		}
 		disableButtons();
 		System.out.println("Receipt created");
+		if(montant<0) montant = 0;
 		int rendu = doRendu();
 		if (rendu > 0)
 			setMessageToUser("Transaction effectuée, récupérez votre monnaie <br> Rendu : " + rendu / 100.0 + "€");
@@ -1076,6 +1087,14 @@ public class DrinkFactoryMachine extends JFrame {
 		if (stockTea <= 0) {
 			teaButton.setEnabled(false);
 		}
+	}
+
+	public Person getPerson(String id){
+		for (Person person: persons) {
+			if(person.getId() == id)
+				return person;
+		}
+		return null;
 	}
 
 //---------------------------------------------------OTHERS----------------------------------------------------------------//
