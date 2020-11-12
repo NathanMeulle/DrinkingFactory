@@ -1461,41 +1461,38 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		timer.setTimer(this, 3, (1 * 1000), true);
 	}
 	
-	/* Entry action for state 'Waiting'. */
-	private void entryAction_main_prepare_r1_Waiting() {
-		timer.setTimer(this, 4, 100, true);
-	}
-	
 	/* Entry action for state 'cooling'. */
 	private void entryAction_main_prepare_r1_cooling() {
-		timer.setTimer(this, 5, 100, true);
+		timer.setTimer(this, 4, 100, true);
 		
-		timer.setTimer(this, 6, (1 * 1000), true);
+		timer.setTimer(this, 5, (1 * 1000), true);
 	}
 	
 	/* Entry action for state 'dosette'. */
 	private void entryAction_main_prepare_r2_dosette() {
-		timer.setTimer(this, 7, (1 * 1000), false);
+		timer.setTimer(this, 6, (1 * 1000), false);
 		
 		sCInterface.raiseDoDosette();
 	}
 	
 	/* Entry action for state 'grain'. */
 	private void entryAction_main_prepare_r2_grain() {
-		timer.setTimer(this, 8, (1 * 1000), false);
+		timer.setTimer(this, 7, (1 * 1000), false);
 		
 		sCInterface.raiseDoGrain();
 	}
 	
 	/* Entry action for state 'sachet'. */
 	private void entryAction_main_prepare_r2_sachet() {
-		timer.setTimer(this, 9, (1 * 1000), false);
+		timer.setTimer(this, 8, (1 * 1000), false);
 		
 		sCInterface.raiseDoSachet();
 	}
 	
 	/* Entry action for state 'gobelet'. */
 	private void entryAction_main_prepare_r2_gobelet() {
+		timer.setTimer(this, 9, 100, true);
+		
 		sCInterface.raiseDoGobelet();
 	}
 	
@@ -1551,41 +1548,41 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		sCInterface.raiseDoErable();
 	}
 	
-	/* Entry action for state 'waiting'. */
-	private void entryAction_main_Prepare2_r1_waiting() {
-		timer.setTimer(this, 15, 7, true);
-	}
-	
 	/* Entry action for state 'poor'. */
 	private void entryAction_main_Prepare2_r2_poor() {
+		timer.setTimer(this, 15, 100, true);
+		
 		timer.setTimer(this, 16, 100, true);
 		
-		timer.setTimer(this, 17, 100, true);
-		
-		timer.setTimer(this, 18, 500, true);
+		timer.setTimer(this, 17, 500, true);
 	}
 	
 	/* Entry action for state 'Infuse'. */
 	private void entryAction_main_Prepare2_r2_Infuse() {
-		timer.setTimer(this, 19, (10 * 1000), false);
+		timer.setTimer(this, 18, (10 * 1000), false);
 		
 		sCInterface.raiseDoInfuse();
 	}
 	
 	/* Entry action for state 'milk'. */
 	private void entryAction_main_Prepare2_r2_milk() {
-		timer.setTimer(this, 20, (1 * 1000), false);
+		timer.setTimer(this, 19, (1 * 1000), false);
 		
-		timer.setTimer(this, 21, (1 * 1000), false);
+		timer.setTimer(this, 20, (1 * 1000), false);
 		
 		sCInterface.raiseDoMilk();
 	}
 	
 	/* Entry action for state 'glace'. */
 	private void entryAction_main_Prepare2_r2_glace() {
-		timer.setTimer(this, 22, (1 * 1000), false);
+		timer.setTimer(this, 21, (1 * 1000), false);
 		
 		sCInterface.raiseDoGlace();
+	}
+	
+	/* Entry action for state 'waiting'. */
+	private void entryAction_main_Prepare2_r2_waiting() {
+		timer.setTimer(this, 22, 100, true);
 	}
 	
 	/* Entry action for state 'Washing'. */
@@ -1593,6 +1590,8 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		timer.setTimer(this, 23, (5 * 1000), false);
 		
 		sCInterface.raiseDoWash();
+		
+		sCInterface.setSelection(false);
 	}
 	
 	/* Exit action for state 'order'. */
@@ -1612,30 +1611,30 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		timer.unsetTimer(this, 3);
 	}
 	
-	/* Exit action for state 'Waiting'. */
-	private void exitAction_main_prepare_r1_Waiting() {
-		timer.unsetTimer(this, 4);
-	}
-	
 	/* Exit action for state 'cooling'. */
 	private void exitAction_main_prepare_r1_cooling() {
-		timer.unsetTimer(this, 5);
+		timer.unsetTimer(this, 4);
 		
-		timer.unsetTimer(this, 6);
+		timer.unsetTimer(this, 5);
 	}
 	
 	/* Exit action for state 'dosette'. */
 	private void exitAction_main_prepare_r2_dosette() {
-		timer.unsetTimer(this, 7);
+		timer.unsetTimer(this, 6);
 	}
 	
 	/* Exit action for state 'grain'. */
 	private void exitAction_main_prepare_r2_grain() {
-		timer.unsetTimer(this, 8);
+		timer.unsetTimer(this, 7);
 	}
 	
 	/* Exit action for state 'sachet'. */
 	private void exitAction_main_prepare_r2_sachet() {
+		timer.unsetTimer(this, 8);
+	}
+	
+	/* Exit action for state 'gobelet'. */
+	private void exitAction_main_prepare_r2_gobelet() {
 		timer.unsetTimer(this, 9);
 	}
 	
@@ -1664,34 +1663,34 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		timer.unsetTimer(this, 14);
 	}
 	
-	/* Exit action for state 'waiting'. */
-	private void exitAction_main_Prepare2_r1_waiting() {
-		timer.unsetTimer(this, 15);
-	}
-	
 	/* Exit action for state 'poor'. */
 	private void exitAction_main_Prepare2_r2_poor() {
+		timer.unsetTimer(this, 15);
+		
 		timer.unsetTimer(this, 16);
 		
 		timer.unsetTimer(this, 17);
-		
-		timer.unsetTimer(this, 18);
 	}
 	
 	/* Exit action for state 'Infuse'. */
 	private void exitAction_main_Prepare2_r2_Infuse() {
-		timer.unsetTimer(this, 19);
+		timer.unsetTimer(this, 18);
 	}
 	
 	/* Exit action for state 'milk'. */
 	private void exitAction_main_Prepare2_r2_milk() {
-		timer.unsetTimer(this, 20);
+		timer.unsetTimer(this, 19);
 		
-		timer.unsetTimer(this, 21);
+		timer.unsetTimer(this, 20);
 	}
 	
 	/* Exit action for state 'glace'. */
 	private void exitAction_main_Prepare2_r2_glace() {
+		timer.unsetTimer(this, 21);
+	}
+	
+	/* Exit action for state 'waiting'. */
+	private void exitAction_main_Prepare2_r2_waiting() {
 		timer.unsetTimer(this, 22);
 	}
 	
@@ -1737,7 +1736,6 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 	
 	/* 'default' enter sequence for state Waiting */
 	private void enterSequence_main_prepare_r1_Waiting_default() {
-		entryAction_main_prepare_r1_Waiting();
 		nextStateIndex = 0;
 		stateVector[0] = State.main_prepare_r1_Waiting;
 	}
@@ -1841,7 +1839,6 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 	
 	/* 'default' enter sequence for state waiting */
 	private void enterSequence_main_Prepare2_r1_waiting_default() {
-		entryAction_main_Prepare2_r1_waiting();
 		nextStateIndex = 0;
 		stateVector[0] = State.main_Prepare2_r1_waiting;
 	}
@@ -1876,6 +1873,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 	
 	/* 'default' enter sequence for state waiting */
 	private void enterSequence_main_Prepare2_r2_waiting_default() {
+		entryAction_main_Prepare2_r2_waiting();
 		nextStateIndex = 1;
 		stateVector[1] = State.main_Prepare2_r2_waiting;
 	}
@@ -1957,8 +1955,6 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 	private void exitSequence_main_prepare_r1_Waiting() {
 		nextStateIndex = 0;
 		stateVector[0] = State.$NullState$;
-		
-		exitAction_main_prepare_r1_Waiting();
 	}
 	
 	/* Default exit sequence for state cooling */
@@ -1997,6 +1993,8 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 	private void exitSequence_main_prepare_r2_gobelet() {
 		nextStateIndex = 1;
 		stateVector[1] = State.$NullState$;
+		
+		exitAction_main_prepare_r2_gobelet();
 	}
 	
 	/* Default exit sequence for state soup */
@@ -2067,8 +2065,6 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 	private void exitSequence_main_Prepare2_r1_waiting() {
 		nextStateIndex = 0;
 		stateVector[0] = State.$NullState$;
-		
-		exitAction_main_Prepare2_r1_waiting();
 	}
 	
 	/* Default exit sequence for state poor */
@@ -2107,6 +2103,8 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 	private void exitSequence_main_Prepare2_r2_waiting() {
 		nextStateIndex = 1;
 		stateVector[1] = State.$NullState$;
+		
+		exitAction_main_Prepare2_r2_waiting();
 	}
 	
 	/* Default exit sequence for state Washing */
@@ -2546,7 +2544,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((timeEvents[4] && isStateActive(State.main_prepare_r2_gobelet)) && true)) {
+			if ((isStateActive(State.main_prepare_r2_gobelet) && timeEvents[9])) {
 				exitSequence_main_prepare();
 				react_main__sync0();
 			} else {
@@ -2560,7 +2558,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((timeEvents[5]) && (sCInterface.operationCallback.isCool()))) {
+			if (((timeEvents[4]) && (sCInterface.operationCallback.isCool()))) {
 				exitSequence_main_prepare_r1_cooling();
 				enterSequence_main_prepare_r1_Waiting_default();
 			} else {
@@ -2568,7 +2566,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 			}
 		}
 		if (did_transition==false) {
-			if (timeEvents[6]) {
+			if (timeEvents[5]) {
 				sCInterface.raiseDoCool();
 			}
 		}
@@ -2579,7 +2577,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (timeEvents[7]) {
+			if (timeEvents[6]) {
 				exitSequence_main_prepare_r2_dosette();
 				enterSequence_main_prepare_r2_gobelet_default();
 				main_prepare_react(false);
@@ -2597,7 +2595,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (timeEvents[8]) {
+			if (timeEvents[7]) {
 				exitSequence_main_prepare_r2_grain();
 				enterSequence_main_prepare_r2_gobelet_default();
 				main_prepare_react(false);
@@ -2615,7 +2613,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (timeEvents[9]) {
+			if (timeEvents[8]) {
 				exitSequence_main_prepare_r2_sachet();
 				enterSequence_main_prepare_r2_gobelet_default();
 				main_prepare_react(false);
@@ -2633,7 +2631,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((true && isStateActive(State.main_prepare_r1_Waiting)) && timeEvents[4])) {
+			if ((timeEvents[9] && isStateActive(State.main_prepare_r1_Waiting))) {
 				exitSequence_main_prepare();
 				react_main__sync0();
 			} else {
@@ -2777,7 +2775,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((timeEvents[15] && isStateActive(State.main_Prepare2_r2_waiting)) && true)) {
+			if ((isStateActive(State.main_Prepare2_r2_waiting) && timeEvents[22])) {
 				exitSequence_main_Prepare2();
 				react_main__sync2();
 			} else {
@@ -2791,12 +2789,12 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((timeEvents[16]) && ((sCInterface.operationCallback.isPoor() && (((sCInterface.getMySelection()== null?"Tea" ==null :sCInterface.getMySelection().equals("Tea")) || (sCInterface.getMySelection()== null?"IcedTea" ==null :sCInterface.getMySelection().equals("IcedTea")))))))) {
+			if (((timeEvents[15]) && ((sCInterface.operationCallback.isPoor() && (((sCInterface.getMySelection()== null?"Tea" ==null :sCInterface.getMySelection().equals("Tea")) || (sCInterface.getMySelection()== null?"IcedTea" ==null :sCInterface.getMySelection().equals("IcedTea")))))))) {
 				exitSequence_main_Prepare2_r2_poor();
 				enterSequence_main_Prepare2_r2_Infuse_default();
 				main_Prepare2_react(false);
 			} else {
-				if (((timeEvents[17]) && ((sCInterface.operationCallback.isPoor() && (((sCInterface.getMySelection()== null?"Tea" !=null : !sCInterface.getMySelection().equals("Tea")) || (sCInterface.getMySelection()== null?"IcedTea" !=null : !sCInterface.getMySelection().equals("IcedTea")))))))) {
+				if (((timeEvents[16]) && ((sCInterface.operationCallback.isPoor() && (((sCInterface.getMySelection()== null?"Tea" !=null : !sCInterface.getMySelection().equals("Tea")) || (sCInterface.getMySelection()== null?"IcedTea" !=null : !sCInterface.getMySelection().equals("IcedTea")))))))) {
 					exitSequence_main_Prepare2_r2_poor();
 					react_main_Prepare2_r2__choice_0();
 				} else {
@@ -2805,7 +2803,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 			}
 		}
 		if (did_transition==false) {
-			if (timeEvents[18]) {
+			if (timeEvents[17]) {
 				sCInterface.raiseDoPoor();
 			}
 			did_transition = main_Prepare2_react(try_transition);
@@ -2817,7 +2815,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (timeEvents[19]) {
+			if (timeEvents[18]) {
 				exitSequence_main_Prepare2_r2_Infuse();
 				sCInterface.raiseDoRetake();
 				
@@ -2836,12 +2834,12 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((timeEvents[20]) && (sCInterface.operationCallback.isGlace()))) {
+			if (((timeEvents[19]) && (sCInterface.operationCallback.isGlace()))) {
 				exitSequence_main_Prepare2_r2_milk();
 				enterSequence_main_Prepare2_r2_glace_default();
 				main_Prepare2_react(false);
 			} else {
-				if (((timeEvents[21]) && (!sCInterface.operationCallback.isGlace()))) {
+				if (((timeEvents[20]) && (!sCInterface.operationCallback.isGlace()))) {
 					exitSequence_main_Prepare2_r2_milk();
 					enterSequence_main_Prepare2_r2_waiting_default();
 					main_Prepare2_react(false);
@@ -2860,7 +2858,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (timeEvents[22]) {
+			if (timeEvents[21]) {
 				exitSequence_main_Prepare2_r2_glace();
 				enterSequence_main_Prepare2_r2_waiting_default();
 				main_Prepare2_react(false);
@@ -2878,7 +2876,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		boolean did_transition = try_transition;
 		
 		if (try_transition) {
-			if (((true && isStateActive(State.main_Prepare2_r1_waiting)) && timeEvents[15])) {
+			if ((timeEvents[22] && isStateActive(State.main_Prepare2_r1_waiting))) {
 				exitSequence_main_Prepare2();
 				react_main__sync2();
 			} else {

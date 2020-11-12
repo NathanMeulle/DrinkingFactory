@@ -41,7 +41,7 @@ public class DrinkFactoryMachine extends JFrame {
 	private int icedTeaPrice = 50;
 	private int montant;
 
-	private int stockCoffe = 10; // nombre de dosette de cafee
+	private int stockCoffe = 15; // nombre de dosette de cafee
 	private int stockTea = 2; // nombre de sachet de the
 	private int stockExpresso = 2; // nombre de packet de grain pour lexpresso
 	private int stockIcedTea = 1; // nombre de sachet pour l iced tea
@@ -443,27 +443,22 @@ public class DrinkFactoryMachine extends JFrame {
 		});
 
 		nfcBiiiipButton.addActionListener(e -> {
-			switch (selection) {
-				case "Coffee":
-					cagnote += coffePrice;
-					break;
-				case "Expresso":
-					cagnote += expressoPrice;
-					break;
-				case "Tea":
-					cagnote += teaPrice;
-					break;
-				case "Soup":
-					cagnote += soupPrice;
-					break;
-				case "Iced Tea":
-					cagnote += icedTeaPrice;
-					break;
+			if(id.getText().equals("")) {
+				setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
+				addMessageToUser("<b>Numéro CB Manquant<b>");
+				id.setBackground(Color.ORANGE);
 			}
-			theFSM.raiseBip();
-			setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
-			repaint();
-			theFSM.raiseAnyButton();
+			else if(id.getText().length()<16){
+				setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
+				addMessageToUser("<b>Numéro Incorrect<b>,<br> Renseignez les 16 chiffres de la carte");
+				id.setBackground(Color.ORANGE);
+			}
+			else {
+				id.setBackground(Color.WHITE);
+				doNFC();
+				theFSM.raiseBip();
+				theFSM.raiseAnyButton();
+			}
 
 		});
 		temperatureSlider.addChangeListener(e -> theFSM.raiseAnyButton());
@@ -497,7 +492,15 @@ public class DrinkFactoryMachine extends JFrame {
 
 	//------------------------------------------------------METHOD IS----------------------------------------------------------------//
 	public boolean isPay() {
-		int remise;
+		System.out.println(montant);
+		System.out.println(selection);
+		montant = getMontant();
+		Person person = getPerson(id.getText());
+		return montant - ((person != null && person.getAchats().size()>=10)? person.remise() : 0) <= cagnote;
+	}
+
+	private int getMontant(){
+		int montant = 1;
 		switch (selection) {
 			case "Coffee":
 				montant = coffePrice + (milkButton.isSelected() ? 10 : 0) + (siropErableButton.isSelected() ? 10 : 0) + (glaceVanilleButton.isSelected() ? 40 : 0);
@@ -515,11 +518,7 @@ public class DrinkFactoryMachine extends JFrame {
 				montant = icedTeaPrice + (siropErableButton.isSelected() ? 10 : 0) + sizeSlider.getValue() * 25;
 				break;
 		}
-		Person person = null;
-		if(! getPerson(id.getText()).equals(""))
-			person = getPerson(id.getText());
-		System.out.println(persons);
-		return montant - ((person != null && person.getAchats().size()>=10)? person.remise() : 0) <= cagnote;
+		return montant;
 	}
 
 	public boolean isHot() {
@@ -588,6 +587,21 @@ public class DrinkFactoryMachine extends JFrame {
 		repaint();
 	}
 
+
+	public void doNFC() {
+		int remise = 0;
+		Person person = getPerson(id.getText());
+		if (person != null && person.getAchats().size()>=10){
+			remise = person.remise();
+			person.clearAchats();
+			System.out.println(String.format("Remise : %.2f€", remise/100.0));
+		}
+		cagnote+=getMontant();
+		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + (cagnote-remise)/100.0);
+		if(remise>0) addMessageToUser(String.format("%.2f€ de remise !", remise/100.0));
+		repaint();
+	}
+
 	private void doCinqanteCents() {
 		System.out.println("50 centimes ajoutés");
 		cagnote += 50;
@@ -610,6 +624,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doCoffee() {
+		unselectCheckbox();
 		milkButton.setEnabled(true);
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
@@ -623,6 +638,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doExpresso() {
+		unselectCheckbox();
 		milkButton.setEnabled(true);
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
@@ -636,6 +652,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doTea() {
+		unselectCheckbox();
 		milkButton.setEnabled(true);
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
@@ -650,6 +667,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 
 	public void doIcedTea() {
+		unselectCheckbox();
 		milkButton.setEnabled(false);
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
@@ -663,6 +681,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doSoup() {
+		unselectCheckbox();
 		milkButton.setEnabled(false);
 		croutonButton.setEnabled(true);
 		siropErableButton.setEnabled(false);
@@ -731,25 +750,27 @@ public class DrinkFactoryMachine extends JFrame {
 
 
 	public void doReceipt() {
-		if(getPerson(id.getText())==null){
-			persons.add(new Person(id.getText(), montant));
-		}
-		else{
-			Person person = getPerson(id.getText());
-			person.addAchat(montant);
+		if(!id.getText().equals("")) {
+			if (getPerson(id.getText()) == null) {
+				persons.add(new Person(id.getText(), montant));
+			} else {
+				Person person = getPerson(id.getText());
+				person.addAchat(montant);
+			}
 		}
 		disableButtons();
 		System.out.println("Receipt created");
 		if(montant<0) montant = 0;
 		int rendu = doRendu();
 		if (rendu > 0)
-			setMessageToUser("Transaction effectuée, récupérez votre monnaie <br> Rendu : " + rendu / 100.0 + "€");
-		else setMessageToUser("Transaction effectuée");
+			addMessageToUser("Transaction effectuée, récupérez votre monnaie <br> Rendu : " + rendu / 100.0 + "€");
+		else addMessageToUser("Transaction effectuée");
 		cagnote = 0;
 		int size = sizeSlider.getValue();
 		System.out.println("size = " + sizeSlider.getValue());
 		defineDelayPoor(size);
 		System.out.println("poor delay = " + poorDelay);
+		id.setText("");
 	}
 
 	private int doRendu() {
@@ -781,6 +802,7 @@ public class DrinkFactoryMachine extends JFrame {
 		progressBar.setValue(progressBarValue);
 		System.out.println("doRestart");
 		cagnote = 0;
+		montant = 0;
 		selection = "";
 		currentTemperature = 15;
 		currentPoorDelay = 0;
@@ -985,6 +1007,7 @@ public class DrinkFactoryMachine extends JFrame {
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(false);
 		glaceVanilleButton.setEnabled(false);
+		id.setEnabled(false);
 	}
 
 	/**
@@ -1012,6 +1035,12 @@ public class DrinkFactoryMachine extends JFrame {
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(false);
 		glaceVanilleButton.setEnabled(false);
+		unselectCheckbox();
+		id.setEnabled(true);
+
+	}
+
+	private void unselectCheckbox() {
 		milkButton.setSelected(false);
 		croutonButton.setSelected(false);
 		siropErableButton.setSelected(false);
@@ -1093,6 +1122,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public Person getPerson(String id){
+		if(id.equals("")) return null;
 		for (Person person: persons) {
 			if(person.getId().equals(id))
 				return person;
@@ -1103,7 +1133,7 @@ public class DrinkFactoryMachine extends JFrame {
 //---------------------------------------------------OTHERS----------------------------------------------------------------//
 
 	// TODO: 06/11/2020 gerer stock...
-	// TODO: 06/11/2020 programme de fidelité (creer la classe client avec un id et une liste de ces achats)
+	// TODO: 06/11/2020 programme de fidelité: hash id
 	//Optionnel
 	// TODO: 06/11/2020 nouvelle gestion de la progress bar
 	// TODO: 11/11/2020 affichage prompteur dans sur la machine

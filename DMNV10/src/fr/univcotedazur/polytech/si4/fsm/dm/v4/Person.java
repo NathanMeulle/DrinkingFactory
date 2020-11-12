@@ -18,7 +18,6 @@ public class Person {
     }
 
     public List<Integer> getAchats() {
-        System.out.println("nb d'achat : " + achats.size());
         return achats;
     }
 
@@ -31,8 +30,11 @@ public class Person {
         for (int achat: achats) {
             somme += achat;
         }
-        achats.clear();
         return somme/10;
+    }
+
+    public void clearAchats(){
+        achats.clear();
     }
 
     @Override
