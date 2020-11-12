@@ -45,7 +45,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 	long poorDelay;
 	long currentPoorDelay = 0;
-
+	long delay;
 	boolean poor;
 	boolean taken;
 	boolean cupAdded = false;
@@ -679,42 +679,44 @@ public class DrinkFactoryMachine extends JFrame {
 
 	public void doHeat() {
 		int wantedTemperature = Integer.parseInt(temperatureTable.get(temperatureSlider.getValue()).getText().substring(0, 2));
-		System.out.println("temperature position : " + temperatureSlider.getValue() + " ie " + wantedTemperature + "°C");
+		//System.out.println("temperature position : " + temperatureSlider.getValue() + " ie " + wantedTemperature + "°C");
 
-		long delay = (long) (1000 * (wantedTemperature - currentTemperature) / 5);
-
-		currentTemperature += delay / 6000.0;
-		if (isHot()) {
-			System.out.println("fin chauffage");
-			addMessageToUser("chauffage terminé");
-			repaint();
-		}
 		if(!currentTemperatureChange){
+			delay = (long) (1000 * (wantedTemperature - currentTemperature) / 5);
 			System.out.println("début chauffage");
 			setMessageToUser("Début du chauffage de l'eau");
 			repaint();
 			currentTemperatureChange = true;
 		}
+		currentTemperature += delay / 600.0;
+		if (isHot()) {
+			System.out.println("fin chauffage");
+			addMessageToUser("chauffage terminé");
+			repaint();
+		}
+
 	}
 
 	public void doCool() {
-		System.out.println("Cooling");
+		//System.out.println("Cooling");
 		int wantedTemperature = Integer.parseInt(temperatureTable.get(temperatureSlider.getValue()).getText().substring(0, 2));
-		System.out.println("temperature position : " + temperatureSlider.getValue() + " ie " + wantedTemperature + "°C");
+		//System.out.println("temperature position : " + temperatureSlider.getValue() + " ie " + wantedTemperature + "°C");
 
-		long delay = (long) (1000 * (currentTemperature - wantedTemperature) / 5);
-		currentTemperature -= delay / 6000.0;
-		if (isCool()) {
-			System.out.println("fin refroidissage");
-			addMessageToUser("refroidissement terminé");
-			repaint();
-		}
 		if(!currentTemperatureChange){
+			delay = (long) (1000 * (currentTemperature - wantedTemperature) / 5);
 			System.out.println("début refroidissmenet");
 			setMessageToUser("Début du refroidissement de l'eau");
 			repaint();
 			currentTemperatureChange = true;
 		}
+		currentTemperature -= delay / 600.0;
+
+		if (isCool()) {
+			System.out.println("fin refroidissage");
+			addMessageToUser("refroidissement terminé");
+			repaint();
+		}
+
 	}
 
 
