@@ -26,6 +26,9 @@ public class DrinkFactoryMachine extends JFrame {
 	private static final long serialVersionUID = 2030629304432075314L;
 	private JPanel contentPane;
 	private JLabel messagesToUser;
+	JLabel label;
+	JTextField id;
+
 	JProgressBar progressBar = new JProgressBar();
 	protected DefaultSMStatemachine theFSM; // Declaration de la stateMAchine
 
@@ -313,6 +316,11 @@ public class DrinkFactoryMachine extends JFrame {
 		lblNfc.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNfc.setBounds(541, 139, 41, 15);
 		contentPane.add(lblNfc);
+
+		id = new JTextField(30);
+		id.setHorizontalAlignment(SwingConstants.CENTER);
+		id.setBounds(541, 164, 68, 60);
+		contentPane.add(id, BorderLayout.SOUTH);
 
 		JSeparator separator = new JSeparator();
 		separator.setBounds(12, 292, 622, 15);
