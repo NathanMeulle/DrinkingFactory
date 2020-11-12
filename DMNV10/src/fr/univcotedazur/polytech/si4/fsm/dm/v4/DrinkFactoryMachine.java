@@ -515,8 +515,10 @@ public class DrinkFactoryMachine extends JFrame {
 				montant = icedTeaPrice + (siropErableButton.isSelected() ? 10 : 0) + sizeSlider.getValue() * 25;
 				break;
 		}
-		Person person = getPerson(id.getText());
-
+		Person person = null;
+		if(! getPerson(id.getText()).equals(""))
+			person = getPerson(id.getText());
+		System.out.println(persons);
 		return montant - ((person != null && person.getAchats().size()>=10)? person.remise() : 0) <= cagnote;
 	}
 
@@ -1092,7 +1094,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 	public Person getPerson(String id){
 		for (Person person: persons) {
-			if(person.getId() == id)
+			if(person.getId().equals(id))
 				return person;
 		}
 		return null;
