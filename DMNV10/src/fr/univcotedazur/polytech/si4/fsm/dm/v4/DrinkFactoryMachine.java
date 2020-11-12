@@ -502,7 +502,7 @@ public class DrinkFactoryMachine extends JFrame {
 				montant = soupPrice + (croutonButton.isSelected() ? 30 : 0);
 				break;
 			case "IcedTea":
-				montant = icedTeaPrice + (milkButton.isSelected() ? 10 : 0) + (siropErableButton.isSelected() ? 10 : 0) + sizeSlider.getValue() * 25;
+				montant = icedTeaPrice + (siropErableButton.isSelected() ? 10 : 0) + sizeSlider.getValue() * 25;
 				break;
 		}
 		return montant <= cagnote;
@@ -740,7 +740,7 @@ public class DrinkFactoryMachine extends JFrame {
 				return cagnote - montant;
 			case "Soup":
 				return cagnote - montant;
-			case "Iced Tea":
+			case "IcedTea":
 				return cagnote - montant;
 		}
 		return cagnote;
@@ -1072,8 +1072,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 //---------------------------------------------------OTHERS----------------------------------------------------------------//
 
-	// TODO: 06/11/2020 Corriger Soup et Iced Tea Bugs
-	// TODO: 06/11/2020 gerer stock
+	// TODO: 06/11/2020 gerer stock...
 	// TODO: 06/11/2020 programme de fidelité (creer la classe client avec un id et une liste de ces achats)
 	//Optionnel
 	// TODO: 06/11/2020 nouvelle gestion de la progress bar
