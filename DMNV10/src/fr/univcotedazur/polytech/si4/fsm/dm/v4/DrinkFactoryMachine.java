@@ -25,9 +25,8 @@ public class DrinkFactoryMachine extends JFrame {
 	 *
 	 */
 	private static final long serialVersionUID = 2030629304432075314L;
-	private JPanel contentPane;
+	private JPanel contentPanel;
 	private JLabel messagesToUser;
-	JLabel label;
 	JTextField id;
 
 	JProgressBar progressBar = new JProgressBar();
@@ -126,11 +125,11 @@ public class DrinkFactoryMachine extends JFrame {
 		setTitle("Drinking Factory Machine");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 650, 650);
-		contentPane = new JPanel();
-		contentPane.setBackground(Color.DARK_GRAY);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPanel = new JPanel();
+		contentPanel.setBackground(Color.DARK_GRAY);
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPanel);
+		contentPanel.setLayout(null);
 
 		messagesToUser = new JLabel("<html>Hello ! La Drinking Machine est prête !");
 		messagesToUser.setForeground(Color.WHITE);
@@ -139,43 +138,43 @@ public class DrinkFactoryMachine extends JFrame {
 		messagesToUser.setToolTipText("message to the user");
 		messagesToUser.setBackground(Color.WHITE);
 		messagesToUser.setBounds(126, 34, 165, 175);
-		contentPane.add(messagesToUser);
+		contentPanel.add(messagesToUser);
 
 		JLabel lblCoins = new JLabel("Coins");
 		lblCoins.setForeground(Color.WHITE);
 		lblCoins.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCoins.setBounds(538, 12, 44, 15);
-		contentPane.add(lblCoins);
+		contentPanel.add(lblCoins);
 
 		coffeeButton = new JButton("Coffee");
 		coffeeButton.setForeground(Color.DARK_GRAY);
 		coffeeButton.setBackground(Color.WHITE);
 		coffeeButton.setBounds(12, 34, 96, 25);
-		contentPane.add(coffeeButton);
+		contentPanel.add(coffeeButton);
 
 		expressoButton = new JButton("Expresso");
 		expressoButton.setForeground(Color.DARK_GRAY);
 		expressoButton.setBackground(Color.WHITE);
 		expressoButton.setBounds(12, 71, 96, 25);
-		contentPane.add(expressoButton);
+		contentPanel.add(expressoButton);
 
 		teaButton = new JButton("Tea");
 		teaButton.setForeground(Color.DARK_GRAY);
 		teaButton.setBackground(Color.WHITE);
 		teaButton.setBounds(12, 108, 96, 25);
-		contentPane.add(teaButton);
+		contentPanel.add(teaButton);
 
 		soupButton = new JButton("Soup");
 		soupButton.setForeground(Color.DARK_GRAY);
 		soupButton.setBackground(Color.WHITE);
 		soupButton.setBounds(12, 145, 96, 25);
-		contentPane.add(soupButton);
+		contentPanel.add(soupButton);
 
 		icedTeaButton = new JButton("Iced Tea");
 		icedTeaButton.setForeground(Color.DARK_GRAY);
 		icedTeaButton.setBackground(Color.WHITE);
 		icedTeaButton.setBounds(12, 182, 96, 25);
-		contentPane.add(icedTeaButton);
+		contentPanel.add(icedTeaButton);
 
 
 		JLabel optionLabel = new JLabel("<html>Options proposées :");
@@ -184,35 +183,35 @@ public class DrinkFactoryMachine extends JFrame {
 		optionLabel.setVerticalAlignment(SwingConstants.TOP);
 		optionLabel.setBackground(Color.WHITE);
 		optionLabel.setBounds(12, 300, 165, 175);
-		contentPane.add(optionLabel);
+		contentPanel.add(optionLabel);
 
 		milkButton = new JCheckBox("Nuage de lait");
 		milkButton.setForeground(Color.WHITE);
 		milkButton.setBackground(Color.DARK_GRAY);
 		milkButton.setBounds(45, 330, 120, 25);
 		milkButton.setEnabled(false);
-		contentPane.add(milkButton);
+		contentPanel.add(milkButton);
 
 		siropErableButton = new JCheckBox("Sirop d'érable");
 		siropErableButton.setForeground(Color.WHITE);
 		siropErableButton.setBackground(Color.DARK_GRAY);
 		siropErableButton.setBounds(45, 367, 120, 25);
 		siropErableButton.setEnabled(false);
-		contentPane.add(siropErableButton);
+		contentPanel.add(siropErableButton);
 
 		glaceVanilleButton = new JCheckBox("Glace Vanille");
 		glaceVanilleButton.setForeground(Color.WHITE);
 		glaceVanilleButton.setBackground(Color.DARK_GRAY);
 		glaceVanilleButton.setBounds(45, 404, 120, 25);
 		glaceVanilleButton.setEnabled(false);
-		contentPane.add(glaceVanilleButton);
+		contentPanel.add(glaceVanilleButton);
 
 		croutonButton = new JCheckBox("Croutons");
 		croutonButton.setForeground(Color.WHITE);
 		croutonButton.setBackground(Color.DARK_GRAY);
 		croutonButton.setBounds(45, 441, 120, 25);
 		croutonButton.setEnabled(false);
-		contentPane.add(croutonButton);
+		contentPanel.add(croutonButton);
 
 
 		progressBar.setStringPainted(true);
@@ -220,7 +219,7 @@ public class DrinkFactoryMachine extends JFrame {
 		progressBar.setForeground(Color.blue);
 		progressBar.setBackground(Color.DARK_GRAY);
 		progressBar.setBounds(12, 254, 622, 26);
-		contentPane.add(progressBar);
+		contentPanel.add(progressBar);
 
 		sugarSlider = new JSlider();
 		sugarSlider.setValue(1);
@@ -232,7 +231,7 @@ public class DrinkFactoryMachine extends JFrame {
 		sugarSlider.setMajorTickSpacing(1);
 		sugarSlider.setMaximum(4);
 		sugarSlider.setBounds(301, 51, 200, 36);
-		contentPane.add(sugarSlider);
+		contentPanel.add(sugarSlider);
 
 		sizeSlider = new JSlider();
 		sizeSlider.setPaintTicks(true);
@@ -244,7 +243,7 @@ public class DrinkFactoryMachine extends JFrame {
 		sizeSlider.setMaximum(2);
 		sizeSlider.setMajorTickSpacing(1);
 		sizeSlider.setBounds(301, 125, 200, 36);
-		contentPane.add(sizeSlider);
+		contentPanel.add(sizeSlider);
 
 		temperatureSlider = new JSlider();
 		temperatureSlider.setPaintLabels(true);
@@ -259,34 +258,34 @@ public class DrinkFactoryMachine extends JFrame {
 
 		reinitialiseTemperatureSlider();
 
-		contentPane.add(temperatureSlider);
+		contentPanel.add(temperatureSlider);
 
 		lblSugar = new JLabel("Sugar");
 		lblSugar.setForeground(Color.WHITE);
 		lblSugar.setBackground(Color.DARK_GRAY);
 		lblSugar.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSugar.setBounds(380, 34, 44, 15);
-		contentPane.add(lblSugar);
+		contentPanel.add(lblSugar);
 
 		JLabel lblSize = new JLabel("Size");
 		lblSize.setForeground(Color.WHITE);
 		lblSize.setBackground(Color.DARK_GRAY);
 		lblSize.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSize.setBounds(380, 113, 44, 15);
-		contentPane.add(lblSize);
+		contentPanel.add(lblSize);
 
 		JLabel lblTemperature = new JLabel("Temperature");
 		lblTemperature.setForeground(Color.WHITE);
 		lblTemperature.setBackground(Color.DARK_GRAY);
 		lblTemperature.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTemperature.setBounds(363, 173, 96, 15);
-		contentPane.add(lblTemperature);
+		contentPanel.add(lblTemperature);
 
 		JPanel moneyPanel = new JPanel();
 		moneyPanel.setBackground(Color.DARK_GRAY);
 		lblCoins.setLabelFor(moneyPanel);
 		moneyPanel.setBounds(538, 25, 96, 97);
-		contentPane.add(moneyPanel);
+		contentPanel.add(moneyPanel);
 
 		money50centsButton = new JButton("0.50 €");
 		money50centsButton.setForeground(Color.BLACK);
@@ -306,7 +305,7 @@ public class DrinkFactoryMachine extends JFrame {
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.DARK_GRAY);
 		panel_1.setBounds(538, 154, 96, 40);
-		contentPane.add(panel_1);
+		contentPanel.add(panel_1);
 
 		nfcBiiiipButton = new JButton("biiip");
 		nfcBiiiipButton.setForeground(Color.BLACK);
@@ -317,22 +316,24 @@ public class DrinkFactoryMachine extends JFrame {
 		lblNfc.setForeground(Color.WHITE);
 		lblNfc.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNfc.setBounds(541, 139, 41, 15);
-		contentPane.add(lblNfc);
+		contentPanel.add(lblNfc);
 
-		id = new JTextField(30);
+		id = new JTextField(20);
+		id.setFont(new Font("Cantarell", Font.LAYOUT_LEFT_TO_RIGHT, 10));
+		id.setDocument(new JTextFieldLimit(16));
 		id.setHorizontalAlignment(SwingConstants.CENTER);
-		id.setBounds(541, 164, 68, 60);
-		contentPane.add(id, BorderLayout.SOUTH);
+		id.setBounds(531, 195, 110, 28);
+		contentPanel.add(id, BorderLayout.SOUTH);
 
 		JSeparator separator = new JSeparator();
 		separator.setBounds(12, 292, 622, 15);
-		contentPane.add(separator);
+		contentPanel.add(separator);
 
 		addCupButton = new JButton("Add cup");
 		addCupButton.setForeground(Color.BLACK);
 		addCupButton.setBackground(Color.WHITE);
 		addCupButton.setBounds(505, 336, 96, 25);
-		contentPane.add(addCupButton);
+		contentPanel.add(addCupButton);
 
 		BufferedImage myPicture = null;
 		try {
@@ -342,12 +343,12 @@ public class DrinkFactoryMachine extends JFrame {
 		}
 		labelForPictures = new JButton(new ImageIcon(myPicture));
 		labelForPictures.setBounds(175, 319, 286, 260);
-		contentPane.add(labelForPictures);
+		contentPanel.add(labelForPictures);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.DARK_GRAY);
-		panel_2.setBounds(538, 217, 96, 33);
-		contentPane.add(panel_2);
+		panel_2.setBounds(538, 227, 96, 33);
+		contentPanel.add(panel_2);
 
 		cancelButton = new JButton("Cancel");
 		cancelButton.setForeground(Color.BLACK);
