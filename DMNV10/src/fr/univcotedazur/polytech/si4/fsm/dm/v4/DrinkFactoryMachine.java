@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.List;
 import java.util.Timer;
@@ -500,8 +501,6 @@ public class DrinkFactoryMachine extends JFrame {
 
 	//------------------------------------------------------METHOD IS----------------------------------------------------------------//
 	public boolean isPay() {
-		System.out.println(montant);
-		System.out.println(selection);
 		montant = getMontant();
 		Person person = getPerson(id.getText());
 		return montant - ((person != null && person.getAchats().size()>=10)? person.remise() : 0) <= cagnote;
@@ -777,7 +776,11 @@ public class DrinkFactoryMachine extends JFrame {
 	public void doReceipt() {
 		if(!id.getText().equals("")) {
 			if (getPerson(id.getText()) == null) {
-				persons.add(new Person(id.getText(), montant));
+				try {
+					persons.add(new Person(Encryption.toHexString(Encryption.getSHA(id.getText())), montant));
+				} catch (NoSuchAlgorithmException e) {
+					e.printStackTrace();
+				}
 			} else {
 				Person person = getPerson(id.getText());
 				person.addAchat(montant);
@@ -1162,8 +1165,13 @@ public class DrinkFactoryMachine extends JFrame {
 	public Person getPerson(String id){
 		if(id.equals("")) return null;
 		for (Person person: persons) {
-			if(person.getId().equals(id))
-				return person;
+			try {
+				if(person.getId().equals(Encryption.toHexString(Encryption.getSHA(id))))
+					return person;
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+				return null;
+			}
 		}
 		return null;
 	}
