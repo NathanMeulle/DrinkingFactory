@@ -43,9 +43,14 @@ public class DrinkFactoryMachine extends JFrame {
 
 	private int stockCoffe = 15; // nombre de dosette de cafee
 	private int stockTea = 2; // nombre de sachet de the
-	private int stockExpresso = 2; // nombre de packet de grain pour lexpresso
-	private int stockIcedTea = 1; // nombre de sachet pour l iced tea
+	private int stockExpresso = 2; // nombre de packet de grain pour l expresso
 	private int stockSoup = 10; // nombre de dose de soupe
+	private int stockSugar = 25; // nombre de dose de sucre
+	private int stockSpices = 25; // nombre de dose d epice
+	private int stockErable = 10 ; // nombre de dose de sirop d erable
+	private int stockMilk =10 ; // nombre de dose de lait
+	private int stockGlaceVanille = 10; // nombre de dose de glace vanille
+	private int stockCrouton = 1 ; // nombre de dose de crouton
 
 	long poorDelay;
 	long currentPoorDelay = 0;
@@ -222,7 +227,7 @@ public class DrinkFactoryMachine extends JFrame {
 		contentPanel.add(progressBar);
 
 		sugarSlider = new JSlider();
-		sugarSlider.setValue(1);
+		sugarSlider.setValue(0);
 		sugarSlider.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		sugarSlider.setBackground(Color.DARK_GRAY);
 		sugarSlider.setForeground(Color.WHITE);
@@ -461,7 +466,10 @@ public class DrinkFactoryMachine extends JFrame {
 			}
 
 		});
-		temperatureSlider.addChangeListener(e -> theFSM.raiseAnyButton());
+		temperatureSlider.addChangeListener(e ->{
+			sugarSlider.setEnabled(true);
+			theFSM.raiseAnyButton();
+		});
 		sugarSlider.addChangeListener(e -> theFSM.raiseAnyButton());
 		sizeSlider.addChangeListener(e -> theFSM.raiseAnyButton());
 		milkButton.addActionListener(e -> theFSM.raiseAnyButton());
@@ -629,6 +637,8 @@ public class DrinkFactoryMachine extends JFrame {
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
 		glaceVanilleButton.setEnabled(true);
+		enableOptionButtonCauseOfStock();
+		if (stockSugar>0){	sugarSlider.setEnabled(true);}
 		reinitialiseSugarSlider();
 		reinitialiseTemperatureSlider();
 		selection = "Coffee";
@@ -643,6 +653,8 @@ public class DrinkFactoryMachine extends JFrame {
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
 		glaceVanilleButton.setEnabled(true);
+		enableOptionButtonCauseOfStock();
+		if (stockSugar>0){	sugarSlider.setEnabled(true);}
 		reinitialiseSugarSlider();
 		reinitialiseTemperatureSlider();
 		selection = "Expresso";
@@ -657,6 +669,8 @@ public class DrinkFactoryMachine extends JFrame {
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
 		glaceVanilleButton.setEnabled(false);
+		enableOptionButtonCauseOfStock();
+		if (stockSugar>0){	sugarSlider.setEnabled(true);}
 		reinitialiseSugarSlider();
 		reinitialiseTemperatureSlider();
 		selection = "Tea";
@@ -672,6 +686,8 @@ public class DrinkFactoryMachine extends JFrame {
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
 		glaceVanilleButton.setEnabled(false);
+		enableOptionButtonCauseOfStock();
+		if (stockSugar>0){	sugarSlider.setEnabled(true);}
 		reinitialiseSugarSlider();
 		changeTemperatureSliderForIcedTea();
 		selection = "IcedTea";
@@ -686,6 +702,10 @@ public class DrinkFactoryMachine extends JFrame {
 		croutonButton.setEnabled(true);
 		siropErableButton.setEnabled(false);
 		glaceVanilleButton.setEnabled(false);
+		enableOptionButtonCauseOfStock();
+		if( stockSpices <=0 ){
+			sugarSlider.setEnabled(false);
+		}
 		createSpicesSlider();
 		reinitialiseTemperatureSlider();
 		selection = "Soup";
@@ -697,11 +717,16 @@ public class DrinkFactoryMachine extends JFrame {
 	public void doSugar() {
 		addMessageToUser(String.format("Ajout de %d sucre", sugarSlider.getValue()) + (sugarSlider.getValue() > 1 ? "s" : ""));
 		System.out.println("do sugar : " + sugarSlider.getValue());
+		stockSugar -= sugarSlider.getValue();
+		if( stockSugar <=0 ){
+			sugarSlider.setEnabled(false);
+		}
 	}
 
 	public void doSpices() {
 		addMessageToUser(String.format("Ajout de %d doses d'épices", sugarSlider.getValue()) + (sugarSlider.getValue() > 1 ? "s" : ""));
 		System.out.println("do spices : " + sugarSlider.getValue());
+		stockSpices -= sugarSlider.getValue();
 	}
 
 
@@ -858,11 +883,12 @@ public class DrinkFactoryMachine extends JFrame {
 		stockSoup -= 1;
 		System.out.println("dosette");
 		addMessageToUser("Ajout dosette");
+
 	}
 
 
 	public void doIcedTeaSachet() {
-		stockIcedTea -= 1;
+		stockTea -= 1;
 		System.out.println("IcedTea sachet");
 		addMessageToUser("Préparation du thé glacé");
 		TimerTask task = new TimerTask() {
@@ -895,16 +921,20 @@ public class DrinkFactoryMachine extends JFrame {
 	public void doMilk() {
 		System.out.println("milk");
 		addMessageToUser("Ajout lait");
+		stockMilk -= 1 ;
 	}
 
 	public void doGlace() {
 		System.out.println("glace");
 		addMessageToUser("Ajout glace");
+		stockGlaceVanille -= 1;
 	}
 
 	public void doErable() {
 		addMessageToUser(String.format("Ajout de %d dose%s de sirop d'erable", sugarSlider.getValue(), (sugarSlider.getValue() > 1 ? "s" : "")));
 		System.out.println("do erable : " + sugarSlider.getValue());
+		stockErable -= sugarSlider.getValue();
+
 	}
 
 	public void doCrouton() {
@@ -912,6 +942,7 @@ public class DrinkFactoryMachine extends JFrame {
 		if(croutonButton.isSelected()) {
 			System.out.println("croutons");
 			addMessageToUser("Ajout croutons");
+			stockCrouton -= 1 ;
 		}
 	}
 
@@ -1113,12 +1144,19 @@ public class DrinkFactoryMachine extends JFrame {
 		if (stockExpresso <= 0) {
 			expressoButton.setEnabled(false);
 		}
-		if (stockIcedTea <= 0) {
-			icedTeaButton.setEnabled(false);
-		}
 		if (stockTea <= 0) {
 			teaButton.setEnabled(false);
+			icedTeaButton.setEnabled(false);
 		}
+
+	}
+
+	public void enableOptionButtonCauseOfStock() {
+		if (stockSugar == 0){ sugarSlider.setEnabled(false);}
+		if (stockCrouton == 0) { croutonButton.setEnabled(false);}
+		if (stockGlaceVanille == 0) { glaceVanilleButton.setEnabled(false);}
+		if (stockMilk == 0) { milkButton.setEnabled(false);}
+		if (stockErable == 0) { siropErableButton.setEnabled(false);}
 	}
 
 	public Person getPerson(String id){
@@ -1130,7 +1168,7 @@ public class DrinkFactoryMachine extends JFrame {
 		return null;
 	}
 
-//---------------------------------------------------OTHERS----------------------------------------------------------------//
+	//---------------------------------------------------OTHERS----------------------------------------------------------------//
 
 	// TODO: 06/11/2020 gerer stock...
 	// TODO: 06/11/2020 programme de fidelité: hash id
