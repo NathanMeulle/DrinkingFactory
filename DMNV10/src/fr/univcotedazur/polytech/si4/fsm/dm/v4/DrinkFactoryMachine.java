@@ -48,10 +48,10 @@ public class DrinkFactoryMachine extends JFrame {
 	private int stockSoup = 10; // nombre de dose de soupe
 	private int stockSugar = 25; // nombre de dose de sucre
 	private int stockSpices = 25; // nombre de dose d epice
-	private int stockErable = 10 ; // nombre de dose de sirop d erable
-	private int stockMilk =10 ; // nombre de dose de lait
+	private int stockErable = 10; // nombre de dose de sirop d erable
+	private int stockMilk = 10 ; // nombre de dose de lait
 	private int stockGlaceVanille = 10; // nombre de dose de glace vanille
-	private int stockCrouton = 1 ; // nombre de dose de crouton
+	private int stockCrouton = 1; // nombre de dose de crouton
 
 	long poorDelay;
 	long currentPoorDelay = 0;
@@ -228,7 +228,7 @@ public class DrinkFactoryMachine extends JFrame {
 		contentPanel.add(progressBar);
 
 		sugarSlider = new JSlider();
-		sugarSlider.setValue(0);
+		sugarSlider.setValue(1);
 		sugarSlider.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		sugarSlider.setBackground(Color.DARK_GRAY);
 		sugarSlider.setForeground(Color.WHITE);
@@ -449,17 +449,15 @@ public class DrinkFactoryMachine extends JFrame {
 		});
 
 		nfcBiiiipButton.addActionListener(e -> {
-			if(id.getText().equals("")) {
+			if (id.getText().equals("")) {
 				setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
 				addMessageToUser("<b>Numéro CB Manquant<b>");
 				id.setBackground(Color.ORANGE);
-			}
-			else if(id.getText().length()<16){
+			} else if (id.getText().length() < 16) {
 				setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
 				addMessageToUser("<b>Numéro Incorrect<b>,<br> Renseignez les 16 chiffres de la carte");
 				id.setBackground(Color.ORANGE);
-			}
-			else {
+			} else {
 				id.setBackground(Color.WHITE);
 				doNFC();
 				theFSM.raiseBip();
@@ -467,7 +465,7 @@ public class DrinkFactoryMachine extends JFrame {
 			}
 
 		});
-		temperatureSlider.addChangeListener(e ->{
+		temperatureSlider.addChangeListener(e -> {
 			sugarSlider.setEnabled(true);
 			theFSM.raiseAnyButton();
 		});
@@ -480,7 +478,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 
 		// initialisation de la stateMachine
-		enableButtonCauseOfStock();
+		disableButtonCauseOfStock();
 		taken = false;
 		poor = false;
 		theFSM = new DefaultSMStatemachine();
@@ -503,10 +501,10 @@ public class DrinkFactoryMachine extends JFrame {
 	public boolean isPay() {
 		montant = getMontant();
 		Person person = getPerson(id.getText());
-		return montant - ((person != null && person.getAchats().size()>=10)? person.remise() : 0) <= cagnote;
+		return montant - ((person != null && person.getAchats().size() >= 10) ? person.remise() : 0) <= cagnote;
 	}
 
-	private int getMontant(){
+	private int getMontant() {
 		int montant = 1;
 		switch (selection) {
 			case "Coffee":
@@ -598,14 +596,14 @@ public class DrinkFactoryMachine extends JFrame {
 	public void doNFC() {
 		int remise = 0;
 		Person person = getPerson(id.getText());
-		if (person != null && person.getAchats().size()>=10){
+		if (person != null && person.getAchats().size() >= 10) {
 			remise = person.remise();
 			person.clearAchats();
-			System.out.println(String.format("Remise : %.2f€", remise/100.0));
+			System.out.println(String.format("Remise : %.2f€", remise / 100.0));
 		}
-		cagnote+=getMontant();
-		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + (cagnote-remise)/100.0);
-		if(remise>0) addMessageToUser(String.format("%.2f€ de remise !", remise/100.0));
+		cagnote += getMontant();
+		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + (cagnote - remise) / 100.0);
+		if (remise > 0) addMessageToUser(String.format("%.2f€ de remise !", remise / 100.0));
 		repaint();
 	}
 
@@ -636,10 +634,10 @@ public class DrinkFactoryMachine extends JFrame {
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
 		glaceVanilleButton.setEnabled(true);
-		enableOptionButtonCauseOfStock();
-		if (stockSugar>0){	sugarSlider.setEnabled(true);}
 		reinitialiseSugarSlider();
 		reinitialiseTemperatureSlider();
+		disableOptionButtonCauseOfStock();
+		disbleSugarSliderCauseOfStock();
 		selection = "Coffee";
 		System.out.println("Coffee selected");
 		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
@@ -652,10 +650,10 @@ public class DrinkFactoryMachine extends JFrame {
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
 		glaceVanilleButton.setEnabled(true);
-		enableOptionButtonCauseOfStock();
-		if (stockSugar>0){	sugarSlider.setEnabled(true);}
 		reinitialiseSugarSlider();
 		reinitialiseTemperatureSlider();
+		disableOptionButtonCauseOfStock();
+		disbleSugarSliderCauseOfStock();
 		selection = "Expresso";
 		System.out.println("Expresso selected");
 		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
@@ -668,10 +666,10 @@ public class DrinkFactoryMachine extends JFrame {
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
 		glaceVanilleButton.setEnabled(false);
-		enableOptionButtonCauseOfStock();
-		if (stockSugar>0){	sugarSlider.setEnabled(true);}
 		reinitialiseSugarSlider();
 		reinitialiseTemperatureSlider();
+		disableOptionButtonCauseOfStock();
+		disbleSugarSliderCauseOfStock();
 		selection = "Tea";
 		System.out.println("Tea selected");
 		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
@@ -685,10 +683,10 @@ public class DrinkFactoryMachine extends JFrame {
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(true);
 		glaceVanilleButton.setEnabled(false);
-		enableOptionButtonCauseOfStock();
-		if (stockSugar>0){	sugarSlider.setEnabled(true);}
 		reinitialiseSugarSlider();
 		changeTemperatureSliderForIcedTea();
+		disableOptionButtonCauseOfStock();
+		disbleSugarSliderCauseOfStock();
 		selection = "IcedTea";
 		System.out.println("Iced Tea selected");
 		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
@@ -701,12 +699,16 @@ public class DrinkFactoryMachine extends JFrame {
 		croutonButton.setEnabled(true);
 		siropErableButton.setEnabled(false);
 		glaceVanilleButton.setEnabled(false);
-		enableOptionButtonCauseOfStock();
-		if( stockSpices <=0 ){
-			sugarSlider.setEnabled(false);
-		}
+		disableOptionButtonCauseOfStock();
 		createSpicesSlider();
 		reinitialiseTemperatureSlider();
+		if (stockSpices <= 0) {
+			sugarSlider.setEnabled(false);
+			sugarSlider.setValue(0);
+		}
+		else {
+			sugarSlider.setEnabled(true);
+		}
 		selection = "Soup";
 		System.out.println("Soup selected");
 		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
@@ -717,13 +719,10 @@ public class DrinkFactoryMachine extends JFrame {
 		addMessageToUser(String.format("Ajout de %d sucre", sugarSlider.getValue()) + (sugarSlider.getValue() > 1 ? "s" : ""));
 		System.out.println("do sugar : " + sugarSlider.getValue());
 		stockSugar -= sugarSlider.getValue();
-		if( stockSugar <=0 ){
-			sugarSlider.setEnabled(false);
-		}
 	}
 
 	public void doSpices() {
-		addMessageToUser(String.format("Ajout de %d doses d'épices", sugarSlider.getValue()) + (sugarSlider.getValue() > 1 ? "s" : ""));
+		addMessageToUser(String.format("Ajout de %d dose%s d'épice", sugarSlider.getValue(), sugarSlider.getValue() > 1 ? "s" : ""));
 		System.out.println("do spices : " + sugarSlider.getValue());
 		stockSpices -= sugarSlider.getValue();
 	}
@@ -733,8 +732,8 @@ public class DrinkFactoryMachine extends JFrame {
 		int wantedTemperature = Integer.parseInt(temperatureTable.get(temperatureSlider.getValue()).getText().substring(0, 2));
 		//System.out.println("temperature position : " + temperatureSlider.getValue() + " ie " + wantedTemperature + "°C");
 
-		if(!currentTemperatureChange){
-			delay = (long) (1000 * (wantedTemperature - currentTemperature) / 5);
+		if (!currentTemperatureChange) {
+			delay = (long) (1000 * (wantedTemperature - currentTemperature) / 20);
 			System.out.println("début chauffage");
 			setMessageToUser("Début du chauffage de l'eau");
 			repaint();
@@ -754,7 +753,7 @@ public class DrinkFactoryMachine extends JFrame {
 		int wantedTemperature = Integer.parseInt(temperatureTable.get(temperatureSlider.getValue()).getText().substring(0, 2));
 		//System.out.println("temperature position : " + temperatureSlider.getValue() + " ie " + wantedTemperature + "°C");
 
-		if(!currentTemperatureChange){
+		if (!currentTemperatureChange) {
 			delay = (long) (1000 * (currentTemperature - wantedTemperature) / 5);
 			System.out.println("début refroidissmenet");
 			setMessageToUser("Début du refroidissement de l'eau");
@@ -772,9 +771,8 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 
-
 	public void doReceipt() {
-		if(!id.getText().equals("")) {
+		if (!id.getText().equals("")) {
 			if (getPerson(id.getText()) == null) {
 				try {
 					persons.add(new Person(Encryption.toHexString(Encryption.getSHA(id.getText())), montant));
@@ -788,7 +786,7 @@ public class DrinkFactoryMachine extends JFrame {
 		}
 		disableButtons();
 		System.out.println("Receipt created");
-		if(montant<0) montant = 0;
+		if (montant < 0) montant = 0;
 		int rendu = doRendu();
 		if (rendu > 0)
 			addMessageToUser("Transaction effectuée, récupérez votre monnaie <br> Rendu : " + rendu / 100.0 + "€");
@@ -841,7 +839,8 @@ public class DrinkFactoryMachine extends JFrame {
 		sizeSlider.setValue(1);
 		reinitialiseSugarSlider();
 		activateButtons();
-		enableButtonCauseOfStock();
+		disableButtonCauseOfStock();
+		disbleSugarSliderCauseOfStock();
 		setMessageToUser("Selection : " + selection + "<br>" + "Montant inséré : " + cagnote());
 		repaint();
 	}
@@ -924,7 +923,7 @@ public class DrinkFactoryMachine extends JFrame {
 	public void doMilk() {
 		System.out.println("milk");
 		addMessageToUser("Ajout lait");
-		stockMilk -= 1 ;
+		stockMilk -= 1;
 	}
 
 	public void doGlace() {
@@ -942,10 +941,10 @@ public class DrinkFactoryMachine extends JFrame {
 
 	public void doCrouton() {
 		//TODO controle à mettre dans la FSM... en attendant :
-		if(croutonButton.isSelected()) {
+		if (croutonButton.isSelected()) {
 			System.out.println("croutons");
 			addMessageToUser("Ajout croutons");
-			stockCrouton -= 1 ;
+			stockCrouton -= 1;
 		}
 	}
 
@@ -960,7 +959,7 @@ public class DrinkFactoryMachine extends JFrame {
 			ee.printStackTrace();
 		}
 
-		if(currentTemperatureChange){
+		if (currentTemperatureChange) {
 			System.out.println("début versage");
 			addMessageToUser("Début du versage de la boisson");
 			repaint();
@@ -968,7 +967,7 @@ public class DrinkFactoryMachine extends JFrame {
 			currentTemperatureChange = false;
 		}
 
-		currentPoorDelay +=  500;
+		currentPoorDelay += 500;
 
 		if (isPoor()) {
 			BufferedImage finishPicture = null;
@@ -1069,9 +1068,10 @@ public class DrinkFactoryMachine extends JFrame {
 		croutonButton.setEnabled(false);
 		siropErableButton.setEnabled(false);
 		glaceVanilleButton.setEnabled(false);
-		unselectCheckbox();
 		id.setEnabled(true);
-
+		unselectCheckbox();
+		disableOptionButtonCauseOfStock();
+		disableButtonCauseOfStock();
 	}
 
 	private void unselectCheckbox() {
@@ -1089,11 +1089,11 @@ public class DrinkFactoryMachine extends JFrame {
 
 	private void defineDelayPoor(int size) {
 		if (size == 0)
-			poorDelay = 2000;
+			poorDelay = 6000;
 		if (size == 1)
-			poorDelay = 2500;
+			poorDelay = 10000;
 		if (size == 2)
-			poorDelay = 3000;
+			poorDelay = 16000;
 	}
 
 
@@ -1137,7 +1137,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 
-	public void enableButtonCauseOfStock() {
+	public void disableButtonCauseOfStock() {
 		if (stockSoup <= 0) {
 			soupButton.setEnabled(false);
 		}
@@ -1151,22 +1151,41 @@ public class DrinkFactoryMachine extends JFrame {
 			teaButton.setEnabled(false);
 			icedTeaButton.setEnabled(false);
 		}
+	}
+
+	public void disableOptionButtonCauseOfStock() {
+		if (stockCrouton <= 0) {
+			croutonButton.setSelected(false);
+			croutonButton.setEnabled(false);
+		}
+		if (stockGlaceVanille <= 0) {
+			glaceVanilleButton.setSelected(false);
+			glaceVanilleButton.setEnabled(false);
+		}
+		if (stockMilk <= 0) {
+			milkButton.setSelected(false);
+			milkButton.setEnabled(false);
+		}
+		if (stockErable <= 0) {
+			siropErableButton.setSelected(false);
+			siropErableButton.setEnabled(false);
+		}
+	}
+
+	public void disbleSugarSliderCauseOfStock(){
+		if (stockSugar <= 0) {
+			sugarSlider.setValue(0);
+			sugarSlider.setEnabled(false);
+		}
+		else sugarSlider.setEnabled(true);
 
 	}
 
-	public void enableOptionButtonCauseOfStock() {
-		if (stockSugar == 0){ sugarSlider.setEnabled(false);}
-		if (stockCrouton == 0) { croutonButton.setEnabled(false);}
-		if (stockGlaceVanille == 0) { glaceVanilleButton.setEnabled(false);}
-		if (stockMilk == 0) { milkButton.setEnabled(false);}
-		if (stockErable == 0) { siropErableButton.setEnabled(false);}
-	}
-
-	public Person getPerson(String id){
-		if(id.equals("")) return null;
-		for (Person person: persons) {
+	public Person getPerson(String id) {
+		if (id.equals("")) return null;
+		for (Person person : persons) {
 			try {
-				if(person.getId().equals(Encryption.toHexString(Encryption.getSHA(id))))
+				if (person.getId().equals(Encryption.toHexString(Encryption.getSHA(id))))
 					return person;
 			} catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
@@ -1176,13 +1195,12 @@ public class DrinkFactoryMachine extends JFrame {
 		return null;
 	}
 
+
 	//---------------------------------------------------OTHERS----------------------------------------------------------------//
 
-	// TODO: 06/11/2020 gerer stock...
-	// TODO: 06/11/2020 programme de fidelité: hash id
+	//TODO créer classe Stock
 	//Optionnel
 	// TODO: 06/11/2020 nouvelle gestion de la progress bar
-	// TODO: 11/11/2020 affichage prompteur dans sur la machine
 	// TODO: 06/11/2020 ajout des sons et du popcorn
 
 }
