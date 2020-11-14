@@ -43,15 +43,15 @@ public class DrinkFactoryMachine extends JFrame {
 	private int montant;
 
 	private int stockCoffe = 15; // nombre de dosette de cafee
-	private int stockTea = 2; // nombre de sachet de the
-	private int stockExpresso = 2; // nombre de packet de grain pour l expresso
+	private int stockTea = 3; // nombre de sachet de the
+	private int stockExpresso = 3; // nombre de packet de grain pour l expresso
 	private int stockSoup = 10; // nombre de dose de soupe
 	private int stockSugar = 25; // nombre de dose de sucre
 	private int stockSpices = 25; // nombre de dose d epice
 	private int stockErable = 10; // nombre de dose de sirop d erable
 	private int stockMilk = 10 ; // nombre de dose de lait
 	private int stockGlaceVanille = 10; // nombre de dose de glace vanille
-	private int stockCrouton = 1; // nombre de dose de crouton
+	private int stockCrouton = 3; // nombre de dose de crouton
 
 	long poorDelay;
 	long currentPoorDelay = 0;
@@ -505,7 +505,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	private int getMontant() {
-		int montant = 1;
+		int montant = 0;
 		switch (selection) {
 			case "Coffee":
 				montant = coffePrice + (milkButton.isSelected() ? 10 : 0) + (siropErableButton.isSelected() ? 10 : 0) + (glaceVanilleButton.isSelected() ? 40 : 0);
@@ -734,6 +734,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 		if (!currentTemperatureChange) {
 			delay = (long) (1000 * (wantedTemperature - currentTemperature) / 20);
+			startProgressBar(delay, wantedTemperature);
 			System.out.println("début chauffage");
 			setMessageToUser("Début du chauffage de l'eau");
 			repaint();
@@ -755,6 +756,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 		if (!currentTemperatureChange) {
 			delay = (long) (1000 * (currentTemperature - wantedTemperature) / 5);
+			startProgressBar(delay, wantedTemperature);
 			System.out.println("début refroidissmenet");
 			setMessageToUser("Début du refroidissement de l'eau");
 			repaint();
@@ -797,6 +799,37 @@ public class DrinkFactoryMachine extends JFrame {
 		defineDelayPoor(size);
 		System.out.println("poor delay = " + poorDelay);
 		id.setText("");
+	}
+
+	private void startProgressBar(double delay, double wantedTemperature) {
+		long duree = 0;
+		if (selection.contains("Tea")) duree += 10;
+
+		double totalTimeHeating = Math.abs((wantedTemperature - currentTemperature)) / (delay / 600.0);
+		double totalTimePooring = (poorDelay * 0.5) / 500;
+		totalTimePooring += (milkButton.isSelected())? 1 : 0;
+		totalTimePooring += (glaceVanilleButton.isSelected())? 1 : 0;
+		totalTimePooring = (croutonButton.isSelected() && totalTimePooring < 3) ? 3 : totalTimePooring;
+
+
+		duree += totalTimeHeating;
+		duree += totalTimePooring;
+
+		long finalDuree = duree * 1000;
+		TimerTask repeatedTask = new TimerTask() {
+			public void run() {
+				progressBarValue += 1.0;
+				progressBar.setValue(progressBarValue);
+				repaint();
+				if (progressBarValue >= 100) {
+					cancel();
+				}
+			}
+		};
+		Timer timer = new Timer("TimerProgressBar");
+		timer.scheduleAtFixedRate(repeatedTask, 0, finalDuree / 100);
+		repaint();
+
 	}
 
 	private int doRendu() {
@@ -1005,6 +1038,23 @@ public class DrinkFactoryMachine extends JFrame {
 	public void doWash() {
 		setMessageToUser("Washing in progress");
 		System.out.println("Washing");
+		long delay = 5000;
+		TimerTask repeatedTask = new TimerTask() {
+			public void run() {
+				progressBarValue-= 1.0;
+				progressBar.setValue(progressBarValue);
+				repaint();
+				if(progressBarValue<=0){
+					cancel();
+				}
+			}
+		};
+		Timer timer = new Timer("TimerProgressBar");
+		timer.scheduleAtFixedRate(repeatedTask, 0, delay/100);
+		repaint();
+
+
+
 	}
 	//------------------------------------------------------METHOD DO----------------------------------------------------------------//
 	//--------------------------------------------------------OTHERS----------------------------------------------------------------//
@@ -1198,9 +1248,7 @@ public class DrinkFactoryMachine extends JFrame {
 
 	//---------------------------------------------------OTHERS----------------------------------------------------------------//
 
-	//TODO créer classe Stock
 	//Optionnel
-	// TODO: 06/11/2020 nouvelle gestion de la progress bar
-	// TODO: 06/11/2020 ajout des sons et du popcorn
+	// TODO: 06/11/2020 ajout du popcorn
 
 }

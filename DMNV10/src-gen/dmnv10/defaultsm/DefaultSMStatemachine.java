@@ -2794,7 +2794,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 				enterSequence_main_Prepare2_r2_Infuse_default();
 				main_Prepare2_react(false);
 			} else {
-				if (((timeEvents[16]) && ((sCInterface.operationCallback.isPoor() && (((sCInterface.getMySelection()== null?"Tea" !=null : !sCInterface.getMySelection().equals("Tea")) || (sCInterface.getMySelection()== null?"IcedTea" !=null : !sCInterface.getMySelection().equals("IcedTea")))))))) {
+				if (((timeEvents[16]) && ((sCInterface.operationCallback.isPoor() && (((sCInterface.getMySelection()== null?"Tea" !=null : !sCInterface.getMySelection().equals("Tea")) && (sCInterface.getMySelection()== null?"IcedTea" !=null : !sCInterface.getMySelection().equals("IcedTea")))))))) {
 					exitSequence_main_Prepare2_r2_poor();
 					react_main_Prepare2_r2__choice_0();
 				} else {
