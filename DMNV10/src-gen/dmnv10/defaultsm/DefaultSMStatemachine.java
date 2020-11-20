@@ -238,42 +238,6 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 			}
 		}
 		
-		private boolean doRestart;
-		
-		
-		public boolean isRaisedDoRestart() {
-			synchronized(DefaultSMStatemachine.this) {
-				return doRestart;
-			}
-		}
-		
-		protected void raiseDoRestart() {
-			synchronized(DefaultSMStatemachine.this) {
-				doRestart = true;
-				for (SCInterfaceListener listener : listeners) {
-					listener.onDoRestartRaised();
-				}
-			}
-		}
-		
-		private boolean doWash;
-		
-		
-		public boolean isRaisedDoWash() {
-			synchronized(DefaultSMStatemachine.this) {
-				return doWash;
-			}
-		}
-		
-		protected void raiseDoWash() {
-			synchronized(DefaultSMStatemachine.this) {
-				doWash = true;
-				for (SCInterfaceListener listener : listeners) {
-					listener.onDoWashRaised();
-				}
-			}
-		}
-		
 		private boolean doCoffee;
 		
 		
@@ -724,6 +688,42 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 			}
 		}
 		
+		private boolean doRestart;
+		
+		
+		public boolean isRaisedDoRestart() {
+			synchronized(DefaultSMStatemachine.this) {
+				return doRestart;
+			}
+		}
+		
+		protected void raiseDoRestart() {
+			synchronized(DefaultSMStatemachine.this) {
+				doRestart = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onDoRestartRaised();
+				}
+			}
+		}
+		
+		private boolean doWash;
+		
+		
+		public boolean isRaisedDoWash() {
+			synchronized(DefaultSMStatemachine.this) {
+				return doWash;
+			}
+		}
+		
+		protected void raiseDoWash() {
+			synchronized(DefaultSMStatemachine.this) {
+				doWash = true;
+				for (SCInterfaceListener listener : listeners) {
+					listener.onDoWashRaised();
+				}
+			}
+		}
+		
 		private String mySelection;
 		
 		public synchronized String getMySelection() {
@@ -782,8 +782,6 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		}
 		protected void clearOutEvents() {
 		
-		doRestart = false;
-		doWash = false;
 		doCoffee = false;
 		doExpresso = false;
 		doTea = false;
@@ -809,6 +807,8 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		doInfuse = false;
 		doRetake = false;
 		doFinish = false;
+		doRestart = false;
+		doWash = false;
 		}
 		
 	}
@@ -1212,14 +1212,6 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		sCInterface.raiseAddCup();
 	}
 	
-	public synchronized boolean isRaisedDoRestart() {
-		return sCInterface.isRaisedDoRestart();
-	}
-	
-	public synchronized boolean isRaisedDoWash() {
-		return sCInterface.isRaisedDoWash();
-	}
-	
 	public synchronized boolean isRaisedDoCoffee() {
 		return sCInterface.isRaisedDoCoffee();
 	}
@@ -1318,6 +1310,14 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 	
 	public synchronized boolean isRaisedDoFinish() {
 		return sCInterface.isRaisedDoFinish();
+	}
+	
+	public synchronized boolean isRaisedDoRestart() {
+		return sCInterface.isRaisedDoRestart();
+	}
+	
+	public synchronized boolean isRaisedDoWash() {
+		return sCInterface.isRaisedDoWash();
 	}
 	
 	public synchronized String getMySelection() {
@@ -1435,6 +1435,8 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 	/* Entry action for state 'order'. */
 	private void entryAction_main_order() {
 		timer.setTimer(this, 0, 15, true);
+		
+		sCInterface.setSelection(false);
 	}
 	
 	/* Entry action for state 'pay'. */
@@ -1590,8 +1592,6 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 		timer.setTimer(this, 23, (5 * 1000), false);
 		
 		sCInterface.raiseDoWash();
-		
-		sCInterface.setSelection(false);
 	}
 	
 	/* Exit action for state 'order'. */
@@ -2794,7 +2794,7 @@ public class DefaultSMStatemachine implements IDefaultSMStatemachine {
 				enterSequence_main_Prepare2_r2_Infuse_default();
 				main_Prepare2_react(false);
 			} else {
-				if (((timeEvents[16]) && ((sCInterface.operationCallback.isPoor() && (((sCInterface.getMySelection()== null?"Tea" !=null : !sCInterface.getMySelection().equals("Tea")) && (sCInterface.getMySelection()== null?"IcedTea" !=null : !sCInterface.getMySelection().equals("IcedTea")))))))) {
+				if (((timeEvents[16]) && (((sCInterface.operationCallback.isPoor() && (sCInterface.getMySelection()== null?"Tea" !=null : !sCInterface.getMySelection().equals("Tea"))) && (sCInterface.getMySelection()== null?"IcedTea" !=null : !sCInterface.getMySelection().equals("IcedTea")))))) {
 					exitSequence_main_Prepare2_r2_poor();
 					react_main_Prepare2_r2__choice_0();
 				} else {
