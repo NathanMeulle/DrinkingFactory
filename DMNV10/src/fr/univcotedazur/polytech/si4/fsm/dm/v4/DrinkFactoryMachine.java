@@ -1,23 +1,21 @@
 package fr.univcotedazur.polytech.si4.fsm.dm.v4;
 
 
+import dmnv10.TimerService;
+import dmnv10.defaultsm.DefaultSMStatemachine;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
-
-import dmnv10.TimerService;
-import dmnv10.defaultsm.DefaultSMStatemachine;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
 import java.util.List;
 import java.util.Timer;
+import java.util.*;
 
 
 public class DrinkFactoryMachine extends JFrame {
@@ -833,19 +831,7 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	private int doRendu() {
-		switch (selection) {
-			case "Coffee":
-				return cagnote - montant;
-			case "Expresso":
-				return cagnote - montant;
-			case "Tea":
-				return cagnote - montant;
-			case "Soup":
-				return cagnote - montant;
-			case "IcedTea":
-				return cagnote - montant;
-		}
-		return cagnote;
+		return cagnote - montant;
 	}
 
 	public void doRestart() {
@@ -973,7 +959,6 @@ public class DrinkFactoryMachine extends JFrame {
 	}
 
 	public void doCrouton() {
-		//TODO controle à mettre dans la FSM... en attendant :
 		if (croutonButton.isSelected()) {
 			System.out.println("croutons");
 			addMessageToUser("Ajout croutons");

@@ -1,7 +1,12 @@
 package fr.univcotedazur.polytech.si4.fsm.dm.v4;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.text.*;
+
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
+
+/**
+ * Classe pour faire un input avec un nombre de caractère limité
+ */
 class JTextFieldLimit extends PlainDocument {
     private int limit;
     JTextFieldLimit(int limit) {

@@ -1,12 +1,15 @@
 package fr.univcotedazur.polytech.si4.fsm.dm.v4;
 
 import java.math.BigInteger;
-        import java.nio.charset.StandardCharsets;
-        import java.security.MessageDigest;
-        import java.security.NoSuchAlgorithmException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 // Java program to calculate SHA hash value
 
+/**
+ * Classe permettant de crypter les données banquaires
+ */
 class Encryption {
     public static byte[] getSHA(String input) throws NoSuchAlgorithmException {
         // Static getInstance method is called with hashing SHA

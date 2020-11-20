@@ -1,10 +1,11 @@
 package fr.univcotedazur.polytech.si4.fsm.dm.v4;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe représentant les clients permettant la fidélisation
+ */
 public class Person {
     private String id;
     private List<Integer> achats;
