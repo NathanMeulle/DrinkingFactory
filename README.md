@@ -14,8 +14,12 @@ This project allows customers to order drinks from a drinking machine ☕️
 ![](https://img.shields.io/badge/Editor-IntelliJ_IDEA-informational?style=flat-square&logo=intellij-idea&logoColor=white&color=4581E5)
 ![](https://img.shields.io/badge/Editor-Yakindu-informational?style=flat-square&logo=yakindu&logoColor=white&color=4581E5)
 
+<p float="left">
+  <img src="https://github.com/NathanMeulle/DrinkingFactory/blob/main/DMNV10/src/picts/preview.jpg" width="450">
+    
+  <img src="https://github.com/NathanMeulle/DrinkingFactory/blob/main/DMNV10/src/picts/yakindu-preview.jpg" width="450">
+</p>
 
-<img src="https://github.com/NathanMeulle/DrinkingFactory/blob/main/DMNV10/src/picts/preview.jpg" width="500">
 
 [![ForTheBadge built-with-swag](http://ForTheBadge.com/images/badges/built-with-swag.svg)](https://github.com/NathanMeulle)
 
