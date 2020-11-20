@@ -1,0 +1,4 @@
+User1 = (selectCoffee -> payCoffee -> doDosette -> doHeat -> doGobelet -> doPoor -> doSugar -> coffee -> User1).
+User2 = (selectExpresso -> payExpresso -> doGrain -> doHeat -> doGobelet -> doPoor -> doSugar -> expresso -> User2).
+
+assert Prop = [] (selectCoffee -> (<> payCoffee))
