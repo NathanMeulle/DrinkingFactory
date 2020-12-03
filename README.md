@@ -15,9 +15,9 @@ This project allows customers to order drinks from a drinking machine ☕️
 ![](https://img.shields.io/badge/Editor-Yakindu-informational?style=flat-square&logo=yakindu&logoColor=white&color=4581E5)
 
 <p float="left">
-  <img src="https://github.com/NathanMeulle/DrinkingFactory/blob/main/DMNV10/src/picts/preview.jpg" width="400">
+  <img src="https://github.com/NathanMeulle/DrinkingFactory/blob/main/DMNV10%20RENDU%20FINAL/src/picts/preview.jpg" width="400">
     
-  <img src="https://github.com/NathanMeulle/DrinkingFactory/blob/main/DMNV10/src/picts/yakindu-preview.jpg" width="400">
+  <img src="https://github.com/NathanMeulle/DrinkingFactory/blob/main/DMNV10%20RENDU%20FINAL/src/picts/yakindu-preview.jpg" width="400">
 </p>
 
 
