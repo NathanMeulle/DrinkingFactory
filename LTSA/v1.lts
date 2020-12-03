@@ -4,4 +4,12 @@ User1 = (selectCoffee -> payCoffee -> doDosette -> doHeat -> doGobelet -> doPoor
 
 assert Prop1 = [] (selectExpresso -> (<> payExpresso))
 assert Prop2 = [] (selectCoffee -> (<> payCoffee))
-assert Prop3 = [] (selectExpresso -> (<> payExpresso) -> (<> expresso))
+assert Prop4 = [] (selectCoffee -> (<> doRestart))
+assert Prop5 = [] (selectCoffee -> (<> doDosette))
+assert Prop6 = [] (selectExpresso -> (<> doGrain))
+	
+
+
+assert Prop3 = [] (selectExpresso -> (! coffee))
+assert Prop7 = [] (selectExpresso -> (! doDosette))
+assert Prop8 = [] (selectCoffee -> (! expresso))
